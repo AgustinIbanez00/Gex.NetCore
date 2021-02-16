@@ -1,3 +1,5 @@
+using Gex.NetCore.Models;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -28,6 +30,7 @@ namespace Gex.NetCore
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddDbContext<gexContext>();
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp";
@@ -45,6 +48,7 @@ namespace Gex.NetCore
             app.UseRouting();
             app.UseSpaStaticFiles();
             app.UseAuthorization();
+            
 
             app.UseEndpoints(endpoints =>
             {
