@@ -1,41 +1,87 @@
 <template>
-    <section class="section">
-      <div class="container has-text-centered">
-        <div class="column is-4 is-offset-4">
-          <h3 class="title has-text-grey">Login</h3>
-          <p class="subtitle has-text-grey">Please login to proceed</p>         
-          <article class="message is-success" v-if="$route.query.new">
-          <div class="message-body">
-            <strong>You're all set {{$route.query.firstName}}!</strong> Login with your password to continue.
-          </div>
-          </article>
-          <div class="box">          
-            <form @submit.prevent="handleSubmit">
-              <div class="field">
-                <div class="control">
-                  <input class="input is-large" type="email" placeholder="Email" autofocus="" v-model="credentials.userName">
-                </div>
-              </div>
-              <div class="field">
-                <div class="control">
-                  <input class="input is-large" type="password" placeholder="Password" v-model="credentials.password">
-                </div>
-              </div>
-              <Spinner v-bind:show="isBusy" />
-              <button class="button is-block is-info is-large is-fullwidth" type="submit">Login</button>
-              <div class="errors-container" v-if="errors">
-                 {{errors}}
-              </div>
-            </form>
-          </div>
-          <p class="has-text-grey">
-             <router-link to="/register">Sign Up</router-link>
-          </p>
-        </div>
-      </div>  
-  </section> 
+
+    <v-form ref="form" v-model="valid">
+        <v-text-field v-model="username"
+                      :rules="usernameRules"
+                      label="Correo electrónico"
+                      required></v-text-field>
+
+        <v-text-field v-model="password"
+                      :counter="10"
+                      :rules="passwordRules"
+                      label="Contraseña"
+                      required></v-text-field>
+        <v-btn @click="login">Iniciar sesión</v-btn>
+
+    </v-form>
+
 </template>
 
+<script>
+    import axios from 'axios';
+
+    export default {
+        data: function () {
+            return {
+
+                valid: true,
+                password: "",
+                passwordRules: [
+                    (v) => !!v || "Es necesario una contraseña",
+                    (v) =>
+                        (v && v.length <= 10) ||
+                        "La contraseña debe tener menos de 10 caracteres.",
+                ],
+                username: "",
+                usernameRules: [
+                    (v) => !!v || "Es obligatorio ingresar un correo electrónico",
+                    (v) => /.+@.+\..+/.test(v) || "El correo electrónico debe ser válido.",
+                ],
+                checkbox: false,
+                prices: null,
+            }
+        },
+        methods: {
+            validate() {
+                this.$refs.form.validate();
+            },
+            reset() {
+                this.$refs.form.reset();
+            },
+            resetValidation() {
+                this.$refs.form.resetValidation();
+            },
+            login() {
+
+//.post("http://localhost:50598/api/Auth/login", { username: this.username, password: this.password })
+//.post("http://localhost:50598/api/cursos", curso)
+let curso = 
+{
+  id : 1,
+  comision : "a",
+  cuatrimestre: 1,
+  ciclolectivo: 2020,
+  cantalumnos: 24,
+  estado: 0
+  
+}
+
+
+
+                axios
+                    .get("http://localhost:50598/api/cursos")
+                    .then((response) => {
+                        console.log(JSON.stringify(response))
+                    })
+                    .catch((error) => {
+                        console.log(JSON.stringify(error));
+                    });
+            },
+        }
+    };
+</script>
+
+<!--
 <script>
 import Spinner from  '@/components/Spinner.vue'; // @ is an alias to /src
 import { Component, Vue } from 'vue-property-decorator';
@@ -43,38 +89,40 @@ import { Credentials } from '../../models/credentials.interface';
 // this.$route.query.page
 
 @Component({
-  components: {
-    Spinner,
-  },
+    components: {
+        Spinner,
+    },
 })
-export default class RegistrationForm extends Vue {
+export default
+{
+    name: 'Login',
+    components: {
 
-private isBusy: boolean = false;
-private errors: string = '';
-private credentials = {} as Credentials;
+    }
+}
+
+var isBusy = false;
+var errors = '';
+var credentials = {} as Credentials;
 
 private created() {
-  if (this.$route.query.new) {
-    this.credentials.userName = this.$route.query.email;
-  }
+    if (this.$route.query.new) {
+        this.credentials.userName = this.$route.query.email;
+    }
 }
 
 private handleSubmit() {
-     this.isBusy = true;
-     this.$store.dispatch('auth/authRequest', this.credentials).then((result) => {
-     this.$router.push('/dashboard/home');
+         this.isBusy = true;
+         this.$store.dispatch('auth/authRequest', this.credentials).then((result) => {
+         this.$router.push('/dashboard/home');
+        })
+     .catch((err) => {
+        this.errors = err;
     })
-   .catch((err) => {
-    this.errors = err;
-  })
-  .then(() => {
-    this.isBusy = false;
-  });
+    .then(() => {
+        this.isBusy = false;
+    });
  }
 }
 </script>
-
-<style lang="scss" scoped> 
-
-</style>
- 
+-->
