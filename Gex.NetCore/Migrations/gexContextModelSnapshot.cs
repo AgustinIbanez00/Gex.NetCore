@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Gex.NetCore.Migrations
 {
-    [DbContext(typeof(gexContext))]
+    [DbContext(typeof(GexContext))]
     partial class gexContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
@@ -16,95 +16,6 @@ namespace Gex.NetCore.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
-
-            modelBuilder.Entity("Gex.NetCore.Entities.AppUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("varchar(767)");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<long?>("FacebookId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("FirstName")
-                        .HasColumnType("text");
-
-                    b.Property<string>("LastName")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("timestamp");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasColumnType("text");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasColumnType("text");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("text");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("PictureUrl")
-                        .HasColumnType("text");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserName")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("AppUser");
-                });
-
-            modelBuilder.Entity("Gex.NetCore.Entities.Customer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("Gender")
-                        .HasColumnType("text");
-
-                    b.Property<string>("IdentityId")
-                        .HasColumnType("varchar(767)");
-
-                    b.Property<string>("Locale")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Location")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IdentityId");
-
-                    b.ToTable("Customers");
-                });
 
             modelBuilder.Entity("Gex.NetCore.Models.Cursos", b =>
                 {
@@ -262,11 +173,14 @@ namespace Gex.NetCore.Migrations
                     b.Property<long?>("ProfesorId")
                         .HasColumnType("bigint");
 
+                    b.Property<string>("ProfesorId1")
+                        .HasColumnType("varchar(767)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ExamenId");
 
-                    b.HasIndex("ProfesorId");
+                    b.HasIndex("ProfesorId1");
 
                     b.ToTable("Mesas");
                 });
@@ -280,6 +194,9 @@ namespace Gex.NetCore.Migrations
                     b.Property<long?>("AlumnoId")
                         .HasColumnType("bigint");
 
+                    b.Property<string>("AlumnoId1")
+                        .HasColumnType("varchar(767)");
+
                     b.Property<byte>("Estado")
                         .HasColumnType("tinyint");
 
@@ -291,28 +208,11 @@ namespace Gex.NetCore.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AlumnoId");
+                    b.HasIndex("AlumnoId1");
 
                     b.HasIndex("MesaId");
 
                     b.ToTable("MesasAlumnos");
-                });
-
-            modelBuilder.Entity("Gex.NetCore.Models.Migrations", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int>("Batch")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Migration")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Migrations");
                 });
 
             modelBuilder.Entity("Gex.NetCore.Models.PersonalAccessTokens", b =>
@@ -406,6 +306,9 @@ namespace Gex.NetCore.Migrations
                     b.Property<long?>("AlumnoId")
                         .HasColumnType("bigint");
 
+                    b.Property<string>("AlumnoId1")
+                        .HasColumnType("varchar(767)");
+
                     b.Property<byte>("Estado")
                         .HasColumnType("tinyint");
 
@@ -417,46 +320,26 @@ namespace Gex.NetCore.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AlumnoId");
+                    b.HasIndex("AlumnoId1");
 
                     b.HasIndex("RespuestaId");
 
                     b.ToTable("RespuestasAlumnos");
                 });
 
-            modelBuilder.Entity("Gex.NetCore.Models.Sessions", b =>
+            modelBuilder.Entity("Gex.NetCore.Models.User", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("varchar(767)");
 
-                    b.Property<string>("IpAddress")
-                        .HasColumnType("text");
-
-                    b.Property<int>("LastActivity")
+                    b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
-
-                    b.Property<string>("Payload")
-                        .HasColumnType("text");
-
-                    b.Property<string>("UserAgent")
-                        .HasColumnType("text");
-
-                    b.Property<long?>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Sessions");
-                });
-
-            modelBuilder.Entity("Gex.NetCore.Models.Users", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
 
                     b.Property<DateTime?>("BirthDate")
                         .HasColumnType("datetime");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .HasColumnType("text");
 
                     b.Property<DateTimeOffset?>("CreatedAt")
                         .HasColumnType("timestamp");
@@ -470,13 +353,25 @@ namespace Gex.NetCore.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("text");
 
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
                     b.Property<DateTimeOffset?>("EmailVerifiedAt")
                         .HasColumnType("timestamp");
 
                     b.Property<string>("LastName")
                         .HasColumnType("text");
 
-                    b.Property<string>("Name")
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("timestamp");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasColumnType("text");
+
+                    b.Property<string>("NormalizedUserName")
                         .HasColumnType("text");
 
                     b.Property<string>("Observation")
@@ -485,14 +380,32 @@ namespace Gex.NetCore.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("text");
 
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("text");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
                     b.Property<string>("ProfilePhotoPath")
                         .HasColumnType("text");
 
                     b.Property<string>("RememberToken")
                         .HasColumnType("text");
 
+                    b.Property<string>("Salt")
+                        .HasColumnType("text");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("text");
+
                     b.Property<int>("State")
                         .HasColumnType("int");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
 
                     b.Property<string>("TwoFactorRecoveryCodes")
                         .HasColumnType("text");
@@ -506,16 +419,12 @@ namespace Gex.NetCore.Migrations
                     b.Property<DateTimeOffset?>("UpdatedAt")
                         .HasColumnType("timestamp");
 
+                    b.Property<string>("UserName")
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("Gex.NetCore.Entities.Customer", b =>
-                {
-                    b.HasOne("Gex.NetCore.Entities.AppUser", "Identity")
-                        .WithMany()
-                        .HasForeignKey("IdentityId");
                 });
 
             modelBuilder.Entity("Gex.NetCore.Models.Examenes", b =>
@@ -546,16 +455,16 @@ namespace Gex.NetCore.Migrations
                         .WithMany("Mesas")
                         .HasForeignKey("ExamenId");
 
-                    b.HasOne("Gex.NetCore.Models.Users", "Profesor")
+                    b.HasOne("Gex.NetCore.Models.User", "Profesor")
                         .WithMany("Mesas")
-                        .HasForeignKey("ProfesorId");
+                        .HasForeignKey("ProfesorId1");
                 });
 
             modelBuilder.Entity("Gex.NetCore.Models.MesasAlumnos", b =>
                 {
-                    b.HasOne("Gex.NetCore.Models.Users", "Alumno")
+                    b.HasOne("Gex.NetCore.Models.User", "Alumno")
                         .WithMany("MesasAlumnos")
-                        .HasForeignKey("AlumnoId");
+                        .HasForeignKey("AlumnoId1");
 
                     b.HasOne("Gex.NetCore.Models.Mesas", "Mesa")
                         .WithMany("MesasAlumnos")
@@ -578,9 +487,9 @@ namespace Gex.NetCore.Migrations
 
             modelBuilder.Entity("Gex.NetCore.Models.RespuestasAlumnos", b =>
                 {
-                    b.HasOne("Gex.NetCore.Models.Users", "Alumno")
+                    b.HasOne("Gex.NetCore.Models.User", "Alumno")
                         .WithMany("RespuestasAlumnos")
-                        .HasForeignKey("AlumnoId");
+                        .HasForeignKey("AlumnoId1");
 
                     b.HasOne("Gex.NetCore.Models.Respuestas", "Respuesta")
                         .WithMany("RespuestasAlumnos")

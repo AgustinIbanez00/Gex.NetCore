@@ -15,7 +15,7 @@ namespace Gex.NetCore.Models
         public string Nota { get; set; }
         public byte Estado { get; set; }
 
-        public virtual Users Alumno { get; set; }
+        public virtual User Alumno { get; set; }
         public virtual Mesas Mesa { get; set; }
     }
 }

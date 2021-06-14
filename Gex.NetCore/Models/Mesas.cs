@@ -21,7 +21,7 @@ namespace Gex.NetCore.Models
         public byte? MostrarRespuestas { get; set; }
 
         public virtual Examenes Examen { get; set; }
-        public virtual Users Profesor { get; set; }
+        public virtual User Profesor { get; set; }
         public virtual ICollection<MesasAlumnos> MesasAlumnos { get; set; }
     }
 }

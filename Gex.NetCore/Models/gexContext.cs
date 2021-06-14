@@ -1,9 +1,4 @@
-﻿using System;
-
-using Gex.NetCore.Entities;
-
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
 
 // Code scaffolded by EF Core assumes nullable reference types (NRTs) are not used or disabled.
 // If you have enabled NRTs for your project, then un-comment the following line:
@@ -11,13 +6,13 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Gex.NetCore.Models
 {
-    public partial class gexContext : DbContext
+    public partial class GexContext : DbContext
     {
-        public gexContext()
+        public GexContext()
         {
         }
 
-        public gexContext(DbContextOptions<gexContext> options)
+        public GexContext(DbContextOptions<GexContext> options)
             : base(options)
         {
         }
@@ -33,8 +28,7 @@ namespace Gex.NetCore.Models
         public virtual DbSet<Preguntas> Preguntas { get; set; }
         public virtual DbSet<Respuestas> Respuestas { get; set; }
         public virtual DbSet<RespuestasAlumnos> RespuestasAlumnos { get; set; }
-        public virtual DbSet<Users> Users { get; set; }
-        public virtual DbSet<Customer> Customers { get; set; }
+        public virtual DbSet<User> Users { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

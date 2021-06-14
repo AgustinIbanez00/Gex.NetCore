@@ -1,30 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using Microsoft.AspNetCore.Identity;
+
 // Code scaffolded by EF Core assumes nullable reference types (NRTs) are not used or disabled.
 // If you have enabled NRTs for your project, then un-comment the following line:
 // #nullable disable
 
 namespace Gex.NetCore.Models
 {
-    public partial class Users
+    public partial class User : IdentityUser
     {
-        public Users()
+        public User()
         {
             Mesas = new HashSet<Mesas>();
             MesasAlumnos = new HashSet<MesasAlumnos>();
             RespuestasAlumnos = new HashSet<RespuestasAlumnos>();
         }
 
-        public long Id { get; set; }
-        public string Name { get; set; }
-        public string Email { get; set; }
         public DateTimeOffset? EmailVerifiedAt { get; set; }
         public string Password { get; set; }
-        public string TwoFactorSecret { get; set; }
-        public string TwoFactorRecoveryCodes { get; set; }
+        public string Salt { get; set; }
         public string RememberToken { get; set; }
-        public long? CurrentTeamId { get; set; }
         public string ProfilePhotoPath { get; set; }
         public DateTimeOffset? CreatedAt { get; set; }
         public DateTimeOffset? UpdatedAt { get; set; }

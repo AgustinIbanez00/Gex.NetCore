@@ -1,21 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
+﻿
+using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 
-using Gex.NetCore.Auth;
-using Gex.NetCore.Entities;
 using Gex.NetCore.Helpers;
 using Gex.NetCore.Models;
 using Gex.NetCore.ViewModels;
 
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-
-using Newtonsoft.Json;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Gex.NetCore.Controllers
 {
@@ -23,55 +21,76 @@ namespace Gex.NetCore.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
+        private readonly GexContext _context;
+        private readonly IConfiguration _configuration;
 
-        private readonly UserManager<AppUser> _userManager;
-        private readonly IJwtFactory _jwtFactory;
-        private readonly JwtIssuerOptions _jwtOptions;
-
-        public AuthController(UserManager<AppUser> userManager, IJwtFactory jwtFactory, IOptions<JwtIssuerOptions> jwtOptions)
+        public AuthController(GexContext context, IConfiguration configuration)
         {
-            _userManager = userManager;
-            _jwtFactory = jwtFactory;
-            _jwtOptions = jwtOptions.Value;
+            _context = context;
+            _configuration = configuration;
         }
 
-        // POST api/auth/login
-        [HttpPost("login")]
-        public async Task<IActionResult> Post([FromBody] CredentialsViewModel credentials)
+        //[AllowAnonymous]
+        [Route("Login")]
+        [HttpPost]
+        public async Task<IActionResult> Login([FromBody] CredentialsViewModel credentials)
         {
             if (!ModelState.IsValid)
+                return BadRequest(Errors.GetModelStateErrors(ModelState));
+            
+            User Usuario = await _context.Users.Where(x => x.Email == credentials.Email).FirstOrDefaultAsync();
+            if (Usuario == null)
+                return NotFound(Errors.InvalidCredentials());
+            
+            if (HashHelper.CheckHash(credentials.Password, Usuario.Password, Usuario.Salt))
             {
-                return BadRequest(ModelState);
-            }
+                var secretKey = _configuration.GetValue<string>("SecretKey");
+                var key = Encoding.ASCII.GetBytes(secretKey);
 
-            var identity = await GetClaimsIdentity(credentials.UserName, credentials.Password);
-            if (identity == null)
-            {
-                return BadRequest(Errors.AddErrorToModelState("login_failure", "Invalid username or password.", ModelState));
-            }
+                var claims = new ClaimsIdentity();
+                claims.AddClaim(new Claim(ClaimTypes.NameIdentifier, credentials.Email));
 
-            var jwt = await Tokens.GenerateJwt(identity, _jwtFactory, credentials.UserName, _jwtOptions, new JsonSerializerSettings { Formatting = Formatting.Indented });
-            return new OkObjectResult(jwt);
+                var tokenDescriptor = new SecurityTokenDescriptor
+                {
+                    Subject = claims,
+                    Expires = DateTime.UtcNow.AddHours(4),
+                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                };
+
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var createdToken = tokenHandler.CreateToken(tokenDescriptor);
+
+                string bearer_token = tokenHandler.WriteToken(createdToken);
+
+                return Ok(new { Token = bearer_token } );
+            }
+            else return BadRequest(Errors.InvalidCredentials());
         }
 
-        private async Task<ClaimsIdentity> GetClaimsIdentity(string userName, string password)
+        [Route("Register")]
+        [HttpPost]
+        public async Task<IActionResult> Register([FromBody] RegistrationViewModel registerModel)
         {
-            if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(password))
-                return await Task.FromResult<ClaimsIdentity>(null);
+            if (!ModelState.IsValid) 
+                return BadRequest(Errors.GetModelStateErrors(ModelState));
 
-            // get the user to verifty
-            var userToVerify = await _userManager.FindByNameAsync(userName);
+            if (await _context.Users.Where(x => x.Email == registerModel.Email).AnyAsync())
+                return BadRequest(Errors.InvalidCredentials($"Esa dirección de correo electrónico {registerModel.Email} ya existe."));
 
-            if (userToVerify == null) return await Task.FromResult<ClaimsIdentity>(null);
+            HashedPassword Password = HashHelper.Hash(registerModel.Password);
 
-            // check the credentials
-            if (await _userManager.CheckPasswordAsync(userToVerify, password))
+            User user = new User()
             {
-                return await Task.FromResult(_jwtFactory.GenerateClaimsIdentity(userName, userToVerify.Id));
-            }
+                Email = registerModel.Email,
+                Password = Password.Password,
+                Salt = Password.Salt
+            };
 
-            // Credentials are invalid, or account doesn't exist
-            return await Task.FromResult<ClaimsIdentity>(null);
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { Message = "Usuario creado correctamente." } );
         }
+
     }
 }
