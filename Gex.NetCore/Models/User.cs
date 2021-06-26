@@ -13,7 +13,7 @@ namespace Gex.NetCore.Models
     {
         public User()
         {
-            Mesas = new HashSet<Mesas>();
+            Mesas = new HashSet<MesaExamen>();
             MesasAlumnos = new HashSet<MesasAlumnos>();
             RespuestasAlumnos = new HashSet<RespuestasAlumnos>();
         }
@@ -32,7 +32,7 @@ namespace Gex.NetCore.Models
         public int? Type { get; set; }
         public int State { get; set; }
 
-        public virtual ICollection<Mesas> Mesas { get; set; }
+        public virtual ICollection<MesaExamen> Mesas { get; set; }
         public virtual ICollection<MesasAlumnos> MesasAlumnos { get; set; }
         public virtual ICollection<RespuestasAlumnos> RespuestasAlumnos { get; set; }
     }

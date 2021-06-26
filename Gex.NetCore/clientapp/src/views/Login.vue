@@ -57,7 +57,7 @@
             login() {
                 let model = { email: this.usuario, password: this.clave };
                 console.log(model)
-                axios.post("/api/Auth/Login", model)
+                axios.post("http://localhost:5000/api/Auth/Login", model)
                     .then(res => {
                         if(res.status == 200) 
                             VueCookies.set('gex_session', res.data.token)

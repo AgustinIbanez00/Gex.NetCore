@@ -7,22 +7,19 @@ using System.Collections.Generic;
 
 namespace Gex.NetCore.Models
 {
-    public partial class Cursos
+    public partial class Materia
     {
-        public Cursos()
+        public Materia()
         {
-            Examenes = new HashSet<Examenes>();
+            Examenes = new HashSet<Examen>();
             MateriasCursos = new HashSet<MateriasCursos>();
         }
 
         public long Id { get; set; }
-        public string Comision { get; set; }
-        public int Cuatrimestre { get; set; }
-        public int? CicloLectivo { get; set; }
-        public int CantAlumnos { get; set; }
+        public string Nombre { get; set; }
         public int Estado { get; set; }
 
-        public virtual ICollection<Examenes> Examenes { get; set; }
+        public virtual ICollection<Examen> Examenes { get; set; }
         public virtual ICollection<MateriasCursos> MateriasCursos { get; set; }
     }
 }

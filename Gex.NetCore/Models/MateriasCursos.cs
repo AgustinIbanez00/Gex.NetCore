@@ -15,7 +15,7 @@ namespace Gex.NetCore.Models
         public DateTime? FechaInicio { get; set; }
         public DateTime? FechaFin { get; set; }
 
-        public virtual Cursos Curso { get; set; }
-        public virtual Materias Materia { get; set; }
+        public virtual Curso Curso { get; set; }
+        public virtual Materia Materia { get; set; }
     }
 }

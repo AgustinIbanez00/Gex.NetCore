@@ -1,8 +1,19 @@
 <template>
-
-  </template>
+    <v-form ref="form" v-model="valid">
+		<v-text-field label="Nombre"></v-text-field>
+		<p>asdsad</p>
+	</v-form>
+</template>
 
 <script>
+
+	export default {
+		data: function () {
+
+		}
+		
+	}
+
 	/*
 import Spinner from '@/components/Spinner.vue'; // @ is an alias to /src
 import { Component, Vue } from 'vue-property-decorator';

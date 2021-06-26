@@ -7,10 +7,13 @@ using System.Collections.Generic;
 
 namespace Gex.NetCore.Models
 {
-    public partial class Migrations
+    public partial class Session
     {
-        public int Id { get; set; }
-        public string Migration { get; set; }
-        public int Batch { get; set; }
+        public string Id { get; set; }
+        public long? UserId { get; set; }
+        public string IpAddress { get; set; }
+        public string UserAgent { get; set; }
+        public string Payload { get; set; }
+        public int LastActivity { get; set; }
     }
 }

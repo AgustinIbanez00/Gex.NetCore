@@ -1,9 +1,11 @@
 ﻿
 using System;
+using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Gex.NetCore.Helpers;
@@ -36,11 +38,11 @@ namespace Gex.NetCore.Controllers
         public async Task<IActionResult> Login([FromBody] CredentialsViewModel credentials)
         {
             if (!ModelState.IsValid)
-                return BadRequest(Errors.GetModelStateErrors(ModelState));
+                return BadRequest(ResponseHelper.GetModelStateErrors(ModelState));
             
             User Usuario = await _context.Users.Where(x => x.Email == credentials.Email).FirstOrDefaultAsync();
             if (Usuario == null)
-                return NotFound(Errors.InvalidCredentials());
+                return NotFound(ResponseHelper.InvalidCredentials());
             
             if (HashHelper.CheckHash(credentials.Password, Usuario.Password, Usuario.Salt))
             {
@@ -64,7 +66,7 @@ namespace Gex.NetCore.Controllers
 
                 return Ok(new { Token = bearer_token } );
             }
-            else return BadRequest(Errors.InvalidCredentials());
+            else return BadRequest(ResponseHelper.InvalidCredentials());
         }
 
         [Route("Register")]
@@ -72,10 +74,10 @@ namespace Gex.NetCore.Controllers
         public async Task<IActionResult> Register([FromBody] RegistrationViewModel registerModel)
         {
             if (!ModelState.IsValid) 
-                return BadRequest(Errors.GetModelStateErrors(ModelState));
+                return BadRequest(ResponseHelper.GetModelStateErrors(ModelState));
 
             if (await _context.Users.Where(x => x.Email == registerModel.Email).AnyAsync())
-                return BadRequest(Errors.InvalidCredentials($"Esa dirección de correo electrónico {registerModel.Email} ya existe."));
+                return BadRequest(ResponseHelper.InvalidCredentials($"Esa dirección de correo electrónico {registerModel.Email} ya existe."));
 
             HashedPassword Password = HashHelper.Hash(registerModel.Password);
 
@@ -90,6 +92,14 @@ namespace Gex.NetCore.Controllers
             await _context.SaveChangesAsync();
 
             return Ok(new { Message = "Usuario creado correctamente." } );
+        }
+
+        [Route("Me")]
+        [HttpGet]
+        public IActionResult Get()
+        {
+            var r = ((ClaimsIdentity)User.Identity).FindFirst(ClaimTypes.NameIdentifier);
+            return Ok(new { Username =  r == null ? "" : r.Value } );
         }
 
     }

@@ -1,14 +1,33 @@
 ﻿
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Net;
+using System.Runtime.InteropServices;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Gex.NetCore.Helpers
 {
-    public static class Errors
+    public enum GexError
     {
+        [Description("La dirección de correo o contraseña son incorrectas.")]
+        InvalidCredentials,
+
+        [Description("No se puede crear un(a) {0} con el mismo identificador.")]
+        DuplicatedEntity,
+
+        [Description("No se encontró ningun(a) {0} con los datos ingresados.")]
+        NotFound,
+
+
+    }
+
+    public static class ResponseHelper
+    {
+
         public static ModelStateDictionary AddErrorsToModelState(IdentityResult identityResult, ModelStateDictionary modelState)
         {
             foreach (var e in identityResult.Errors)
@@ -29,23 +48,31 @@ namespace Gex.NetCore.Helpers
         {
             return Model.Select(x => new ModelErrors() { Key = x.Key, Messages = x.Value.Errors.Select(y => y.ErrorMessage).ToList() }).ToList();
         }
-        public static ResponseError Response(int StatusCode, string Message)
+        public static ResponseSingle Response(GexError StatusCode, [Optional] string Message)
         {
-            return new ResponseError()
+            return new ResponseSingle()
             {
-                StatusCode = StatusCode,
-                Message = Message
+                Error = new ResponseError()
+                {
+                    Message = Message = !string.IsNullOrEmpty(Message) ? Message : Enumerations.GetEnumDescription(StatusCode),
+                    StatusCode = StatusCode
+                }                
             };
         }
 
-        public static ResponseError InvalidCredentials(string customMessage = "La dirrección de correo o contraseña son incorrectas.") => Response(404, customMessage);
+        public static ResponseSingle InvalidCredentials([Optional] string message) 
+            => Response(GexError.InvalidCredentials, message);
+    }
 
+    public class ResponseSingle
+    {
+        public ResponseError Error { get; set; }
     }
 
     public class ResponseError
     {
-        public int StatusCode { get; set; }
         public string Message { get; set; }
+        public GexError StatusCode { get; set; }
     }
 
     public class ModelErrors

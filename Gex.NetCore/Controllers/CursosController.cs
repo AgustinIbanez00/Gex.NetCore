@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Gex.NetCore.Models;
 using Microsoft.AspNetCore.Authorization;
+using static Gex.NetCore.Helpers.ResponseHelper;
+using Gex.NetCore.Helpers;
 
 namespace Gex.NetCore.Controllers
 {
@@ -20,16 +22,18 @@ namespace Gex.NetCore.Controllers
             _context = context;
         }
 
+        [AllowAnonymous]
         // GET: api/Cursos
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Cursos>>> GetCursos()
+        public async Task<ActionResult<IEnumerable<Curso>>> GetCursos()
         {
             return await _context.Cursos.ToListAsync();
         }
 
         // GET: api/Cursos/5
+        [AllowAnonymous]
         [HttpGet("{id}")]
-        public async Task<ActionResult<Cursos>> GetCursos(long id)
+        public async Task<ActionResult<Curso>> GetCursos(long id)
         {
             var cursos = await _context.Cursos.FindAsync(id);
 
@@ -45,7 +49,7 @@ namespace Gex.NetCore.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCursos(long id, Cursos cursos)
+        public async Task<IActionResult> PutCursos(long id, Curso cursos)
         {
             if (id != cursos.Id)
             {
@@ -77,17 +81,23 @@ namespace Gex.NetCore.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Cursos>> PostCursos(Cursos cursos)
-        {
+        public async Task<ActionResult<Curso>> PostCursos(Curso cursos)
+        { 
+            if(!ModelState.IsValid)
+                return BadRequest(ResponseHelper.GetModelStateErrors(ModelState));
+
+            if (_context.Cursos.Any(c => c.Id == cursos.Id))
+                return BadRequest(ResponseHelper.Response(GexError.DuplicatedEntity));
+
             _context.Cursos.Add(cursos);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCursos", new { id = cursos.Id }, cursos);
+            return CreatedAtAction(nameof(GetCursos), new { id = cursos.Id }, cursos);
         }
 
         // DELETE: api/Cursos/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Cursos>> DeleteCursos(long id)
+        public async Task<ActionResult<Curso>> DeleteCursos(long id)
         {
             var cursos = await _context.Cursos.FindAsync(id);
             if (cursos == null)
@@ -106,4 +116,4 @@ namespace Gex.NetCore.Controllers
             return _context.Cursos.Any(e => e.Id == id);
         }
     }
-}
+}  

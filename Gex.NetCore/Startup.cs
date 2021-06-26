@@ -13,11 +13,25 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using VueCliMiddleware;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Localization;
+using System.Collections.Generic;
+using System.Globalization;
+using Microsoft.Extensions.Options;
+using Gex.NetCore.Extensions.Mvc;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Razor;
 
 namespace Gex.NetCore
 {
     public class Startup
     {
+        private string[] supportedCultures = new string[]
+        {
+            "es-ES", "en-US"
+        };
+
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -29,6 +43,7 @@ namespace Gex.NetCore
         public void ConfigureServices(IServiceCollection services)
         {
             var key = Encoding.ASCII.GetBytes(Configuration.GetValue<string>("SecretKey"));
+
 
             services.AddCors();
 
@@ -50,16 +65,39 @@ namespace Gex.NetCore
             });
 
             services.AddControllers();
-            services.AddDbContext<GexContext>();
+            services.AddDbContext<GexContext>(options => options.UseMySQL(Configuration.GetValue<string>("DatabaseConnection")));
+            /*
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp";
             });
+            */
+            services.AddLocalization(options =>
+            {
+                options.ResourcesPath = "Resources";
+            });
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                options.SetDefaultCulture("es-ES");
+                options.AddSupportedCultures(supportedCultures);
+                options.AddSupportedUICultures(supportedCultures);
+                options.FallBackToParentUICultures = true;
+            });
+
 
             services.TryAddTransient<IHttpContextAccessor, HttpContextAccessor>();
-
-
-            services.AddMvc().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>());
+            services.AddMvc(
+                o =>
+                {
+                    o.ModelBindingMessageProvider.SetValueMustNotBeNullAccessor(_ => "The campo is required.");
+                   
+                }
+                )
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>())
+                .AddDataAnnotationsLocalization()
+                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix);
+            ;
+            
 
             services.AddSwaggerDocument();
         }
@@ -78,16 +116,22 @@ namespace Gex.NetCore
                 .AllowAnyHeader()
             );
             app.UseRouting();
-            app.UseSpaStaticFiles();
+            //app.UseSpaStaticFiles();
             app.UseAuthentication();
             app.UseAuthorization();
-            
+            var localizationOptions = new RequestLocalizationOptions().SetDefaultCulture(supportedCultures[0])
+                .AddSupportedCultures(supportedCultures)
+                .AddSupportedUICultures(supportedCultures);
+
+            app.UseRequestLocalization(localizationOptions);
+           
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
 
+            /*
             app.UseSpa(spa =>
             {
                 if (env.IsDevelopment())
@@ -100,7 +144,7 @@ namespace Gex.NetCore
                     spa.UseVueCli(npmScript: "serve");
                 }
             });
-
+            */
             app.UseOpenApi();
             app.UseSwaggerUi3();
         }
