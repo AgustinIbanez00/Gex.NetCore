@@ -68,7 +68,7 @@ namespace Gex.NetCore
                 options.AddSupportedUICultures(supportedCultures);
                 options.FallBackToParentUICultures = true;
             });
-
+                
 
             services.TryAddTransient<IHttpContextAccessor, HttpContextAccessor>();
             services.AddMvc()
@@ -86,12 +86,15 @@ namespace Gex.NetCore
         {
             if (env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
-            
+
             app.UseCors(builder => builder
                 .AllowAnyOrigin()
                 .AllowAnyMethod()
                 .AllowAnyHeader()
             );
+
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
 
             app.UseRouting();
             app.UseAuthentication();
@@ -101,7 +104,9 @@ namespace Gex.NetCore
                 .AddSupportedUICultures(supportedCultures);
 
             app.UseRequestLocalization(localizationOptions);
-           
+
+
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
@@ -112,6 +117,7 @@ namespace Gex.NetCore
             {
                 options.DocumentTitle = "Sistema de Exámenes Gex";
             });
+
         }
     }
 }

@@ -7,11 +7,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Gex.NetCore.Controllers
 {
+    [Route("/")]
     public class HomeController : Controller
     {
         public IActionResult Index()
         {
-            return View();
+            return Redirect("swagger");
         }
     }
 }
