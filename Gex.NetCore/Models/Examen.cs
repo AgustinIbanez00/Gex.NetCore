@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 // Code scaffolded by EF Core assumes nullable reference types (NRTs) are not used or disabled.
 // If you have enabled NRTs for your project, then un-comment the following line:
@@ -16,7 +17,10 @@ namespace Gex.NetCore.Models
         }
 
         public long Id { get; set; }
+
+        [ForeignKey(nameof(Curso))]
         public long? CursoId { get; set; }
+        [ForeignKey(nameof(Materia))]
         public long? MateriaId { get; set; }
         public string Nombre { get; set; }
         public DateTime? FechaCreacion { get; set; }

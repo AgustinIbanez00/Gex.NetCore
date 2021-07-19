@@ -124,6 +124,6 @@
     <value />
   </data>
   <data name="RequiredAttribute" xml:space="preserve">
-    <value>El campo {0} es requerido.</value>
+    <value>El campo {0} es obligatorio.</value>
   </data>
 </root>

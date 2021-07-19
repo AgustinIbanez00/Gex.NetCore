@@ -1,13 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-using Gex.NetCore.Resources;
-using Gex.NetCore.ViewModels.Validations;
-
-using ServiceStack.FluentValidation.Attributes;
-
 namespace Gex.NetCore.ViewModels
 {
-    [Validator(typeof(RegistrationViewModelValidator))]
     public class RegistrationViewModel
     {
         [Display(Name = "correo electrónico")]

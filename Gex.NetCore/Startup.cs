@@ -1,4 +1,3 @@
-using FluentValidation.AspNetCore;
 using Gex.NetCore.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -11,7 +10,13 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Mvc.Razor;
+using XLocalizer;
+using Gex.NetCore.LocalizationResources;
+using System.Globalization;
+using XLocalizer.Routing;
+using XLocalizer.Xml;
+using Gex.NetCore.Services.Interface;
+using Gex.NetCore.Services;
 
 namespace Gex.NetCore
 {
@@ -22,7 +27,6 @@ namespace Gex.NetCore
             "es-ES", "en-US"
         };
 
-
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -30,10 +34,14 @@ namespace Gex.NetCore
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             var key = Encoding.ASCII.GetBytes(Configuration.GetValue<string>("SecretKey"));
+
+            services.AddAutoMapper(typeof(Startup));
+
+            services.AddScoped<ICursoService, CursoService>();
+
 
             services.AddCors();
 
@@ -53,28 +61,25 @@ namespace Gex.NetCore
                     ValidateAudience = false
                 };
             });
-
             services.AddControllers();
             services.AddDbContext<GexContext>(options => options.UseMySQL(Configuration.GetValue<string>("DatabaseConnection")));
+            services.Configure<RequestLocalizationOptions>(ops =>
+            {
+                var cultures = new CultureInfo[] { new CultureInfo("en"), new CultureInfo("es"), new CultureInfo("ar") };
+                ops.SupportedCultures = cultures;
+                ops.SupportedUICultures = cultures;
+                ops.DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture("en");
 
-            services.AddLocalization(options =>
-            {
-                options.ResourcesPath = "Resources";
+                ops.RequestCultureProviders.Insert(0, new RouteSegmentRequestCultureProvider(cultures));
             });
-            services.Configure<RequestLocalizationOptions>(options =>
-            {
-                options.SetDefaultCulture("es-ES");
-                options.AddSupportedCultures(supportedCultures);
-                options.AddSupportedUICultures(supportedCultures);
-                options.FallBackToParentUICultures = true;
-            });
-                
+            services.AddSingleton<IXResourceProvider, XmlResourceProvider>();
 
             services.TryAddTransient<IHttpContextAccessor, HttpContextAccessor>();
             services.AddMvc()
-                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>())
                 .AddDataAnnotationsLocalization()
-                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix);
+                .AddXLocalizer<LocSource>(ops => Configuration.GetSection("XLocalizerOptions").Bind(ops))
+
+            ;
 
             services.AddSwaggerDocument(options =>
             {
@@ -105,8 +110,6 @@ namespace Gex.NetCore
 
             app.UseRequestLocalization(localizationOptions);
 
-
-            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

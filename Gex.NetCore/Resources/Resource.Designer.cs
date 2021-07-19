@@ -79,7 +79,7 @@ namespace Gex.NetCore.Resources {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a El campo {0} es requerido..
+        ///   Busca una cadena traducida similar a El campo {0} es obligatorio..
         /// </summary>
         public static string RequiredAttribute {
             get {

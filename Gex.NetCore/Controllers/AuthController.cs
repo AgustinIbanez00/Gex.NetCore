@@ -12,6 +12,7 @@ using Gex.NetCore.Helpers;
 using Gex.NetCore.Models;
 using Gex.NetCore.ViewModels;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -55,7 +56,7 @@ namespace Gex.NetCore.Controllers
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {
                     Subject = claims,
-                    Expires = DateTime.UtcNow.AddHours(4),
+                    Expires = DateTime.UtcNow.AddDays(15),
                     SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
                 };
 
@@ -77,7 +78,11 @@ namespace Gex.NetCore.Controllers
                 return BadRequest(ResponseHelper.GetModelStateErrors(ModelState));
 
             if (await _context.Users.Where(x => x.Email == registerModel.Email).AnyAsync())
-                return BadRequest(ResponseHelper.InvalidCredentials($"Esa dirección de correo electrónico {registerModel.Email} ya existe."));
+            {
+                ModelState.AddModelError(nameof(registerModel.Email), $"Esa dirección de correo electrónico {registerModel.Email} ya existe.");
+                return BadRequest(ModelState);
+            }
+                //return BadRequest(ResponseHelper.InvalidCredentials());
 
             HashedPassword Password = HashHelper.Hash(registerModel.Password);
 
@@ -96,8 +101,10 @@ namespace Gex.NetCore.Controllers
 
         [Route("Me")]
         [HttpGet]
+        [Authorize]
         public IActionResult Get()
         {
+
             var r = ((ClaimsIdentity)User.Identity).FindFirst(ClaimTypes.NameIdentifier);
             return Ok(new { Username =  r == null ? "" : r.Value } );
         }
