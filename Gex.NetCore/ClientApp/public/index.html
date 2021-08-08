@@ -1,18 +1,35 @@
 ﻿<!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-    <link href="https://fonts.googleapis.com/css?family=Material+Icons" rel="stylesheet">
-    <title><%= htmlWebpackPlugin.options.title %></title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0">
+	<link rel="icon" href="<%= BASE_URL %>favicon.ico">
+	<link href="https://fonts.googleapis.com/css?family=Material+Icons" rel="stylesheet">
+	<title>GEX - Inicio</title>
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<script>	
+		var pushState = history.pushState;
+		var replaceState = history.replaceState;
+
+		history.pushState = function() {
+			pushState.apply(history, arguments);
+			window.dispatchEvent(new Event('pushstate'));
+			window.dispatchEvent(new Event('locationchange'));
+		};
+
+		history.replaceState = function() {
+			replaceState.apply(history, arguments);
+			window.dispatchEvent(new Event('replacestate'));
+			window.dispatchEvent(new Event('locationchange'));
+		};
+
+		window.addEventListener('popstate', function() {
+			window.dispatchEvent(new Event('locationchange'))
+		});
+	</script>
 </head>
   <body>
-    <noscript>
-      <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
-    </noscript>
     <div id="app"></div>
-    <!-- built files will be auto injected -->
   </body>
 </html>
