@@ -52,14 +52,13 @@
 		},
 		data: () => ({
 			route: 'examenes',
-			abm: true,
   	  selectedItem: 0,
 			opciones:[{text: 'Perfil',link: 'configuracion de la persona'},{text: 'Reportes',link: 'informes'},{text:'Cerrar sesión',link:'salir'}]
 		}),
 		methods: {
 			accion_boton: function(modo){
 				var vm = this;
-				if(modo == 'creacion') vm.$refs[vm.route].lista();
+				if(modo == 'creacion' || modo == 'edicion') vm.$refs[vm.route].lista();
 				else vm.$refs[vm.route].creacion();
 			},
 			creacion: function(){
