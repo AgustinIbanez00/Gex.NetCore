@@ -14,7 +14,7 @@
 			<v-card v-show="estado_actual != estados.lista" class="mx-15 mt-5 text-center pa-5 pt-0">
 				<v-card-title>NUEVO EXÁMEN</v-card-title>
 				<v-row>
-					<v-col md="6"><v-select :items="materias" label="Materia"></v-select></v-col>
+					<v-col md="6"><v-select :items="materias" label="Materia" value="Laboratorio de programación"></v-select></v-col>
 					<v-col md="2"><v-select :items="tipos" label="Tipo"></v-select></v-col>
 					<v-col lg="2">
 						<v-menu ref="datepicker_examen" v-model="datepicker_examen" :close-on-content-click="false" transition="scale-transition" offset-y max-width="290px" min-width="auto">
@@ -44,24 +44,33 @@
 			<v-card v-show="estado_actual == estados.edicion" class="mx-15 mt-3 text-center pa-5">
 				<v-card class="mb-3">
 					<v-toolbar color="primary" dark flat><v-icon>widgets</v-icon>&nbsp<v-toolbar-title>Preguntas</v-toolbar-title></v-toolbar>
+					<v-icon>fas fa-code</v-icon>
+					<v-text-field @keyup="buscar_preguntas()" v-model="buscar_preguntas_texto" label="Buscar pregunta" prepend-icon="fa4-search"></v-text-field>
 					<v-row>
 						<v-col>
 							<v-card-text>			
-								<v-treeview v-model="examen.temas" :load-children="cargar_temas" :items="items" selected-color="indigo" open-on-click selectable return-object expand-icon="mdi-chevron-down" on-icon="mdi-bookmark" off-icon="mdi-bookmark-outline" indeterminate-icon="mdi-bookmark-minus">
+								<v-treeview v-model="examen.preguntas" :load-children="cargar_preguntas" :items="items" selected-color="indigo" open-on-click selectable return-object expand-icon="mdi-chevron-down" on-icon="mdi-bookmark" off-icon="mdi-bookmark-outline" indeterminate-icon="mdi-bookmark-minus">
 								</v-treeview>
 							</v-card-text>
 						</v-col>
 						<v-divider vertical></v-divider>
 						<v-col cols="12" md="6">
 							<v-card-text>
-								<div v-if="examen.temas.length === 0" key="title" class="text-h6 font-weight-light grey--text pa-4 text-center">
+								<div v-if="examen.preguntas.length === 0" key="title" class="text-h6 font-weight-light grey--text pa-4 text-center">
 									Seleccionar preguntas del exámen
 								</div>
-								<v-scroll-x-transition group hide-on-leave>
-									<v-chip v-for="(examen_elejido, i) in examen.temas" :key="i" :color="color_random(examen_elejido.name)" dark small class="ma-1">
-										{{`${i+1}) ${examen_elejido.name}` }}&nbsp&nbsp&nbsp<v-icon left small @click="examen.temas.splice(i, 1); colores_preguntas.splice(i, 1);">mdi-minus</v-icon>
-									</v-chip>
-								</v-scroll-x-transition>
+								<!-- <v-scroll-x-transition group hide-on-leave> -->
+									<v-chip-group v-model="selection" column active-class="primary--text">
+										<v-chip v-for="(pregunta_elegida, i) in examen.preguntas" :key="i" :color="color_random(pregunta_elegida.name)" dark small class="ma-1">
+											{{`${i+1}) ${pregunta_elegida.name}` }}&nbsp&nbsp&nbsp<v-icon left small @click="examen.preguntas.splice(i, 1); colores_preguntas.splice(i, 1);">mdi-minus</v-icon>
+										</v-chip>
+										<draggable v-model="examen.preguntas" @start="dragStart" @end="dragEnd">
+											<v-chip v-for="(pregunta_elegid, i) in examen.preguntas" :key="i" draggable>
+												{{ pregunta_elegida.name }}
+											</v-chip>
+										</draggable>
+									</v-chip-group>
+								<!-- </v-scroll-x-transition> -->
 							</v-card-text>
 						</v-col>
 					</v-row>
@@ -74,7 +83,7 @@
 <script>
 	const examen_default = {
 		fecha: null,
-		temas: [],
+		preguntas: [],
 	};
 	export default {
 		name: "comp_examenes",
@@ -84,14 +93,14 @@
 			examen: JSON.parse(JSON.stringify(examen_default)),
 			date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
 			datepicker_examen: false,
-			materias: ['Laboratorio IV','Android','Redes','Web II'],
+			materias: ['Laboratorio de programación','Android','Redes','Web II'],
 			estado_actual: 3,
 			estados:{
 				lista: 1,
 				creacion: 2,
 				edicion: 3,
 			},
-			temas: [],
+			preguntas: [],
 			tipos: ['Final','Recuperatorio','Parcial','Global','Test'],
 			modalidades: ['Multipleflai','Normal'],
 			headers: [
@@ -105,7 +114,10 @@
 			examenes: [],
 			colores: ['red','pink','purple','deep-purple','indigo','blue','light-blue','cyan','teal','green','light-green','lime','yellow','amber','orange','deep-orange','brown','blue-grey','grey'],
 			tipos_colores : ['',' lighten',' darken',' accent'],
-			colores_preguntas: []
+			colores_preguntas: [],
+			buscar_preguntas_texto: '',
+			selection: null,
+   		currentTag: null,
 		}),
 		computed: {
 			items () {
@@ -117,101 +129,98 @@
 
         return [{id: 0, name: 'Todos los periodos', children}];
       },
-			shouldShowTree () {
-        return this.temas.length > 0 && !this.isLoading;
-      },
 		},
 		watch: {
-      temas (val) {
-        this.periodos = val.reduce((acc, cur) => {
-          const type = cur.periodo;
-          if (!acc.includes(type)) acc.push(type);
+      preguntas (val) {
+        this.periodos = val.reduce((acc, periodo) => {
+          const nombre_periodo = periodo.periodo;
+          if (!acc.includes(nombre_periodo)) acc.push(nombre_periodo);
           return acc;
         }, []).sort();
       },
     },
 		methods: {
- 			cargar_temas () {
-        if (this.temas.length) return;
-				this.temas = [
+ 			cargar_preguntas () {
+        if (this.preguntas.length) return;
+				this.preguntas = [
 					{
 						id: 1,
-						periodo: 'I',
+						periodo: 'Laboratorio de programación I',
 						name: '¿Como se construye un formulario?'
 					},
 					{
 						id: 2,
-						periodo: 'I',
+						periodo: 'Laboratorio de programación I',
 						name: '¿que es un botón?'
 					},
 					{
 						id: 3,
-						periodo: 'I',
+						periodo: 'Laboratorio de programación I',
 						name: '¿que es un datepicker?'
 					},
 					{
 						id: 4,
-						periodo: 'II',
+						periodo: 'Laboratorio de programación II',
 						name: '¿Como funciona .NET?'
 					},
 					{
 						id: 5,
-						periodo: 'II',
+						periodo: 'Laboratorio de programación II',
 						name: '¿Como usar base de datos en .NET?'
 					},
 					{
 						id: 6,
-						periodo: 'II',
+						periodo: 'Laboratorio de programación II',
 						name: '¿Que estrucura tiene un objeto?'
 					},
 					{
 						id: 7,
-						periodo: 'III',
+						periodo: 'Laboratorio de programación III',
 						name: '¿Como hacer ejecutable un programa?'
 					},
 					{
 						id: 8,
-						periodo: 'III',
+						periodo: 'Laboratorio de programación III',
 						name: '¿Cuales son las cualidades de un programa ejecutable?'
 					},
 					{
 						id: 9,
-						periodo: 'III',
+						periodo: 'Laboratorio de programación III',
 						name: '¿Que sucede en la computadora cuando se ejecuta un programa?'
 					},
 					{
 						id: 10,
-						periodo: 'IV',
+						periodo: 'Laboratorio de programación IV',
 						name: '¿Que es una página web?'
 					},
 					{
 						id: 11,
-						periodo: 'IV',
+						periodo: 'Laboratorio de programación IV',
 						name: '¿Que es un framework?'
 					},
 					{
 						id: 11,
-						periodo: 'IV',
+						periodo: 'Laboratorio de programación IV',
 						name: '¿Como funciona Angular?'
 					},
 				];
 
 				/*
-        return fetch('https://api.openbrewerydb.org/temas')
+        return fetch('https://api.openbrewerydb.org/preguntas')
           .then(res => res.json())
-          .then(data => (this.temas = data))
+          .then(data => (this.preguntas = data))
           .catch(err => console.log(err))*/
       },
       getChildren (type) {
-        const temas = [];
-        for (const brewery of this.temas) {
+        const preguntas = [];
+        for (const brewery of this.preguntas) {
           if (brewery.periodo !== type) continue;
-          temas.push({
+          preguntas.push({
             ...brewery,
             name: brewery.name,
           });
         }
-        return temas.sort((a, b) => a.name > b.name ? 1 : -1);
+        return preguntas.sort((a, b) => a.name > b.name ? 1 : -1);
       },
 			cargar_tabla: function(){
 				var vm = this;
@@ -224,21 +233,30 @@
 				var vm = this;
 				if(recargar) vm.cargar_tabla();
 				vm.estado_actual = vm.estados.lista;
+				vm.top();
 			},
 			creacion: function(){
 				var vm = this;
 				vm.estado_actual = vm.estados.creacion;
+				vm.top();
 			},
 			edicion: function(id){
 				var vm = this;
 				var examen = vm.examenes.find(e =>e.id = id);
-				examen.temas = [];
+				examen.preguntas = [];
 				vm.examen = examen;
 				vm.estado_actual = vm.estados.edicion;
+				vm.top();
 			},
 			cancelar: function(){
 				var vm = this;
 				vm.$emit('cancelar');
+				vm.top();
+			},
+			buscar_preguntas(){
+				var vm = this;
+				let preguntas = vm.examen.preguntas.find(p => p.includes(vm.buscar_preguntas_texto));
+				console.log(preguntas);
 			},
 
 			//Omg
@@ -265,7 +283,26 @@
 					vm.colores_preguntas[i] = color;
 				}
 				return vm.colores_preguntas[i];
-			}
+			},
+			dragStart() {
+      if (this.examen.preguntas[this.selection]) this.currentTag = this.examen.preguntas[this.selection].name;
+      else this.currentTag = null;
+			},
+			dragEnd() {
+				var self = this;
+				if (this.currentTag) {
+					this.examen.preguntas.forEach((x, i) => {
+						if (x.name === self.currentTag) self.selection = i;
+					});  
+				}
+			},
+			top (){
+				window.scroll({
+					top: 0,
+					left: 0,
+					behavior: 'smooth'
+				});
+			},
 		},
 		mounted() {
 			var vm = this;
@@ -281,7 +318,7 @@
 						</v-btn>
 						<v-spacer></v-spacer>
 						<v-btn class="white--text" color="green darken-1" depressed>
-							Guardar temas
+							Guardar preguntas
 							<v-icon right>
 								mdi-content-save
 							</v-icon>
