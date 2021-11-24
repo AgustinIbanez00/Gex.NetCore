@@ -1,25 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.ComponentModel.DataAnnotations;
 
-// Code scaffolded by EF Core assumes nullable reference types (NRTs) are not used or disabled.
-// If you have enabled NRTs for your project, then un-comment the following line:
-// #nullable disable
+namespace Gex.NetCore.Models;
 
-namespace Gex.NetCore.Models
+public enum MateriaTipo
 {
-    public partial class Materia
-    {
-        public Materia()
-        {
-            Examenes = new HashSet<Examen>();
-            MateriasCursos = new HashSet<MateriasCursos>();
-        }
+    ANUAL,
+    CUATRIMESTRAL,
+    TRIMESTRAL
+}
 
-        public long Id { get; set; }
-        public string Nombre { get; set; }
-        public int Estado { get; set; }
-
-        public virtual ICollection<Examen> Examenes { get; set; }
-        public virtual ICollection<MateriasCursos> MateriasCursos { get; set; }
-    }
+public partial class Materia
+{
+    [Key]
+    public long Id { get; set; }
+    public string Nombre { get; set; }
+    public MateriaTipo Tipo { get; set; }
 }

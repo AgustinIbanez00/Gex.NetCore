@@ -3,6 +3,7 @@ using System;
 using Gex.NetCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Gex.NetCore.Migrations
 {
     [DbContext(typeof(GexContext))]
-    partial class GexContextModelSnapshot : ModelSnapshot
+    [Migration("20211113021256_FixNameCursadas2")]
+    partial class FixNameCursadas2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -28,30 +30,11 @@ namespace Gex.NetCore.Migrations
                     b.Property<int>("CicloLectivo")
                         .HasColumnType("int");
 
-                    b.Property<string>("CreatedById")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("LastModificationById")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<DateTime>("LastModificationDate")
-                        .HasColumnType("datetime(6)");
-
                     b.Property<string>("Nombre")
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CreatedById");
-
-                    b.HasIndex("LastModificationById");
-
-                    b.HasIndex("Nombre")
-                        .IsUnique();
 
                     b.ToTable("Comisiones");
                 });
@@ -129,7 +112,7 @@ namespace Gex.NetCore.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("AlumnoId")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(95)");
 
                     b.Property<int?>("ComisionId")
                         .HasColumnType("int");
@@ -153,7 +136,7 @@ namespace Gex.NetCore.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<string>("AlumnoId")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(95)");
 
                     b.Property<int>("Condicion")
                         .HasColumnType("int");
@@ -206,7 +189,7 @@ namespace Gex.NetCore.Migrations
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("ProfesorId")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(95)");
 
                     b.HasKey("Id");
 
@@ -306,7 +289,7 @@ namespace Gex.NetCore.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<string>("AlumnoId")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(95)");
 
                     b.Property<bool?>("Correcto")
                         .HasColumnType("tinyint(1)");
@@ -364,16 +347,22 @@ namespace Gex.NetCore.Migrations
                     b.ToTable("TiposExamen");
                 });
 
-            modelBuilder.Entity("Gex.NetCore.Models.Usuario", b =>
+            modelBuilder.Entity("Gex.NetCore.Models.User", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(95)");
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
+                    b.Property<DateTime?>("BirthDate")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<string>("ConcurrencyStamp")
                         .HasColumnType("longtext");
+
+                    b.Property<DateTimeOffset?>("CreatedAt")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<long?>("Dni")
                         .HasColumnType("bigint");
@@ -400,6 +389,9 @@ namespace Gex.NetCore.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("NormalizedUserName")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Observation")
                         .HasColumnType("longtext");
 
                     b.Property<string>("Password")
@@ -435,27 +427,15 @@ namespace Gex.NetCore.Migrations
                     b.Property<int?>("Type")
                         .HasColumnType("int");
 
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<string>("UserName")
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
                     b.ToTable("Usuarios");
-                });
-
-            modelBuilder.Entity("Gex.NetCore.Models.Comision", b =>
-                {
-                    b.HasOne("Gex.NetCore.Models.Usuario", "CreatedBy")
-                        .WithMany()
-                        .HasForeignKey("CreatedById");
-
-                    b.HasOne("Gex.NetCore.Models.Usuario", "LastModificationBy")
-                        .WithMany()
-                        .HasForeignKey("LastModificationById");
-
-                    b.Navigation("CreatedBy");
-
-                    b.Navigation("LastModificationBy");
                 });
 
             modelBuilder.Entity("Gex.NetCore.Models.Cursada", b =>
@@ -496,7 +476,7 @@ namespace Gex.NetCore.Migrations
 
             modelBuilder.Entity("Gex.NetCore.Models.InscripcionComision", b =>
                 {
-                    b.HasOne("Gex.NetCore.Models.Usuario", "Alumno")
+                    b.HasOne("Gex.NetCore.Models.User", "Alumno")
                         .WithMany()
                         .HasForeignKey("AlumnoId");
 
@@ -511,8 +491,8 @@ namespace Gex.NetCore.Migrations
 
             modelBuilder.Entity("Gex.NetCore.Models.InscripcionMesas", b =>
                 {
-                    b.HasOne("Gex.NetCore.Models.Usuario", "Alumno")
-                        .WithMany()
+                    b.HasOne("Gex.NetCore.Models.User", "Alumno")
+                        .WithMany("MesasAlumnos")
                         .HasForeignKey("AlumnoId");
 
                     b.HasOne("Gex.NetCore.Models.MesaExamen", "Mesa")
@@ -530,8 +510,8 @@ namespace Gex.NetCore.Migrations
                         .WithMany()
                         .HasForeignKey("ExamenId");
 
-                    b.HasOne("Gex.NetCore.Models.Usuario", "Profesor")
-                        .WithMany()
+                    b.HasOne("Gex.NetCore.Models.User", "Profesor")
+                        .WithMany("Mesas")
                         .HasForeignKey("ProfesorId");
 
                     b.Navigation("Examen");
@@ -574,8 +554,8 @@ namespace Gex.NetCore.Migrations
 
             modelBuilder.Entity("Gex.NetCore.Models.RespuestaAlumno", b =>
                 {
-                    b.HasOne("Gex.NetCore.Models.Usuario", "Alumno")
-                        .WithMany()
+                    b.HasOne("Gex.NetCore.Models.User", "Alumno")
+                        .WithMany("RespuestasAlumnos")
                         .HasForeignKey("AlumnoId");
 
                     b.HasOne("Gex.NetCore.Models.Examen", "Examen")
@@ -600,6 +580,15 @@ namespace Gex.NetCore.Migrations
                         .HasForeignKey("MateriaId");
 
                     b.Navigation("Materia");
+                });
+
+            modelBuilder.Entity("Gex.NetCore.Models.User", b =>
+                {
+                    b.Navigation("Mesas");
+
+                    b.Navigation("MesasAlumnos");
+
+                    b.Navigation("RespuestasAlumnos");
                 });
 #pragma warning restore 612, 618
         }

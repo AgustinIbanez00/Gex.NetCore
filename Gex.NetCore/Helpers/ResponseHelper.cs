@@ -13,6 +13,9 @@ namespace Gex.NetCore.Helpers
 {
     public enum GexError
     {
+        [Description("Error inesperado.")]
+        Generic, 
+
         [Description("La dirección de correo o contraseña son incorrectas.")]
         InvalidCredentials,
 
@@ -21,6 +24,9 @@ namespace Gex.NetCore.Helpers
 
         [Description("No se encontró ningun(a) {0} con los datos ingresados.")]
         NotFound,
+
+        [Description("Se encontró un(a) {0} con esa información.")]
+        AlreadyExists,
 
 
     }
@@ -48,20 +54,23 @@ namespace Gex.NetCore.Helpers
         {
             return Model.Select(x => new ModelErrors() { Key = x.Key, Messages = x.Value.Errors.Select(y => y.ErrorMessage).ToList() }).ToList();
         }
-        public static ResponseSingle Response(GexError StatusCode, [Optional] string Message)
+        public static ResponseSingle Response(string entity, GexError StatusCode, [Optional] string Message)
         {
             return new ResponseSingle()
             {
                 Error = new ResponseError()
                 {
-                    Message = Message = !string.IsNullOrEmpty(Message) ? Message : Enumerations.GetEnumDescription(StatusCode),
+                    Message = Message = !string.IsNullOrEmpty(Message) ? Message : string.Format(Enumerations.GetEnumDescription(StatusCode), entity),
                     StatusCode = StatusCode
                 }                
             };
         }
 
-        public static ResponseSingle InvalidCredentials([Optional] string message) 
-            => Response(GexError.InvalidCredentials, message);
+        public static ResponseSingle NotFound(string entity, [Optional] string message)
+            => Response(entity, GexError.NotFound, message);
+
+        public static ResponseSingle InvalidCredentials(string entity, [Optional] string message) 
+            => Response(entity, GexError.InvalidCredentials, message);
     }
 
     public class ResponseSingle

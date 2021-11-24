@@ -57,4 +57,89 @@
     <value>cantidad de alumnos</value>
     <comment>Created by XLocalizer</comment>
   </data>
+  <data isActive="false">
+    <key>The field {0} must be a string with a maximum length of {1}.</key>
+    <value>The field {0} must be a string with a maximum length of {1}.</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
+  <data isActive="false">
+    <key>El campo {0} s�lo permite una longitud m�xima de {1} caracteres.</key>
+    <value>El campo {0} s�lo permite una longitud m�xima de {1} caracteres.</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
+  <data isActive="false">
+    <key>El campo {0} sólo permite una longitud máxima de {1} caracteres.</key>
+    <value>El campo {0} sólo permite una longitud máxima de {1} caracteres.</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
+  <data isActive="false">
+    <key>estado</key>
+    <value>estado</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
+  <data isActive="false">
+    <key>correo electrónico</key>
+    <value>correo electrónico</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
+  <data isActive="false">
+    <key>contraseña</key>
+    <value>contraseña</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
+  <data isActive="false">
+    <key>The field {0} must be a string with a minimum length of {2} and a maximum length of {1}.</key>
+    <value>The field {0} must be a string with a minimum length of {2} and a maximum length of {1}.</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
+  <data isActive="false">
+    <key>'{0}' and '{1}' do not match. They should not be different!</key>
+    <value>'{0}' and '{1}' do not match. They should not be different!</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
+  <data isActive="false">
+    <key>nombre</key>
+    <value>nombre</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
+  <data isActive="false">
+    <key>apellido</key>
+    <value>apellido</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
+  <data isActive="false">
+    <key>ubicación</key>
+    <value>ubicación</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
+  <data isActive="false">
+    <key>confirmar contraseña</key>
+    <value>confirmar contraseña</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
+  <data isActive="false">
+    <key>El campo {0} sólo permite una longitud de caracteres de {2} y {1}.</key>
+    <value>El campo {0} sólo permite una longitud de caracteres de {2} y {1}.</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
+  <data isActive="false">
+    <key>'{0}' y '{1}' no coinciden.</key>
+    <value>'{0}' y '{1}' no coinciden.</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
+  <data isActive="false">
+    <key>Los campos '{0}' y '{1}' no coinciden.</key>
+    <value>Los campos '{0}' y '{1}' no coinciden.</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
+  <data isActive="false">
+    <key>El campo {0} no es una dirección de correo válida.</key>
+    <value>El campo {0} no es una dirección de correo válida.</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
+  <data isActive="false">
+    <key>Identificador</key>
+    <value>Identificador</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
 </root>

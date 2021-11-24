@@ -1,4 +1,3 @@
-using Gex.NetCore.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -9,7 +8,6 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Microsoft.EntityFrameworkCore;
 using XLocalizer;
 using Gex.NetCore.LocalizationResources;
 using System.Globalization;
@@ -17,110 +15,123 @@ using XLocalizer.Routing;
 using XLocalizer.Xml;
 using Gex.NetCore.Services.Interface;
 using Gex.NetCore.Services;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Gex.NetCore.Repository.Interface;
+using Gex.NetCore.Repository;
+using EntityFramework.Exceptions.MySQL.Pomelo;
+using Microsoft.AspNetCore.Mvc;
+using Gex.NetCore.Middlewares;
 
-namespace Gex.NetCore
+namespace Gex.NetCore;
+
+public class Startup
 {
-    public class Startup
+    private string[] supportedCultures = new string[]
     {
-        private string[] supportedCultures = new string[]
-        {
             "es-ES", "en-US"
-        };
+    };
 
-        public Startup(IConfiguration configuration)
+    public Startup(IConfiguration configuration)
+    {
+        Configuration = configuration;
+    }
+
+    public IConfiguration Configuration { get; }
+
+    public void ConfigureServices(IServiceCollection services)
+    {
+        var key = Encoding.ASCII.GetBytes(Configuration.GetValue<string>("SecretKey"));
+
+        services.AddAutoMapper(typeof(Startup));
+
+        /* INYECCION DE REPOSITORIOS */
+        services.AddScoped<IComisionRepository, ComisionRepository>();
+        /* INYECCION DE SERVICIOS */
+        services.AddScoped<IComisionService, ComisionService>();
+
+        services.AddCors();
+
+        services.AddAuthentication(x =>
         {
-            Configuration = configuration;
-        }
-
-        public IConfiguration Configuration { get; }
-
-        public void ConfigureServices(IServiceCollection services)
+            x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        }).AddJwtBearer(x =>
         {
-            var key = Encoding.ASCII.GetBytes(Configuration.GetValue<string>("SecretKey"));
-
-            services.AddAutoMapper(typeof(Startup));
-
-            services.AddScoped<ICursoService, CursoService>();
-
-
-            services.AddCors();
-
-            services.AddAuthentication(x =>
+            x.RequireHttpsMetadata = false;
+            x.SaveToken = true;
+            x.TokenValidationParameters = new TokenValidationParameters
             {
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(x =>
-            {
-                x.RequireHttpsMetadata = false;
-                x.SaveToken = true;
-                x.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = false,
-                    ValidateAudience = false
-                };
-            });
-            services.AddControllers();
-            services.AddDbContext<GexContext>(options => options.UseMySQL(Configuration.GetValue<string>("DatabaseConnection")));
-            services.Configure<RequestLocalizationOptions>(ops =>
-            {
-                var cultures = new CultureInfo[] { new CultureInfo("en"), new CultureInfo("es"), new CultureInfo("ar") };
-                ops.SupportedCultures = cultures;
-                ops.SupportedUICultures = cultures;
-                ops.DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture("en");
-
-                ops.RequestCultureProviders.Insert(0, new RouteSegmentRequestCultureProvider(cultures));
-            });
-            services.AddSingleton<IXResourceProvider, XmlResourceProvider>();
-
-            services.TryAddTransient<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddMvc()
-                .AddDataAnnotationsLocalization()
-                .AddXLocalizer<LocSource>(ops => Configuration.GetSection("XLocalizerOptions").Bind(ops))
-
-            ;
-
-            services.AddSwaggerDocument(options =>
-            {
-                options.Title = "Sistema de Exámenes Gex";
-            });
-        }
-
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(key),
+                ValidateIssuer = false,
+                ValidateAudience = false
+            };
+        });
+        services.AddControllers().AddBadRequestServices();
+        services.AddDbContext<GexContext>(options =>
         {
-            if (env.IsDevelopment())
-                app.UseDeveloperExceptionPage();
+            options.UseMySql(Configuration.GetValue<string>("DatabaseConnection"), new MariaDbServerVersion(new Version(10, 4, 17)));
+            options.LogTo(Console.WriteLine, LogLevel.Information);
+            options.EnableSensitiveDataLogging();
+            options.EnableDetailedErrors();
+            options.UseExceptionProcessor();
+        });
+        services.Configure<RequestLocalizationOptions>(ops =>
+        {
+            var cultures = new CultureInfo[] { new CultureInfo("en"), new CultureInfo("es"), new CultureInfo("ar") };
+            ops.SupportedCultures = cultures;
+            ops.SupportedUICultures = cultures;
+            ops.DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture("en");
 
-            app.UseCors(builder => builder
-                .AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader()
-            );
+            ops.RequestCultureProviders.Insert(0, new RouteSegmentRequestCultureProvider(cultures));
+        });
+        services.AddSingleton<IXResourceProvider, XmlResourceProvider>();
 
-            app.UseDefaultFiles();
-            app.UseStaticFiles();
+        services.TryAddTransient<IHttpContextAccessor, HttpContextAccessor>();
+        services.AddMvc()
+            .AddDataAnnotationsLocalization()
+            .AddXLocalizer<LocSource>(ops => Configuration.GetSection("XLocalizerOptions").Bind(ops))
+        ;
+        services.AddSwaggerDocument(options =>
+        {
+            options.Title = "Sistema de Exámenes Gex";
+        });
+    }
 
-            app.UseRouting();
-            app.UseAuthentication();
-            app.UseAuthorization();
-            var localizationOptions = new RequestLocalizationOptions().SetDefaultCulture(supportedCultures[0])
-                .AddSupportedCultures(supportedCultures)
-                .AddSupportedUICultures(supportedCultures);
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    {
+        if (env.IsDevelopment())
+            app.UseDeveloperExceptionPage();
 
-            app.UseRequestLocalization(localizationOptions);
+        app.UseCors(builder => builder
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+        );
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+        app.UseDefaultFiles();
+        app.UseStaticFiles();
 
-            app.UseOpenApi();
-            app.UseSwaggerUi3(options =>
-            {
-                options.DocumentTitle = "Sistema de Exámenes Gex";
-            });
+        app.UseRouting();
+        app.UseAuthentication();
+        app.UseAuthorization();
+        var localizationOptions = new RequestLocalizationOptions().SetDefaultCulture(supportedCultures[0])
+            .AddSupportedCultures(supportedCultures)
+            .AddSupportedUICultures(supportedCultures);
 
-        }
+        app.UseRequestLocalization(localizationOptions);
+
+        app.UseEndpoints(endpoints =>
+        {
+            endpoints.MapControllers();
+        });
+
+        app.UseOpenApi();
+        app.UseSwaggerUi3(options =>
+        {
+            options.DocumentTitle = "Sistema de Exámenes Gex";
+        });
+
     }
 }

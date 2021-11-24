@@ -1,7 +1,6 @@
-﻿using AutoMapper;  
+﻿using AutoMapper;
 using Gex.NetCore.Models;
 using Gex.NetCore.ViewModels;
-using Gex.NetCore.ViewModels.Curso;
 
 namespace Gex.NetCore.Utils
 {
@@ -9,8 +8,7 @@ namespace Gex.NetCore.Utils
     {
         public AutoMapperProfiles()
         {
-            CreateMap<Curso, CursoDTO>().ReverseMap();
-            CreateMap<Curso, CursoCreationDTO>().ReverseMap();
+            CreateMap<Comision, ComisionDTO>().ReverseMap();
         }
 
     }

@@ -38,7 +38,7 @@ namespace Gex.NetCore.Helpers
         public static byte[] GetHash(string password, string salt)
         {
             byte[] unhashedBytes = Encoding.Unicode.GetBytes(string.Concat(salt, password));
-            SHA256Managed sha256 = new SHA256Managed();
+            SHA256Managed sha256 = new();
             byte[] hashedBytes = sha256.ComputeHash(unhashedBytes);
             return hashedBytes;
         }

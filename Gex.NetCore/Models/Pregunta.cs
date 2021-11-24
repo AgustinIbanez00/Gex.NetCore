@@ -1,26 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.ComponentModel.DataAnnotations;
 
-// Code scaffolded by EF Core assumes nullable reference types (NRTs) are not used or disabled.
-// If you have enabled NRTs for your project, then un-comment the following line:
-// #nullable disable
+namespace Gex.NetCore.Models;
 
-namespace Gex.NetCore.Models
+public enum PreguntaTipo
 {
-    public partial class Pregunta
-    {
-        public Pregunta()
-        {
-            Respuestas = new HashSet<Respuesta>();
-        }
+    /// <summary>
+    /// Sólo se puede contestar con sí o no.
+    /// </summary>
+    CERRADA,
+    /// <summary>
+    /// Debe realizar una justificación de la respuesta.
+    /// </summary>
+    ABIERTA
+}
 
-        public long Id { get; set; }
-        public long? ExamenId { get; set; }
-        public string Valor { get; set; }
-        public int? Tipo { get; set; }
-        public int Puntos { get; set; }
-
-        public virtual Examen Examen { get; set; }
-        public virtual ICollection<Respuesta> Respuestas { get; set; }
-    }
+public partial class Pregunta
+{
+    [Key]
+    public long Id { get; set; }
+    public Tema Tema { get; set; }
+    public string Descripcion { get; set; }
+    public PreguntaTipo Tipo { get; set; }
+    public int Puntos { get; set; }
 }

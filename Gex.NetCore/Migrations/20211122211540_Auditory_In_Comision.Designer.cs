@@ -3,6 +3,7 @@ using System;
 using Gex.NetCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Gex.NetCore.Migrations
 {
     [DbContext(typeof(GexContext))]
-    partial class GexContextModelSnapshot : ModelSnapshot
+    [Migration("20211122211540_Auditory_In_Comision")]
+    partial class Auditory_In_Comision
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,9 +51,6 @@ namespace Gex.NetCore.Migrations
                     b.HasIndex("CreatedById");
 
                     b.HasIndex("LastModificationById");
-
-                    b.HasIndex("Nombre")
-                        .IsUnique();
 
                     b.ToTable("Comisiones");
                 });

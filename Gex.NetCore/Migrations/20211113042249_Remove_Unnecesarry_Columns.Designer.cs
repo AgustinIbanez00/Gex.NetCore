@@ -3,6 +3,7 @@ using System;
 using Gex.NetCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Gex.NetCore.Migrations
 {
     [DbContext(typeof(GexContext))]
-    partial class GexContextModelSnapshot : ModelSnapshot
+    [Migration("20211113042249_Remove_Unnecesarry_Columns")]
+    partial class Remove_Unnecesarry_Columns
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -28,30 +30,11 @@ namespace Gex.NetCore.Migrations
                     b.Property<int>("CicloLectivo")
                         .HasColumnType("int");
 
-                    b.Property<string>("CreatedById")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("LastModificationById")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<DateTime>("LastModificationDate")
-                        .HasColumnType("datetime(6)");
-
                     b.Property<string>("Nombre")
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CreatedById");
-
-                    b.HasIndex("LastModificationById");
-
-                    b.HasIndex("Nombre")
-                        .IsUnique();
 
                     b.ToTable("Comisiones");
                 });
@@ -364,7 +347,7 @@ namespace Gex.NetCore.Migrations
                     b.ToTable("TiposExamen");
                 });
 
-            modelBuilder.Entity("Gex.NetCore.Models.Usuario", b =>
+            modelBuilder.Entity("Gex.NetCore.Models.User", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("varchar(255)");
@@ -443,21 +426,6 @@ namespace Gex.NetCore.Migrations
                     b.ToTable("Usuarios");
                 });
 
-            modelBuilder.Entity("Gex.NetCore.Models.Comision", b =>
-                {
-                    b.HasOne("Gex.NetCore.Models.Usuario", "CreatedBy")
-                        .WithMany()
-                        .HasForeignKey("CreatedById");
-
-                    b.HasOne("Gex.NetCore.Models.Usuario", "LastModificationBy")
-                        .WithMany()
-                        .HasForeignKey("LastModificationById");
-
-                    b.Navigation("CreatedBy");
-
-                    b.Navigation("LastModificationBy");
-                });
-
             modelBuilder.Entity("Gex.NetCore.Models.Cursada", b =>
                 {
                     b.HasOne("Gex.NetCore.Models.Comision", "Comision")
@@ -496,7 +464,7 @@ namespace Gex.NetCore.Migrations
 
             modelBuilder.Entity("Gex.NetCore.Models.InscripcionComision", b =>
                 {
-                    b.HasOne("Gex.NetCore.Models.Usuario", "Alumno")
+                    b.HasOne("Gex.NetCore.Models.User", "Alumno")
                         .WithMany()
                         .HasForeignKey("AlumnoId");
 
@@ -511,7 +479,7 @@ namespace Gex.NetCore.Migrations
 
             modelBuilder.Entity("Gex.NetCore.Models.InscripcionMesas", b =>
                 {
-                    b.HasOne("Gex.NetCore.Models.Usuario", "Alumno")
+                    b.HasOne("Gex.NetCore.Models.User", "Alumno")
                         .WithMany()
                         .HasForeignKey("AlumnoId");
 
@@ -530,7 +498,7 @@ namespace Gex.NetCore.Migrations
                         .WithMany()
                         .HasForeignKey("ExamenId");
 
-                    b.HasOne("Gex.NetCore.Models.Usuario", "Profesor")
+                    b.HasOne("Gex.NetCore.Models.User", "Profesor")
                         .WithMany()
                         .HasForeignKey("ProfesorId");
 
@@ -574,7 +542,7 @@ namespace Gex.NetCore.Migrations
 
             modelBuilder.Entity("Gex.NetCore.Models.RespuestaAlumno", b =>
                 {
-                    b.HasOne("Gex.NetCore.Models.Usuario", "Alumno")
+                    b.HasOne("Gex.NetCore.Models.User", "Alumno")
                         .WithMany()
                         .HasForeignKey("AlumnoId");
 

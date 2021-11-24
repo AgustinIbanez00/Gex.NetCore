@@ -20,7 +20,7 @@ namespace Gex.NetCore.Controllers
             _context = context;
         }
 
-        // GET: api/Materias
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Materia>>> GetMaterias()
         {

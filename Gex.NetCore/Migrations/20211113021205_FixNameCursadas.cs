@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
+#nullable disable
+
 namespace Gex.NetCore.Migrations
 {
-    public partial class Initial : Migration
+    public partial class FixNameCursadas : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
