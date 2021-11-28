@@ -4,7 +4,7 @@
 
 namespace Gex.NetCore.Migrations
 {
-    public partial class FixNameCursadas : Migration
+    public partial class DefaultValuesAuditoryTable : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

@@ -1,14 +1,11 @@
-﻿using MySql.Data.Types;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace Gex.NetCore.Models
+namespace Gex.NetCore.Models;
+public class InscripcionComision
 {
-    public class InscripcionComision
-    {
-        public int Id { get; set; }
-
-        public DateTime Fecha { get; set; }
-        public Usuario Alumno { get; set; }
-        public Comision Comision { get; set; }
-
-    }
+    [Key]
+    public int Id { get; set; }
+    public DateTime Fecha { get; set; }
+    public Usuario Alumno { get; set; }
+    public Comision Comision { get; set; }
 }

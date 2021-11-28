@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
+using Gex.NetCore.DTO;
 using Gex.NetCore.Models;
-using Gex.NetCore.ViewModels;
 
 namespace Gex.NetCore.Utils
 {

@@ -17,7 +17,8 @@ public class ComisionRepository : IComisionRepository
 
     public async Task<bool> CreateComisionAsync(Comision comision)
     {
-        comision.CreatedDate = DateTime.Now;
+        comision.CreatedAt = DateTime.Now;
+        comision.Id = 0;
         await _context.Comisiones.AddAsync(comision);
         return await Save();
     }
@@ -31,11 +32,13 @@ public class ComisionRepository : IComisionRepository
     public async Task<bool> DeleteComisionAsync(Comision comision)
     {
         if (comision == null)
-        {
-            _context.Comisiones.Remove(comision);
-            await Save();
-        }
-        return false;
+            return false;
+
+        if (comision.Estado == Estado.BAJA)
+            return false;
+
+        comision.Estado = Estado.BAJA;
+        return await Save();
     }
 
     public async Task<bool> ExistsComisionAsync(int id) => await _context.Comisiones.FindAsync(id) != null;
@@ -59,7 +62,7 @@ public class ComisionRepository : IComisionRepository
             return false;
 
         _context.Comisiones.Update(comision);
-        comision.LastModificationDate = DateTime.Now;
+        comision.UpdatedAt = DateTime.Now;
         return await Save();
     }
 }

@@ -1,6 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
 namespace Gex.NetCore.Models;
+public enum UsuarioTipo
+{
+    Alumno,
+    Profesor,
+    Administrador
+}
 public partial class Usuario : IdentityUser
 {
     public DateTimeOffset? EmailVerifiedAt { get; set; }
@@ -10,6 +16,5 @@ public partial class Usuario : IdentityUser
     public string ProfilePhotoPath { get; set; }
     public long? Dni { get; set; }
     public string LastName { get; set; }
-    public int? Type { get; set; }
-    public Estado State { get; set; }
+    public UsuarioTipo Tipo { get; set; }
 }

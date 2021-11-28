@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Gex.NetCore.ViewModels
+namespace Gex.NetCore.DTO
 {
-    public class CredentialsViewModel
+    public class CredentialsDTO
     {
         [EmailAddress]
         public string Email { get; set; }

@@ -1,93 +1,62 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Net;
-using System.Runtime.InteropServices;
+﻿using System.ComponentModel;
+using Microsoft.AspNetCore.Http;
 
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
+namespace Gex.NetCore.Helpers;
 
-namespace Gex.NetCore.Helpers
+public enum Gender
 {
-    public enum GexError
+    MALE,
+    FEMALE
+}
+public enum GexErrorMessage
+{
+    [Description("Error inesperado.")]
+    Generic,
+    [Description("No existe ninguna cuenta asociada con ese correo electrónico.")]
+    InvalidEmail,
+    [Description("La contraseña ingresada es incorrecta.")]
+    InvalidPassword,
+    [Description("El identificador es inválido.")]
+    InvalidId,
+    [Description("No se puede crear {Gender:un|una} {Entity} con el mismo identificador.")]
+    DuplicatedEntity,
+    [Description("No se encontró {Gender:ningún|ninguna} {Entity}.")]
+    NotFound,
+    [Description("Existe {Gender:un|una} {Entity} con esos datos.")]
+    AlreadyExists,
+    [Description("{Gender:El|La} {Entity} ya se encuentra {Gender:eliminado|eliminada}.")]
+    AlreadyDeleted,
+    [Description("No se pudo crear {Gender:ese|esa} {Entity}.")]
+    CouldNotCreate,
+    [Description("No se pudo eliminar {Gender:ese|esa} {Entity}.")]
+    CouldNotDelete,
+    [Description("No se pudo modificar {Gender:ese|esa} {Entity}.")]
+    CouldNotUpdate
+}
+public enum GexSuccessMessage
+{
+    [Description("{Gender:El|La} {Entity} se creó correctamente.")]
+    Created,
+    [Description("{Gender:El|La} {Entity} se eliminó correctamente.")]
+    Deleted,
+    [Description("{Gender:El|La} {Entity} se actualizó correctamente.")]
+    Modified
+}
+public class GexResponseOptions
+{
+    public string Entity { get; set; }
+    public Gender Gender { get; set; }
+
+}
+public static class ResponseHelper
+{
+    public static int GetHttpError(GexErrorMessage gexError)
     {
-        [Description("Error inesperado.")]
-        Generic, 
-
-        [Description("La dirección de correo o contraseña son incorrectas.")]
-        InvalidCredentials,
-
-        [Description("No se puede crear un(a) {0} con el mismo identificador.")]
-        DuplicatedEntity,
-
-        [Description("No se encontró ningun(a) {0} con los datos ingresados.")]
-        NotFound,
-
-        [Description("Se encontró un(a) {0} con esa información.")]
-        AlreadyExists,
-
-
-    }
-
-    public static class ResponseHelper
-    {
-
-        public static ModelStateDictionary AddErrorsToModelState(IdentityResult identityResult, ModelStateDictionary modelState)
+        return gexError switch
         {
-            foreach (var e in identityResult.Errors)
-            {
-                modelState.TryAddModelError(e.Code, e.Description);
-            }
-
-            return modelState;
-        }
-
-        public static ModelStateDictionary AddErrorToModelState(string code, string description, ModelStateDictionary modelState)
-        {
-            modelState.TryAddModelError(code, description);
-            return modelState;
-        }
-
-        public static List<ModelErrors> GetModelStateErrors(ModelStateDictionary Model)
-        {
-            return Model.Select(x => new ModelErrors() { Key = x.Key, Messages = x.Value.Errors.Select(y => y.ErrorMessage).ToList() }).ToList();
-        }
-        public static ResponseSingle Response(string entity, GexError StatusCode, [Optional] string Message)
-        {
-            return new ResponseSingle()
-            {
-                Error = new ResponseError()
-                {
-                    Message = Message = !string.IsNullOrEmpty(Message) ? Message : string.Format(Enumerations.GetEnumDescription(StatusCode), entity),
-                    StatusCode = StatusCode
-                }                
-            };
-        }
-
-        public static ResponseSingle NotFound(string entity, [Optional] string message)
-            => Response(entity, GexError.NotFound, message);
-
-        public static ResponseSingle InvalidCredentials(string entity, [Optional] string message) 
-            => Response(entity, GexError.InvalidCredentials, message);
+            GexErrorMessage.NotFound => StatusCodes.Status404NotFound,
+            GexErrorMessage.CouldNotDelete or GexErrorMessage.CouldNotDelete or GexErrorMessage.CouldNotUpdate => StatusCodes.Status500InternalServerError,
+            _ => StatusCodes.Status400BadRequest
+        };
     }
-
-    public class ResponseSingle
-    {
-        public ResponseError Error { get; set; }
-    }
-
-    public class ResponseError
-    {
-        public string Message { get; set; }
-        public GexError StatusCode { get; set; }
-    }
-
-    public class ModelErrors
-    {
-        public string Key { get; set; }
-        public List<string> Messages { get; set; }
-    }
-
 }

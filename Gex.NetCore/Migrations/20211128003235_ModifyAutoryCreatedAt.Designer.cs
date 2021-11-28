@@ -3,6 +3,7 @@ using System;
 using Gex.NetCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Gex.NetCore.Migrations
 {
     [DbContext(typeof(GexContext))]
-    partial class GexContextModelSnapshot : ModelSnapshot
+    [Migration("20211128003235_ModifyAutoryCreatedAt")]
+    partial class ModifyAutoryCreatedAt
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,14 +40,14 @@ namespace Gex.NetCore.Migrations
                         .HasColumnType("int")
                         .HasColumnName("estado");
 
+                    b.Property<DateTime>("LastUpdateAt")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("last_update_at");
+
                     b.Property<string>("Nombre")
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)")
                         .HasColumnName("nombre");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("updated_at");
 
                     b.HasKey("Id")
                         .HasName("pk_comisiones");

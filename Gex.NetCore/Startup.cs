@@ -20,8 +20,8 @@ using Microsoft.Extensions.Logging;
 using Gex.NetCore.Repository.Interface;
 using Gex.NetCore.Repository;
 using EntityFramework.Exceptions.MySQL.Pomelo;
-using Microsoft.AspNetCore.Mvc;
 using Gex.NetCore.Middlewares;
+using Gex.NetCore.Filters;
 
 namespace Gex.NetCore;
 
@@ -68,14 +68,21 @@ public class Startup
                 ValidateAudience = false
             };
         });
-        services.AddControllers().AddBadRequestServices();
+        services.AddControllers(options =>
+        {
+            options.Filters.Add<HttpResponseExceptionFilter>();
+        }).AddBadRequestServices();
         services.AddDbContext<GexContext>(options =>
         {
-            options.UseMySql(Configuration.GetValue<string>("DatabaseConnection"), new MariaDbServerVersion(new Version(10, 4, 17)));
+            options.UseMySql(Configuration.GetValue<string>("DatabaseConnection"), new MariaDbServerVersion(new Version(10, 4, 17)), o =>
+            {
+                o.EnableRetryOnFailure();
+            });
             options.LogTo(Console.WriteLine, LogLevel.Information);
             options.EnableSensitiveDataLogging();
             options.EnableDetailedErrors();
             options.UseExceptionProcessor();
+            options.UseSnakeCaseNamingConvention();
         });
         services.Configure<RequestLocalizationOptions>(ops =>
         {
@@ -95,6 +102,7 @@ public class Startup
         ;
         services.AddSwaggerDocument(options =>
         {
+            options.Description = "Colleción de API's correspondientes al sistema de exámenes Gex.";
             options.Title = "Sistema de Exámenes Gex";
         });
     }

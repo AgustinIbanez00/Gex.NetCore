@@ -15,7 +15,7 @@ public static class BadRequestConfig
             {
                 var modelState = actionContext.ModelState;
 
-                return new BadRequestObjectResult(new ServiceResponse<string>
+                return new BadRequestObjectResult(new GexResponse<string>
                 {
                     Data = null,
                     ErrorMessages = actionContext.ModelState

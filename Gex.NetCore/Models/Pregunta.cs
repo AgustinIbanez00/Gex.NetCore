@@ -13,7 +13,6 @@ public enum PreguntaTipo
     /// </summary>
     ABIERTA
 }
-
 public partial class Pregunta
 {
     [Key]
@@ -21,5 +20,4 @@ public partial class Pregunta
     public Tema Tema { get; set; }
     public string Descripcion { get; set; }
     public PreguntaTipo Tipo { get; set; }
-    public int Puntos { get; set; }
 }

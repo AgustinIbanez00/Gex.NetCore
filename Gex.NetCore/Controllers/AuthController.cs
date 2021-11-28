@@ -3,10 +3,10 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-
+using Gex.NetCore.DTO;
 using Gex.NetCore.Helpers;
 using Gex.NetCore.Models;
-using Gex.NetCore.ViewModels;
+using Gex.NetCore.Utils;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -23,6 +23,7 @@ public class AuthController : ControllerBase
     private readonly GexContext _context;
     private readonly IConfiguration _configuration;
 
+
     public AuthController(GexContext context, IConfiguration configuration)
     {
         _context = context;
@@ -31,14 +32,12 @@ public class AuthController : ControllerBase
 
     [Route("Login")]
     [HttpPost]
-    public async Task<IActionResult> Login([FromBody] CredentialsViewModel credentials)
+    public async Task<ActionResult<GexResponse<string>>> Login([FromBody] CredentialsDTO credentials)
     {
-        if (!ModelState.IsValid)
-            return BadRequest(ResponseHelper.GetModelStateErrors(ModelState));
-
         Usuario Usuario = await _context.Usuarios.Where(x => x.Email == credentials.Email).FirstOrDefaultAsync();
         if (Usuario == null)
-            return NotFound(ResponseHelper.NotFound("usuario"));
+            return BadRequest();
+            //return BadRequest(ServiceResponse<string>.FormattedError(nameof(credentials.Email), GexErrorMessage.InvalidEmail, Gender.MALE));
 
         if (HashHelper.CheckHash(credentials.Password, Usuario.Password, Usuario.Salt))
         {
@@ -60,25 +59,19 @@ public class AuthController : ControllerBase
 
             string bearer_token = tokenHandler.WriteToken(createdToken);
 
-            return Ok(new { Token = bearer_token });
+            return GexResponse<string>.Ok(bearer_token);
         }
-        else return BadRequest(ResponseHelper.InvalidCredentials("usuario"));
+        //else return BadRequest(ServiceResponse<string>.FormattedError(nameof(credentials.Password), GexErrorMessage.InvalidPassword));
+        return BadRequest();
     }
 
     [Route("Register")]
     [HttpPost]
-    public async Task<IActionResult> Register([FromBody] RegistrationViewModel registerModel)
+    public async Task<ActionResult<GexResponse<string>>> Register([FromBody] RegistrationDTO registerModel)
     {
-        if (!ModelState.IsValid)
-            return BadRequest(ResponseHelper.GetModelStateErrors(ModelState));
-
         if (await _context.Usuarios.Where(x => x.Email == registerModel.Email).AnyAsync())
-        {
-            ModelState.AddModelError(nameof(registerModel.Email), $"Esa dirección de correo electrónico {registerModel.Email} ya existe.");
-            return BadRequest(ModelState);
-        }
-        //return BadRequest(ResponseHelper.InvalidCredentials());
-
+            return BadRequest(GexResponse<string>.Error("Error", nameof(registerModel.Email), $"Esa dirección de correo electrónico {registerModel.Email} ya existe."));
+        
         HashedPassword Password = HashHelper.Hash(registerModel.Password);
 
         Usuario user = new Usuario()
@@ -91,7 +84,7 @@ public class AuthController : ControllerBase
         _context.Usuarios.Add(user);
         await _context.SaveChangesAsync();
 
-        return Ok(new { Message = "Usuario creado correctamente." });
+        return Ok(GexResponse<string>.Ok(null, "Usuario creado correctamente."));
     }
 
     [Route("Me")]
@@ -99,7 +92,6 @@ public class AuthController : ControllerBase
     [Authorize]
     public IActionResult Get()
     {
-
         var r = ((ClaimsIdentity)User.Identity).FindFirst(ClaimTypes.NameIdentifier);
         return Ok(new { Username = r == null ? "" : r.Value });
     }

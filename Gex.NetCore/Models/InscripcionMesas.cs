@@ -13,11 +13,12 @@ public partial class InscripcionMesas
     [Key]
     public long Id { get; set; }
 
-    [Range(0, 10)]
+    /// <summary>
+    /// Si la nota es menor a 0 signifca que el alumno no se presentó.
+    /// </summary>
+    [Range(-1, 10)]
     public int Nota { get; set; }
-
     public Condicion Condicion { get; set; }
-
     public virtual Usuario Alumno { get; set; }
-    public virtual MesaExamen Mesa { get; set; }
+    public virtual MesaExamen MesaExamen { get; set; }
 }
