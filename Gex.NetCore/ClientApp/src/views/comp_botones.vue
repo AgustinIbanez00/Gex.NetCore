@@ -1,46 +1,48 @@
 <template>
-		<!-- Botones -->
-		<v-btn v-if="modo == 'creacion'" color="pink" dark absolute bottom fab style="top:75px; right:50px;" @click="accion('creacion')">
-			<v-icon>add</v-icon>
-		</v-btn>
-		<v-btn v-else-if="modo == 'lista'" dark absolute bottom fab style="top:75px; right:50px;" @click="accion('lista')">
-			<v-icon>mdi-format-list-bulleted-square</v-icon>
-		</v-btn>
-		<v-btn v-else dark absolute bottom fab style="top:75px; right:50px;" @click="accion('lista')">
-			<span class="material-icons">chevron_left</span>
-		</v-btn>
-		<!-- Botones -->
+		<div>
+			<!-- Botones -->
+			<RouterLink :to="`/examenes/crear`" v-show="$route.name == 'Exámenes'">
+				<v-btn v-if="$route.name == 'Exámenes'" @click="creacion" outlined color="white" dark absolute bottom style="font-size:16px;padding-right:10px;top:60px; right:60px; height:40px; z-index:2;">
+					Crear <v-icon>add</v-icon>
+				</v-btn>
+			</RouterLink>
+			<RouterLink :to="`/examenes`" v-show="$route.name == 'Exámen' || $route.name == 'Crear exámen'">
+				<v-btn @click="lista" color="pink" dark absolute bottom style="top:65px; height:45px;font-size:16px; z-index:2; padding-right: 4px; right: 60px;">
+					Exámenes <v-icon>mdi-chevron-right</v-icon>
+				</v-btn>
+			</RouterLink>
+			<!-- Preguntas -->
+			<RouterLink :to="`/examenes/${id}`" v-show="$route.name == 'Preguntas'">
+				<v-btn color="white" absolute bottom style="padding-left:2px; right:60px; top:65px;z-index:2; height:45px;font-size:16px;">
+					<v-icon>mdi-chevron-left</v-icon> Exámen
+				</v-btn>
+			</RouterLink>
+			<RouterLink :to="`/examenes/${id}/preguntas`" v-show="$route.name == 'Exámen'">
+				<v-btn color="white" absolute bottom style="padding-left:6px; right:210px; top:65px; z-index:2; height:45px; font-size:16px;">
+					<v-icon>mdi-playlist-check</v-icon> Preguntas
+				</v-btn>
+			</RouterLink>
+			<!-- Botones -->
+		</div>
 </template>
-
 <script>
+	import mixin_base from '../assets/mixin_base';
 	export default {
+		mixins: [mixin_base],
 		name: "comp_botones",
 		data: () => ({
-			modo: 'edicion',
 		}),
 		methods: {
-			accion(accion){
+			creacion(){
 				var vm = this;
-				vm.modo = accion == 'creacion' ?  'lista' : 'creacion';
-				vm.$emit('accion',vm.modo);
+				vm.estado(vm.estados.creacion);
 			},
-			creacion: function(){
+			lista(){
 				var vm = this;
-				vm.modo = 'lista';
+				vm.estado(vm.estados.lista);
 			},
-			lista: function(){
-				var vm = this;
-				vm.modo = 'creacion';
-				vm.$emit('accion',vm.modo);
-			},
-			edicion: function(){
-				var vm = this;
-				vm.modo = 'lista';
-				vm.$emit('accion',vm.modo);
-			}
 		},
-		mounted() {
-			var vm = this;
-		}
-	};
+		computed: {
+		},
+	}
 </script>
