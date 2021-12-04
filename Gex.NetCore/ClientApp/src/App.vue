@@ -1,5 +1,5 @@
 <template>
-  <v-app class="light-blue">
+	<v-app class="light-blue">
 		<v-app-bar dark dense fixed><!-- Menú -->
 			<v-btn large to="/examenes" exact>Exámenes</v-btn>
 			<v-btn large to="/mesas" exact>Mesas</v-btn>
@@ -25,68 +25,40 @@
 				</v-list>
 			</v-menu>
 		</v-app-bar>
-		<v-card-title class="white--text indigo darken-1 w-100 text-sm-h3 justify-center mt-10">
-			<div>Exámenes</div>
+		<v-card-title style="padding-top:13px;" class="white--text indigo darken-1 w-100 text-sm-h3 justify-center mt-10" v-bind:style="{'height': $route.name == 'Exámenes' ? '70px': '50px'}">
+			<div>{{$route.name == 'Exámenes' ? $route.name : ''}}</div>
 		</v-card-title>
-		<comp_botones ref="botones" @accion='accion_boton'/><!-- Botones -->
+		<comp_botones ref="botones"/>
 		<v-expand-transition class="justify-center">
 			<v-row justify="center">
-				<v-col><!-- Componentes -->
-					<comp_examenes ref="examenes" v-show="route == 'examenes'" @cancelar="cancelar_abm"/>
+				<v-col>
 				</v-col>
 			</v-row>
 		</v-expand-transition>
-    <v-footer app><!-- Footer -->
-    </v-footer>
-  </v-app>
+		<v-footer app><!-- Footer -->
+		</v-footer>
+		<RouterView/>
+	</v-app>
 </template>
 <script>
-	import comp_examenes from "./views/comp_examenes";
 	import comp_botones from "./views/comp_botones";
-
+	import mixin_base from './assets/mixin_base';
 	export default {
+		mixins: [mixin_base],
 		name: "App",
 		components: {
-			comp_examenes,
 			comp_botones,
 		},
 		data: () => ({
-			route: 'examenes',
-  	  selectedItem: 0,
-			opciones:[{text: 'Perfil',link: 'configuracion de la persona'},{text: 'Reportes',link: 'informes'},{text:'Cerrar sesión',link:'salir'}]
+			selectedItem: 0,
+			opciones:[{text: 'Perfil',link: 'configuracion de la persona'},{text: 'Reportes',link: 'informes'},{text:'Cerrar sesión',link:'salir'}],
 		}),
 		methods: {
-			accion_boton: function(modo){
-				var vm = this;
-				if(modo == 'creacion' || modo == 'edicion') vm.$refs[vm.route].lista();
-				else vm.$refs[vm.route].creacion();
-			},
-			creacion: function(){
-				var vm = this;
-				vm.$refs[vm.route].creacion();
-			},
-			lista: function(recargar = false){
-				var vm = this;
-				vm.$refs[vm.route].lista(recargar);				
-			},
-			cancelar_abm: function(){
-				var vm = this;
-				vm.lista();
-				vm.$refs['botones'].lista();
-			}
 		},
 		computed:{
 		},
 		mounted() {
 			var vm = this;
-			// window.onhashchange = function (e) {
-			// 	if (window.location.hash) vm.editar_plantilla(window.location.hash.substring(1));
-			// 	else vm.ver_plantillas();
-			// }
-			window.addEventListener('locationchange', function(){
-				var url = window.location.href.split('/');
-				vm.route = url[url.length-1];
-			})
 		}
 	};
 </script>
