@@ -2,12 +2,13 @@
 using Microsoft.AspNetCore.Authorization;
 using Gex.NetCore.Services.Interface;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Options;
-using System.Net;
 using Gex.NetCore.DTO;
 using Gex.NetCore.Utils;
 using Microsoft.AspNetCore.Http;
 using Gex.NetCore.Helpers;
+using System.Collections;
+using System.Collections.Generic;
+using Gex.NetCore.Models;
 
 namespace Gex.NetCore.Controllers;
 
@@ -24,31 +25,38 @@ public class ComisionController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResponse<ICollection<ComisionDTO>>))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [Authorize(Roles = nameof(UsuarioTipo.Alumno))]
+    public async Task<ActionResult<GexResponse<ICollection<ComisionDTO>>>> GetAll()
     {
-        return Ok(await _service.GetComisionsAsync());
+        var comisiones = await _service.GetComisionsAsync();
+
+        if (!comisiones.Success)
+            return StatusCode(ResponseHelper.GetHttpError(comisiones.ErrorCode), comisiones);
+
+        return Ok(comisiones);
     }
 
     [HttpGet("{id:int}")]
-    public async Task<IActionResult> Get(int id)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResponse<ComisionDTO>))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<GexResponse<ComisionDTO>>> Get(int id)
     {
-        if(id == 0)
-            return BadRequest();
-
         var comision = await _service.GetComisionAsync(id);
 
         if (!comision.Success)
-        {
-            if (comision.ErrorCode == Helpers.GexErrorMessage.NotFound)
-                return NotFound(comision);
-            else
-                return BadRequest(comision);
-        }
+            return StatusCode(ResponseHelper.GetHttpError(comision.ErrorCode), comision);
 
         return Ok(comision);
     }
+
     [HttpGet("nombre/{nombre}")]
-    public async Task<IActionResult> GetByName(string nombre)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResponse<ComisionDTO>))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<GexResponse<ComisionDTO>>> GetByName(string nombre)
     {
         var comision = await _service.GetComisionAsync(nombre);
 

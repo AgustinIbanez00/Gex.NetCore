@@ -34,10 +34,15 @@ public class AuthController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<GexResponse<string>>> Login([FromBody] CredentialsDTO credentials)
     {
+        var options = new GexResponseOptions()
+        {
+            Entity = "usuario",
+            Gender = Gender.MALE
+        };
+
         Usuario Usuario = await _context.Usuarios.Where(x => x.Email == credentials.Email).FirstOrDefaultAsync();
         if (Usuario == null)
-            return BadRequest();
-            //return BadRequest(ServiceResponse<string>.FormattedError(nameof(credentials.Email), GexErrorMessage.InvalidEmail, Gender.MALE));
+            return BadRequest(GexResponse<string>.ErrorF(GexErrorMessage.InvalidEmail, options));
 
         if (HashHelper.CheckHash(credentials.Password, Usuario.Password, Usuario.Salt))
         {
@@ -46,6 +51,7 @@ public class AuthController : ControllerBase
 
             var claims = new ClaimsIdentity();
             claims.AddClaim(new Claim(ClaimTypes.NameIdentifier, credentials.Email));
+            claims.AddClaim(new Claim(ClaimTypes.Role, Usuario.Tipo.ToString()));
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -61,8 +67,7 @@ public class AuthController : ControllerBase
 
             return GexResponse<string>.Ok(bearer_token);
         }
-        //else return BadRequest(ServiceResponse<string>.FormattedError(nameof(credentials.Password), GexErrorMessage.InvalidPassword));
-        return BadRequest();
+        return BadRequest(GexResponse<string>.ErrorF(GexErrorMessage.InvalidPassword, options));
     }
 
     [Route("Register")]
@@ -71,14 +76,15 @@ public class AuthController : ControllerBase
     {
         if (await _context.Usuarios.Where(x => x.Email == registerModel.Email).AnyAsync())
             return BadRequest(GexResponse<string>.Error("Error", nameof(registerModel.Email), $"Esa dirección de correo electrónico {registerModel.Email} ya existe."));
-        
+
         HashedPassword Password = HashHelper.Hash(registerModel.Password);
 
         Usuario user = new Usuario()
         {
             Email = registerModel.Email,
             Password = Password.Password,
-            Salt = Password.Salt
+            Salt = Password.Salt,
+            Tipo = UsuarioTipo.Alumno
         };
 
         _context.Usuarios.Add(user);
@@ -92,7 +98,7 @@ public class AuthController : ControllerBase
     [Authorize]
     public IActionResult Get()
     {
-        var r = ((ClaimsIdentity)User.Identity).FindFirst(ClaimTypes.NameIdentifier);
+        var r = ((ClaimsIdentity)User.Identity).FindFirst(ClaimTypes.Role);
         return Ok(new { Username = r == null ? "" : r.Value });
     }
 

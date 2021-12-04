@@ -29,6 +29,7 @@ public partial class GexContext : DbContext
 
         modelBuilder.Entity<Comision>()
         .HasIndex(p => new { p.Nombre, p.CicloLectivo }).IsUnique();
+        
 
         base.OnModelCreating(modelBuilder);
     }

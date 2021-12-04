@@ -65,9 +65,15 @@ public class Startup
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = new SymmetricSecurityKey(key),
                 ValidateIssuer = false,
-                ValidateAudience = false
+                ValidateAudience = false,
             };
         });
+        services.AddAuthorization(options =>
+        {
+            options.AddPolicy("AlumnosyProfesores",
+                 policy => policy.RequireRole("Administrator", "asds"));
+        });
+
         services.AddControllers(options =>
         {
             options.Filters.Add<HttpResponseExceptionFilter>();

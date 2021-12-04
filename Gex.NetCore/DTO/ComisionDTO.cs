@@ -5,7 +5,7 @@ namespace Gex.NetCore.DTO;
 public class ComisionDTO
 {
     [Required]
-    [Display(Name = "Identificador")]
+    [Display(Name = "identificador")]
     public int Id { get; set; }
 
     [Required]

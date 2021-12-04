@@ -1,13 +1,17 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
-namespace Gex.NetCore.DTO
+namespace Gex.NetCore.DTO;
+public class CredentialsDTO
 {
-    public class CredentialsDTO
-    {
-        [EmailAddress]
-        public string Email { get; set; }
+    [Required]
+    [EmailAddress]
+    [Description("Dirección de correo eletrónico válida. Por ejemplo: user@example.com")]
+    [Display(Name = "correo electrónico")]
+    public string Email { get; set; }
 
-        [DataType(DataType.Password)]
-        public string Password { get; set; }
-    }
+    [Required]
+    [DataType(DataType.Password)]
+    [Description("Contraseña")]
+    public string Password { get; set; }
 }
