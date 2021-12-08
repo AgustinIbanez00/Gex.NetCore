@@ -7,7 +7,7 @@ public enum UsuarioTipo
     Profesor,
     Administrador
 }
-public partial class Usuario : IdentityUser
+public partial class Usuario : IdentityUser<int>
 {
     public DateTimeOffset? EmailVerifiedAt { get; set; }
     public string Password { get; set; }

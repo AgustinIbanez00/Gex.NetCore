@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Gex.Helpers;
 
 namespace Gex.Models;
 public enum MateriaTipo
@@ -15,4 +16,11 @@ public partial class Materia : Auditory
     [Required]
     public string Nombre { get; set; }
     public MateriaTipo Tipo { get; set; }
+
+    public static GexResponseOptions Options => new GexResponseOptions()
+    {
+        Entity = "materia",
+        Gender = Gender.FEMALE
+    };
+
 }

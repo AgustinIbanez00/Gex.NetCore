@@ -16,17 +16,12 @@ public class ComisionService : IComisionService, IGexResponse<ComisionDTO>
 {
     private readonly IMapper _mapper;
     private readonly IComisionRepository _repository;
-    private readonly GexResponseOptions _options;
+    private readonly GexResponseOptions _options = Comision.Options;
 
     public ComisionService(IMapper mapper, IComisionRepository repository)
     {
         _mapper = mapper;
         _repository = repository;
-        _options = new GexResponseOptions()
-        {
-            Entity = "comisión",
-            Gender = Gender.FEMALE
-        };
     }
 
     //*********** HANDLING ERRORS ***********//

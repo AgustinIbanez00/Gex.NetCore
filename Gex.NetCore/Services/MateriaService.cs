@@ -16,17 +16,12 @@ public class MateriaService : IMateriaService, IGexResponse<MateriaDTO>
 {
     private readonly IMapper _mapper;
     private readonly IMateriaRepository _repository;
-    private readonly GexResponseOptions _options;
+    private readonly GexResponseOptions _options = Materia.Options;
 
     public MateriaService(IMapper mapper, IMateriaRepository repository)
     {
         _mapper = mapper;
         _repository = repository;
-        _options = new GexResponseOptions()
-        {
-            Entity = "materia",
-            Gender = Gender.FEMALE
-        };
     }
 
     //*********** HANDLING ERRORS ***********//

@@ -8,7 +8,7 @@ public interface IMateriaService
 {
     Task<GexResponse<ICollection<MateriaDTO>>> GetMateriasAsync();
     Task<GexResponse<MateriaDTO>> GetMateriaAsync(int id);
-    Task<GexResponse<MateriaDTO>> CreateMateriaAsync(MateriaDTO MateriaDTO);
-    Task<GexResponse<MateriaDTO>> UpdateMateriaAsync(MateriaDTO MateriaDTO);
+    Task<GexResponse<MateriaDTO>> CreateMateriaAsync(MateriaDTO materiaDto);
+    Task<GexResponse<MateriaDTO>> UpdateMateriaAsync(MateriaDTO materiaDto);
     Task<GexResponse<MateriaDTO>> DeleteMateriaAsync(int id);
 }

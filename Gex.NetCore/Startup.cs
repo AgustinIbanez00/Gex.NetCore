@@ -52,7 +52,7 @@ public class Startup
         services.AddScoped<IExamenRepository, ExamenRepository>();
         services.AddScoped<IMateriaRepository, MateriaRepository>();
         /* INYECCION DE SERVICIOS */
-        services.AddScoped<IComisionRepository, ComisionRepository>();
+        services.AddScoped<IComisionService, ComisionService>();
         services.AddScoped<IExamenService, ExamenService>();
         services.AddScoped<IMateriaService, MateriaService>();
 
@@ -125,10 +125,10 @@ public class Startup
             c.SwaggerDoc("v1", new OpenApiInfo
             {
                 Title = "Gex",
-                Version = "v1"
+                Version = "v1",
+                Description = "Colleción de API's correspondientes al sistema de exámenes Gex."
             });
         });
-
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

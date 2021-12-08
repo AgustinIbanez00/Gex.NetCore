@@ -17,18 +17,13 @@ public class ExamenService : IExamenService, IGexResponse<ExamenDTO>
     private readonly IMapper _mapper;
     private readonly IExamenRepository _examenRepository;
     private readonly IMateriaRepository _materiaRepository;
-    private readonly GexResponseOptions _options;
+    private readonly GexResponseOptions _options = Examen.Options;
 
     public ExamenService(IMapper mapper, IExamenRepository examenRepository, IMateriaRepository materiaRepository)
     {
         _mapper = mapper;
         _examenRepository = examenRepository;
         _materiaRepository = materiaRepository;
-        _options = new GexResponseOptions()
-        {
-            Entity = "exámen",
-            Gender = Gender.MALE
-        };
     }
 
     //*********** HANDLING ERRORS ***********//

@@ -9,5 +9,6 @@ public class AutoMapperProfiles : Profile
     {
         CreateMap<Comision, ComisionDTO>().ReverseMap();
         CreateMap<Examen, ExamenDTO>().ReverseMap();
+        CreateMap<Materia, MateriaDTO>().ReverseMap();
     }
 }

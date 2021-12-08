@@ -15,11 +15,11 @@ public class MateriaRepository : IMateriaRepository
         _context = context;
     }
 
-    public async Task<bool> CreateMateriaAsync(Materia Materia)
+    public async Task<bool> CreateMateriaAsync(Materia materia)
     {
-        Materia.CreatedAt = DateTime.Now;
-        Materia.Id = 0;
-        await _context.Materias.AddAsync(Materia);
+        materia.CreatedAt = DateTime.Now;
+        materia.Id = 0;
+        await _context.Materias.AddAsync(materia);
         return await Save();
     }
 
@@ -29,15 +29,15 @@ public class MateriaRepository : IMateriaRepository
         return await DeleteMateriaAsync(Materia);
     }
 
-    public async Task<bool> DeleteMateriaAsync(Materia Materia)
+    public async Task<bool> DeleteMateriaAsync(Materia materia)
     {
-        if (Materia == null)
+        if (materia == null)
             return false;
 
-        if (Materia.Estado == Estado.BAJA)
+        if (materia.Estado == Estado.BAJA)
             return false;
 
-        Materia.Estado = Estado.BAJA;
+        materia.Estado = Estado.BAJA;
         return await Save();
     }
 
@@ -49,13 +49,13 @@ public class MateriaRepository : IMateriaRepository
 
     public async Task<bool> Save() => await _context.SaveChangesAsync() >= 0;
 
-    public async Task<bool> UpdateMateriaAsync(Materia Materia)
+    public async Task<bool> UpdateMateriaAsync(Materia materia)
     {
-        if (Materia == null)
+        if (materia == null)
             return false;
 
-        _context.Materias.Update(Materia);
-        Materia.UpdatedAt = DateTime.Now;
+        _context.Materias.Update(materia);
+        materia.UpdatedAt = DateTime.Now;
         return await Save();
     }
 }

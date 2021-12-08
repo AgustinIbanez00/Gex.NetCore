@@ -56,9 +56,9 @@ public class MateriaController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    public async Task<ActionResult<GexResponse<MateriaDTO>>> CreateMateria([FromBody] MateriaDTO MateriaDTO)
+    public async Task<ActionResult<GexResponse<MateriaDTO>>> CreateMateria([FromBody] MateriaDTO materiaDto)
     {
-        var materia = await _service.CreateMateriaAsync(MateriaDTO);
+        var materia = await _service.CreateMateriaAsync(materiaDto);
 
         if (!materia.Success)
             return StatusCode(ResponseHelper.GetHttpError(materia.ErrorCode), materia);
@@ -67,9 +67,9 @@ public class MateriaController : ControllerBase
 
     [HttpPatch]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResponse<MateriaDTO>))]
-    public async Task<ActionResult<GexResponse<MateriaDTO>>> UpdateMateria([FromBody] MateriaDTO MateriaDTO)
+    public async Task<ActionResult<GexResponse<MateriaDTO>>> UpdateMateria([FromBody] MateriaDTO materiaDto)
     {
-        var materia = await _service.UpdateMateriaAsync(MateriaDTO);
+        var materia = await _service.UpdateMateriaAsync(materiaDto);
 
         if (!materia.Success)
             return StatusCode(ResponseHelper.GetHttpError(materia.ErrorCode), materia);
@@ -86,6 +86,4 @@ public class MateriaController : ControllerBase
             return StatusCode(ResponseHelper.GetHttpError(materia.ErrorCode), materia);
         return Ok(materia);
     }
-
-
 }

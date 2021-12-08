@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using Gex.Helpers;
 
 namespace Gex.Models;
-public partial class MesaExamen
+public partial class MesaExamen : Auditory
 {
     [Key]
     public long Id { get; set; }
@@ -24,4 +25,7 @@ public partial class MesaExamen
     public int Duracion { get; set; }
     public virtual Examen Examen { get; set; }
     public virtual Usuario Profesor { get; set; }
+
+    public static GexResponseOptions Options => new GexResponseOptions() { Entity = "mesa de exámen",  Gender = Gender.FEMALE };
+
 }

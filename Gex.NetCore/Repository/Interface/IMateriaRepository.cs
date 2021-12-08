@@ -9,10 +9,10 @@ public interface IMateriaRepository
     Task<ICollection<Materia>> GetMateriasAsync();
     Task<Materia> GetMateriaAsync(long id);
     Task<bool> ExistsMateriaAsync(long id);
-    Task<bool> CreateMateriaAsync(Materia Materia);
-    Task<bool> DeleteMateriaAsync(Materia Materia);
+    Task<bool> CreateMateriaAsync(Materia materia);
+    Task<bool> DeleteMateriaAsync(Materia materia);
     Task<bool> DeleteMateriaAsync(long id);
-    Task<bool> UpdateMateriaAsync(Materia Materia);
+    Task<bool> UpdateMateriaAsync(Materia materia);
 
     Task<bool> Save();
 }
