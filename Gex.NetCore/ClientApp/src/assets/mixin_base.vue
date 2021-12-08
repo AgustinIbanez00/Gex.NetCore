@@ -5,7 +5,8 @@
 	const store = new Vuex.Store({
 		state: {
 			estado_actual: 1,
-			id: 0
+			id: 0,
+			titulo_txt: '',
 		},
 		mutations: {
 			estado(state, estado) {
@@ -60,14 +61,14 @@
 		mounted() {
 			var vm = this;
 			switch(vm.$route.name){
-				case 'Exámenes': vm.estado_actual = vm.estados.lista; vm.lista(); break;
-				case 'Exámen': vm.estado_actual = vm.estados.edicion; vm.edicion(vm.$route.params.id); break;
-				case 'Crear exámen': vm.estado_actual = vm.estados.creacion; vm.creacion(); break;
-				case 'Preguntas': vm.edicion(vm.$route.params.id,true); break;
+				case 'listar_examen': vm.estado_actual = vm.estados.lista; vm.lista(); break;
+				case 'editar_examen': vm.estado_actual = vm.estados.edicion; vm.edicion(vm.$route.params.id); break;
+				case 'crear_examen': vm.estado_actual = vm.estados.creacion; vm.creacion(); break;
+				case 'editar_preguntas': vm.edicion(vm.$route.params.id,true); break;
 			}
 		},
 		computed:{
-			...Vuex.mapState(['estado_actual', 'id']),
+			...Vuex.mapState(['estado_actual', 'id','titulo_txt']),
 			estado_actual:{
 				get: function () {return this.$store.state.estado_actual;},
 				set: function (val) {this.$store.state.estado_actual = val;}
@@ -75,6 +76,50 @@
 			id:{
 				get: function () {return this.$route.params.id;},
 				set: function (val) {this.$route.params.id = val;}
+			},
+			titulo_txt:{
+				get: function () {return this.$store.state.titulo_txt;},
+				set: function (val) {this.$store.state.titulo_txt = val;}
+			},
+			route: function(){
+				var vm = this;
+				return vm.$route.name;
+			},
+			tab_actual: function(){
+				var vm = this;
+				return vm.$route.path.split('/')[1];
+			},
+			titulo(){
+				var vm = this;
+				let titulo = "";
+				if(vm.route == `${vm.tab_actual}_preguntas` && vm.titulo_txt) titulo = vm.titulo_txt;
+				else{
+					switch(vm.tab_actual){
+						case "examen": titulo = "Exámenes"; break;
+						case "materia": titulo = "Materias"; break;
+					}
+				} 
+				return titulo;
+			},
+			elementos(){
+				var vm = this;
+				let res = '';
+				switch(vm.tab_actual){
+					case 'examen': res = 'Exámenes'; break;
+					case 'materia': res = 'Materias'; break;
+					case 'mesa': res = 'Mesas'; break;
+				}
+				return res;
+			},
+			elemento(){
+				var vm = this;
+				let res = '';
+				switch(vm.tab_actual){
+					case 'examen': res = 'Exámen'; break;
+					case 'materia': res = 'Materia'; break;
+					case 'mesa': res = 'Mesa'; break;
+				}
+				return res;
 			},
 		},
 	}

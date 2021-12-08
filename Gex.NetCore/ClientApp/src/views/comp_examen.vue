@@ -2,7 +2,7 @@
 	<v-app class="light-blue">
 		<!-- TABLA EXÁMENES -->
 		<v-expand-transition>
-			<v-data-table v-show="$route.name == 'Exámenes'" :headers="headers" :items="examenes" :items-per-page="5" class="elevation-3 px-10 mx-15 my-3">
+			<v-data-table v-show="route == 'listar_examen'" :headers="headers" :items="examenes" :items-per-page="5" class="elevation-3 px-10 mx-15 my-3">
 				<template v-slot:item.actions="{ item }"><!-- Acciones -->
 					<v-btn class="ma-2" text icon color="blue lighten-1" @click="edicion(item.id)"><v-icon>mdi-pencil</v-icon></v-btn>
 					<v-btn class="ma-2" text icon color="blue-grey darken-1"><v-icon>mdi-delete</v-icon></v-btn>
@@ -11,20 +11,12 @@
 		</v-expand-transition>
 		<!-- ABM EXÁMENES -->
 		<v-expand-transition  class="justify-center">
-			<v-card v-show="$route.name == 'Exámen' || $route.name == 'Crear exámen'" class="mx-15 mt-8 text-center pa-5 pt-0">
-				<v-card-title v-if="$route.name == 'Exámen'">EDITAR EXÁMEN</v-card-title>
+			<v-card v-show="route == 'editar_examen' || route == 'crear_examen'" class="mx-15 mt-8 text-center pa-5 pt-0">
+				<v-card-title v-if="route == 'editar_examen'">EDITAR EXÁMEN</v-card-title>
 				<v-card-title v-else>NUEVO EXÁMEN</v-card-title>
 				<v-row>
 					<v-col md="6"><v-select :items="materias" label="Materia" v-model="examen.materia" @change="materia_cambiada"></v-select></v-col>
 					<v-col md="2"><v-select :items="tipos" label="Tipo"></v-select></v-col>
-					<v-col lg="2">
-						<v-menu ref="datepicker_examen" v-model="datepicker_examen" :close-on-content-click="false" transition="scale-transition" offset-y max-width="290px" min-width="auto">
-							<template v-slot:activator="{ on, attrs }">
-								<v-text-field v-model="examen.fecha" label="Fecha del exámen" prepend-icon="mdi-calendar" v-bind="attrs" @blur="date = parseDate(examen.fecha)" v-on="on"></v-text-field>
-							</template>
-							<v-date-picker v-model="date" no-title @input="datepicker_examen = false"></v-date-picker>
-						</v-menu>
-					</v-col>
 					<v-col md="2" v-show="examen.fecha"><v-select :items="modalidades" label="Modalidad"></v-select></v-col>
 				</v-row>
 				<v-row>
@@ -46,13 +38,11 @@
 <script>
 	import mixin_base from '../assets/mixin_base';
 	export default {
-		name: "comp_examenes",
+		name: "comp_examen",
 		mixins: [mixin_base],
 		data: () => ({
 			isLoading: false,
 			examen: JSON.parse(JSON.stringify(examen_default)),
-			date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
-			datepicker_examen: false,
 			materias: ['Laboratorio de programación','Android','Redes','Web II'],
 			tipos: ['Final','Recuperatorio','Parcial','Global','Test'],
 			modalidades: ['Multipleflai','Normal'],
@@ -87,22 +77,14 @@
 			materia_cambiada: function(){
 				var vm = this;
 			},
-
-			//Omg
-			formatDate (date) {
-				if (!date) return null;
-				const [year, month, day] = date.split('-');
-				return `${day}/${month}/${year}`;
-			},
-			parseDate (date) {
-				if (!date) return null;
-				const [day, month, year] = date.split('/');
-				return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
-			},
 		},
 		mounted() {
 			var vm = this;
-			//vm.cargar_tabla();
+			vm.$nextTick(() => {
+				if(vm.examen.id){
+					vm.titulo_txt = vm.examen.materia;
+				}
+			})
 		}
 	};
 </script>

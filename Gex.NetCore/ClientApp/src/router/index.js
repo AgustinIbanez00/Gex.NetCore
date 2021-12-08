@@ -1,9 +1,12 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '../views/Login.vue'
-import Examenes from '../views/comp_examenes.vue'
-import Preguntas from '../views/comp_examen_preguntas.vue'
-import Materias from '../views/comp_materias.vue'
+import Examen from '../views/comp_examen.vue'
+import ExamenPreguntas from '../views/comp_examen_preguntas.vue'
+import Materia from '../views/comp_materia.vue'
+import MateriaPreguntas from '../views/comp_materia_preguntas.vue'
+import Mesa from '../views/mesas/comp_mesa.vue'
+import ModalPregunta from '../views/comp_modal_pregunta.vue'
 Vue.use(VueRouter)
 const routes = [
 	{
@@ -11,50 +14,79 @@ const routes = [
 		name: 'Iniciar sesión',
 		component: Login
 	},
+	//-- MATERIAS --
 	{
-		path: '/materias',
-		name: 'Materias',
-		component: Materias
+		path: '/materia',
+		name: 'listar_materia',
+		component: Materia
 	},
 	{
-		path: '/materias/crear',
-		name: 'Crear materia',
-		component: Materias
+		path: '/materia/crear',
+		name: 'crear_materia',
+		component: Materia
 	},
 	{
-		path: '/materias/:id',
-		name: 'Materia',
-		component: Materias,
-		/*children: [
-			{
-				path: 'respuestas',
-				name: 'Respuestas',
-				component: Respuestas,
-			}
-		]*/
-	},
-	{
-		path: '/examenes',
-		name: 'Exámenes',
-		component: Examenes
-	},
-	{
-		path: '/examenes/crear',
-		name: 'Crear exámen',
-		component: Examenes
-	},
-	{
-		path: '/examenes/:id',
-		name: 'Exámen',
-		component: Examenes,
+		path: '/materia/:id',
+		name: 'editar_materia',
+		component: Materia,
 		children: [
 			{
 				path: 'preguntas',
-				name: 'Preguntas',
-				component: Preguntas,
+				name: 'materia_preguntas',
+				component: MateriaPreguntas,
+				children: [
+					{
+						path: ':id',
+						name: 'editar_materia_preguntas',
+						component: ModalPregunta,
+					}
+				]
+			},
+		]
+	},
+	//-- /MATERIAS --
+	//-- MESAS --
+	{
+		path: '/mesa/',
+		name: 'listar_mesa',
+		component: Mesa,
+	},
+	{
+		path: '/mesa/crear',
+		name: 'crear_mesa',
+		component: Mesa
+	},
+	{
+		path: '/mesa/:id',
+		name: 'editar_mesa',
+		component: Mesa,
+	},
+	//-- /MESAS --
+
+	//-- EXÁMENES --
+	{
+		path: '/examen',
+		name: 'listar_examen',
+		component: Examen
+	},
+	{
+		path: '/examen/crear',
+		name: 'crear_examen',
+		component: Examen
+	},
+	{
+		path: '/examen/:id',
+		name: 'editar_examen',
+		component: Examen,
+		children: [
+			{
+				path: 'preguntas',
+				name: 'examen_preguntas',
+				component: ExamenPreguntas,
 			}
 		]
 	},
+	//-- /EXÁMENES --
 ]
 const router = new VueRouter({
 	mode: 'history',
