@@ -1,11 +1,11 @@
 <template>
 	<v-app class="light-blue">
 		<v-app-bar dark dense fixed><!-- Menú -->
-			<v-btn large to="/examenes" exact>Exámenes</v-btn>
-			<v-btn large to="/mesas" exact>Mesas</v-btn>
-			<v-btn large to="/materias" exact>Materias</v-btn>
-			<v-btn large to="/cursos" exact>Cursos</v-btn>
-			<v-btn large to="/alumnos" exact>Alumnos</v-btn>
+			<v-btn v-show="tab_actual != 'examen'" large to="/examen" exact active-class>Exámenes</v-btn>
+			<v-btn v-show="tab_actual != 'materia'" large to="/materia" exact>Materias</v-btn>
+			<v-btn v-show="tab_actual != 'mesa'" large to="/mesa" exact>Mesas</v-btn>
+			<v-btn v-show="tab_actual != 'curso'" large to="/curso" exact>Cursos</v-btn>
+			<v-btn v-show="tab_actual != 'alumno'" large to="/alumno" exact>Alumnos</v-btn>
 			<v-spacer></v-spacer>
 			<v-menu left bottom>
 				<!-- Opciones -->
@@ -25,10 +25,10 @@
 				</v-list>
 			</v-menu>
 		</v-app-bar>
-		<v-card-title style="padding-top:13px;" class="white--text indigo darken-1 w-100 text-sm-h3 justify-center mt-10" v-bind:style="{'height': $route.name == 'Exámenes' ? '70px': '50px'}">
-			<div>{{$route.name == 'Exámenes' ? $route.name : ''}}</div>
+		<v-card-title style="padding-top:16px;" class="white--text indigo darken-1 w-100 justify-center mt-10" v-bind:style="{'height': route == `listar_${tab_actual}` ? '70px': '50px','font-size': route == `${tab_actual}_preguntas` ? '30px': '50px'}">
+			<div>{{route == `listar_${tab_actual}` || route == `${tab_actual}_preguntas` ? titulo : ''}}</div>
 		</v-card-title>
-		<comp_botones ref="botones"/>
+		<comp-botones ref="botones"/>
 		<v-expand-transition class="justify-center">
 			<v-row justify="center">
 				<v-col>
@@ -47,7 +47,7 @@
 		mixins: [mixin_base],
 		name: "App",
 		components: {
-			comp_botones,
+			'comp-botones':comp_botones,
 		},
 		data: () => ({
 			selectedItem: 0,

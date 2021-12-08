@@ -2,46 +2,50 @@
 	<div>
 		<!-- DATOS EXÁMEN -->
 		<v-expand-transition>
-			<v-card v-show="$route.name == 'Preguntas'" class="mx-15 mt-8 text-center">
-				<v-card class="mb-3">
-					<v-toolbar color="primary" dark flat><v-icon>widgets</v-icon>&nbsp<v-toolbar-title>Preguntas</v-toolbar-title></v-toolbar>
-					<v-icon>fas fa-code</v-icon>
-					<v-text-field @keyup="buscar_preguntas()" v-model="buscar_preguntas_texto" label="Buscar pregunta" prepend-icon="fa4-search"></v-text-field>
-					<v-row>
-						<v-col cols="12">
-							<v-card-text>
-								<v-treeview v-model="preguntas_elegidas" :items="preguntas_items" selected-color="indigo" open-on-click selectable return-object expand-icon="mdi-chevron-down" on-icon="mdi-bookmark" off-icon="mdi-bookmark-outline" indeterminate-icon="mdi-bookmark-minus">
-								</v-treeview>
-							</v-card-text>
-						</v-col>
-						<v-col cols="12">
-							<v-card-text>
-								<div v-if="examen.preguntas.length === 0" key="title" class="text-h6 font-weight-light grey--text pa-4 text-center">
-									Seleccionar preguntas del exámen
-								</div>
-								<v-chip-group v-model="selection" column active-class="primary--text">
-
-									<draggable v-model="preguntas_elegidas" @start="dragStart" @end="dragEnd">
-										<v-chip v-for="(pregunta_elegida, i) in preguntas_elegidas" :key="i" :color="color_random(pregunta_elegida.name)" dark small class="ma-1">
-											{{`${i+1}) ${pregunta_elegida.name}` }}&nbsp&nbsp&nbsp<v-icon left small @click="preguntas_elegidas.splice(i, 1); colores_preguntas.splice(i, 1);">mdi-minus</v-icon>
-										</v-chip>
-									</draggable>
-								</v-chip-group>
-								<v-btn @click="agregar_preguntas" class="col-md-10" outlined rounded color="green">Agregar preguntas</v-btn>
-							</v-card-text>
-						</v-col>
-						<v-col cols="12">
-							<v-toolbar color="primary" dark flat><v-icon>widgets</v-icon>&nbsp<v-toolbar-title>Preguntas del exámen</v-toolbar-title></v-toolbar>
-							<v-list id="examen_preguntas">
-								<v-list-item v-for="(examen_pregunta, i) in examen.preguntas" :key="i">
-									<v-list-item-content>
-										<v-list-item-title v-text="examen_pregunta.name"></v-list-item-title>
-									</v-list-item-content>
-									</v-list-item>
-							</v-list>
-						</v-col>
-					</v-row>
-				</v-card>
+			<v-card v-show="route == 'examen_preguntas'" class="mx-15 mt-8 text-center">
+				<v-toolbar color="primary" dark flat><v-icon>widgets</v-icon>&nbsp<v-toolbar-title>Preguntas</v-toolbar-title></v-toolbar>
+				<v-row>
+					<v-col cols="12">
+						<v-list id="examen_preguntas">
+							<v-list-item v-for="(examen_pregunta, i) in examen.preguntas" :key="i">
+								<v-list-item-content>
+									<v-list-item-title v-text="examen_pregunta.name"></v-list-item-title>
+								</v-list-item-content>
+								</v-list-item>
+						</v-list>
+					</v-col>
+					<v-col cols="12">
+						<v-toolbar color="primary" dark flat><v-icon>widgets</v-icon>&nbsp<v-toolbar-title>Glosario de preguntas</v-toolbar-title></v-toolbar>
+						<v-text-field @keyup="buscar_preguntas()" v-model="buscar_preguntas_texto" label="Buscar pregunta" prepend-icon="fa4-search"></v-text-field>
+						<v-card-text>
+							<v-treeview v-model="preguntas_elegidas" :items="preguntas_items" selected-color="indigo" open-on-click selectable return-object expand-icon="mdi-chevron-down" on-icon="mdi-bookmark" off-icon="mdi-bookmark-outline" indeterminate-icon="mdi-bookmark-minus">
+							</v-treeview>
+						</v-card-text>
+					</v-col>
+					<v-col cols="12">
+						<v-card-text>
+							<div v-if="examen.preguntas.length === 0" key="title" class="text-h6 font-weight-light grey--text pa-4 text-center">
+								Seleccionar preguntas del exámen
+							</div>
+							<v-chip-group v-model="selection" column active-class="primary--text">
+								<draggable v-model="preguntas_elegidas" @start="dragStart" @end="dragEnd">
+									<v-chip v-for="(pregunta_elegida, i) in preguntas_elegidas" :key="i" :color="color_random(pregunta_elegida.name)" dark small class="ma-1">
+										{{`${i+1}) ${pregunta_elegida.name}` }}&nbsp&nbsp&nbsp<v-icon left small @click="preguntas_elegidas.splice(i, 1); colores_preguntas.splice(i, 1);">mdi-minus</v-icon>
+									</v-chip>
+								</draggable>
+							</v-chip-group>
+							<v-btn @click="agregar_preguntas" class="col-md-10" outlined rounded color="green">Agregar preguntas</v-btn>
+						</v-card-text>
+					</v-col>
+				</v-row>
+				<!-- Acciones ABM -->
+				<v-card-actions>
+					<v-col class="text-right">
+						<v-btn text @click="cancelar">Cancelar</v-btn>
+						<v-btn text color="primary">Guardar y cerrar</v-btn>
+						<v-btn button class="white--text indigo darken-1">Guardar</v-btn>
+					</v-col>
+				</v-card-actions>
 			</v-card>
 		</v-expand-transition>
 	</div>
@@ -78,73 +82,73 @@
 				vm.todas_preguntas = [
 					{
 						id: 1,
-						periodo: 'Laboratorio de programación I',
+						periodo: 'Introducción',
 						name: '¿Como se construye un formulario?',
 						estado: 1
 					},
 					{
 						id: 2,
-						periodo: 'Laboratorio de programación I',
+						periodo: 'Datos',
 						name: '¿que es un botón?',
 						estado:0
 					},
 					{
 						id: 3,
-						periodo: 'Laboratorio de programación I',
+						periodo: 'SQL',
 						name: '¿que es un datepicker?',
 						estado:0
 					},
 					{
 						id: 4,
-						periodo: 'Laboratorio de programación II',
+						periodo: 'Algebra relacional',
 						name: '¿Como funciona .NET?',
 						estado:0
 					},
 					{
 						id: 5,
-						periodo: 'Laboratorio de programación II',
+						periodo: 'Introducción',
 						name: '¿Como usar base de datos en .NET?',
 						estado:0
 					},
 					{
 						id: 6,
-						periodo: 'Laboratorio de programación II',
+						periodo: 'Algebra relacional',
 						name: '¿Que estrucura tiene un objeto?',
 						estado:0
 					},
 					{
 						id: 7,
-						periodo: 'Laboratorio de programación III',
+						periodo: 'Algebra relacional',
 						name: '¿Como hacer ejecutable un programa?',
 						estado:0
 					},
 					{
 						id: 8,
-						periodo: 'Laboratorio de programación III',
+						periodo: 'Algebra relacional',
 						name: '¿Cuales son las cualidades de un programa ejecutable?',
 						estado:0
 					},
 					{
 						id: 9,
-						periodo: 'Laboratorio de programación III',
+						periodo: 'Algebra relacional',
 						name: '¿Que sucede en la computadora cuando se ejecuta un programa?',
 						estado:0
 					},
 					{
 						id: 10,
-						periodo: 'Laboratorio de programación IV',
+						periodo: 'Datos',
 						name: '¿Que es una página web?',
 						estado:0
 					},
 					{
 						id: 11,
-						periodo: 'Laboratorio de programación IV',
+						periodo: 'Datos',
 						name: '¿Que es un framework?',
 						estado:0
 					},
 					{
 						id: 12,
-						periodo: 'Laboratorio de programación IV',
+						periodo: 'Datos',
 						name: '¿Como funciona Angular?',
 						estado:0
 					},
