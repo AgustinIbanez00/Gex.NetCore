@@ -23,6 +23,7 @@ using EntityFramework.Exceptions.MySQL.Pomelo;
 using Gex.Filters;
 using Gex.Models;
 using Gex.Middlewares;
+using Microsoft.OpenApi.Models;
 
 namespace Gex;
 
@@ -120,6 +121,14 @@ public class Startup
             options.Description = "Colleción de API's correspondientes al sistema de exámenes Gex.";
             options.Title = "Sistema de Exámenes Gex";
         });
+        services.AddSwaggerGen(c => {
+            c.SwaggerDoc("v1", new OpenApiInfo
+            {
+                Title = "Gex",
+                Version = "v1"
+            });
+        });
+
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

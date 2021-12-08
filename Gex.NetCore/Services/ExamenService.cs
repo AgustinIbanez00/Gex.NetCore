@@ -49,11 +49,17 @@ public class ExamenService : IExamenService, IGexResponse<ExamenDTO>
                 return Error(GexErrorMessage.AlreadyExists);
 
             var examen = _mapper.Map<Examen>(examenDto);
+
+            examen.Materia = await _materiaRepository.GetMateriaAsync(examenDto.MateriaId);
+
+            if (examen.Materia == null)
+                return GexResponse<ExamenDTO>.ErrorF(GexErrorMessage.NotFound, new GexResponseOptions() { Entity = "materia", Gender = Gender.FEMALE});
+
             if (!await _examenRepository.CreateExamenAsync(examen))
                 return Error(GexErrorMessage.CouldNotCreate);
 
             var dto = _mapper.Map<ExamenDTO>(examen);
-            return GexResponse<ExamenDTO>.Ok(dto, GexSuccessMessage.Created, _options);
+            return Data(dto, GexSuccessMessage.Created);
         }
         catch (UniqueConstraintException)
         {

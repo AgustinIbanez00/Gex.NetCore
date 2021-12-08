@@ -28,6 +28,6 @@ public partial class ExamenDTO
     [Required]
     [Range(1, int.MaxValue, ErrorMessage = "Only positive number allowed")]
     [Display(Name = "materia")]
-    public int? MateriaId { get; set; }
+    public long MateriaId { get; set; }
 }
 
