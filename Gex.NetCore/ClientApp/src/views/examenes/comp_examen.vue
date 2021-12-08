@@ -36,7 +36,8 @@
 	</v-app>
 </template>
 <script>
-	import mixin_base from '../assets/mixin_base';
+	import mixin_base from '../../assets/mixin_base';
+  import VueCookies  from 'vue-cookies';
 	export default {
 		name: "comp_examen",
 		mixins: [mixin_base],
@@ -62,13 +63,17 @@
 		computed: {
 		},
 		methods: {
-			/*cargar_tabla: function(){
+			cargar_tabla: function(){
 				var vm = this;
-				axios.get('http://127.0.0.1:5ax000/api/Cursos')
-				.then(res => {
-					vm.examenes = res.data;
+				axios.get('http://127.0.0.1:5000/api/Examen', {
+					headers: {
+						'Content-Type': 'application/json',
+						'Authorization': `Bearer ${window.$cookies.get("gex_session")}`
+					}
+				}).then(res => {
+					vm.examenes = res.data.data;
 				}).catch(err => console.log(err));
-			},*/
+			},
 			cancelar: function(){
 				var vm = this;
 				vm.estado(vm.estados.lista);
@@ -85,6 +90,7 @@
 					vm.titulo_txt = vm.examen.materia;
 				}
 			})
+			vm.cargar_tabla();
 		}
 	};
 </script>

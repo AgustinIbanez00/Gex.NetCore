@@ -14,6 +14,7 @@
 			},
 		}
 	});
+
 	const mixin_base = {
 		store,
 		data: () => ({
@@ -25,6 +26,7 @@
 			},
 		}),
 		methods: {
+			...Vuex.mapMutations(['estado']),
 			top(){
 				window.scroll({
 					top: 0,
@@ -56,7 +58,17 @@
 				vm.estado_actual = modo_preguntas ? vm.estados.preguntas : vm.estados.edicion;
 				vm.top();
 			},
-			...Vuex.mapMutations(['estado']),
+			//Omg
+			formatDate (date) {
+				if (!date) return null;
+				const [year, month, day] = date.split('-');
+				return `${day}/${month}/${year}`;
+			},
+			parseDate (date) {
+				if (!date) return null;
+				const [day, month, year] = date.split('/');
+				return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+			},
 		},
 		mounted() {
 			var vm = this;
@@ -97,6 +109,10 @@
 					switch(vm.tab_actual){
 						case "examen": titulo = "Exámenes"; break;
 						case "materia": titulo = "Materias"; break;
+						case "mesa": titulo = "Mesas"; break;
+						case "curso": titulo = "Cursos"; break;
+						case "alumno": titulo = "Alumnos"; break;
+						case "inscripcion": titulo = "Inscripciones"; break;
 					}
 				} 
 				return titulo;
@@ -108,6 +124,9 @@
 					case 'examen': res = 'Exámenes'; break;
 					case 'materia': res = 'Materias'; break;
 					case 'mesa': res = 'Mesas'; break;
+					case 'curso': res = 'Cursos'; break;
+					case 'alumno': res = 'Alumnos'; break;
+					case 'inscripcion': res = 'Inscripciones'; break;
 				}
 				return res;
 			},
@@ -118,6 +137,9 @@
 					case 'examen': res = 'Exámen'; break;
 					case 'materia': res = 'Materia'; break;
 					case 'mesa': res = 'Mesa'; break;
+					case 'curso': res = 'Curso'; break;
+					case 'alumno': res = 'Alumno'; break;
+					case 'inscripcion': res = 'Inscripción'; break;
 				}
 				return res;
 			},

@@ -2,7 +2,7 @@
 	<v-app class="light-blue">
 		<!-- TABLA MESAS -->
 		<v-expand-transition>
-			<v-data-table v-show="route == 'listar_mesa'" :headers="headers" :items="mesas" :items-per-page="5" class="elevation-3 px-10 mx-15 my-3">
+			<v-data-table v-show="route == 'listar_alumno'" :headers="headers" :items="alumnos" :items-per-page="5" class="elevation-3 px-10 mx-15 my-3">
 				<template v-slot:item.actions="{ item }"><!-- Acciones -->
 					<v-btn class="ma-2" text icon color="blue lighten-1" @click="edicion(item.id)"><v-icon>mdi-pencil</v-icon></v-btn>
 					<v-btn class="ma-2" text icon color="blue-grey darken-1"><v-icon>mdi-delete</v-icon></v-btn>
@@ -11,22 +11,36 @@
 		</v-expand-transition>
 		<!-- ABM -->
 		<v-expand-transition  class="justify-center">
-			<v-card v-show="route == 'editar_mesa' || route == 'crear_mesa'" class="mx-15 mt-8 text-center pa-5 pt-0">
-				<v-card-title v-if="route == 'editar_mesa'">EDITAR MESA</v-card-title>
-				<v-card-title v-else>NUEVA MESA</v-card-title>
+			<v-card v-show="route == 'editar_alumno' || route == 'crear_alumno'" class="mx-15 mt-8 text-center pa-5 pt-0">
+				<v-card-title v-if="route == 'editar_alumno'">EDITAR ALUMNO</v-card-title>
+				<v-card-title v-else>NUEVO ALUMNO</v-card-title>
 				<v-row>
-					<v-col cols="6"><v-select :items="examenes" label="Materia" v-model="mesa.examen"></v-select></v-col>
-					<v-col cols="6"><v-select :items="cursos" label="Curso" v-model="mesa.curso"></v-select></v-col>
+					<v-col cols='6'>
+						<v-text-field v-model="alumno.nombre" label="Nombre">
+						</v-text-field>
+					</v-col>
+					<v-col cols='6'>
+						<v-text-field v-model="alumno.email" label="Email">
+						</v-text-field>
+					</v-col>
+					<v-col cols='6'>
+						<v-text-field v-model="alumno.dni" label="Dni">
+						</v-text-field>
+					</v-col>
 					<v-col cols="6">
 						<v-menu ref="datepicker" v-model="datepicker" :close-on-content-click="false" transition="scale-transition" offset-y max-width="290px" min-width="auto">
 							<template v-slot:activator="{ on, attrs }">
-								<v-text-field v-model="mesa.fecha" label="Fecha del exámen" prepend-icon="mdi-calendar" v-bind="attrs" @blur="mesa.fecha = parseDate(mesa.fecha)" v-on="on"></v-text-field>
+								<v-text-field v-model="alumno.fecha_nacimiento" label="Fecha del exámen" prepend-icon="mdi-calendar" v-bind="attrs" @blur="alumno.fecha_nacimiento = parseDate(alumno.fecha_nacimiento)" v-on="on"></v-text-field>
 							</template>
-							<v-date-picker v-model="mesa.fecha" no-title @input="datepicker = false"></v-date-picker>
+							<v-date-picker v-model="alumno.fecha_nacimiento" no-title @input="datepicker = false"></v-date-picker>
 						</v-menu>
 					</v-col>
 					<v-col cols='6'>
-						<v-text-field v-model="mesa.duracion" label="Duración" append-icon="mdi-alarm">
+						<v-text-field v-model="alumno.clave" label="Contraseña">
+						</v-text-field>
+					</v-col>
+					<v-col cols='6'>
+						<v-text-field v-model="confirmar_clave" label="Confirmar contraseña">
 						</v-text-field>
 					</v-col>
 				</v-row>
@@ -45,15 +59,15 @@
 </template>
 <script>
 	import mixin_base from '../../assets/mixin_base';
-	var mesa_default = {
+	var alumno_default = {
 		id: 1,
-		materia: '',
-		curso: '',
-		fecha: null,
-		duracion: 0
+		nombre: '',
+		email: '',
+		dni: '',
+		clave: '',
 	}
 	export default {
-		name: "comp_mesas",
+		name: "comp_alumnos",
 		mixins: [mixin_base],
 		watch: {
 		},
@@ -67,12 +81,9 @@
 				{ text: 'Acciones', value: 'actions' , width: '140px' },
 			],
 			datepicker: false,
-
-			mesa: JSON.parse(JSON.stringify(mesa_default)),
-			mesas: [],
-			materias: ['Laboratorio de programación','Matemáticas','Ingles'],
-			examenes: ['Base de datos A','Base de datos B','Base de datos C','Laboratorio de programación A','Laboratorio de programación B','Laboratorio de programación C'],
-			cursos: ['1A','1B','1C','2A','2B','2C','3A','3B','3C']
+			alumno: JSON.parse(JSON.stringify(alumno_default)),
+			alumnos: [],
+			confirmar_clave: '',
 		}),
 		computed: {
 		},

@@ -33,27 +33,21 @@
 		window.addEventListener('popstate', function() {
 			window.dispatchEvent(new Event('locationchange'))
 		});
-			examen_default = {
-				id: 1,
-				materia: 'Laboratorio de programación',
-				fecha: null,
-				preguntas: [],
-			}
-			materia_default = {
-				id: 1,
-				nombre: ''
-			}
-			respuesta_default = {
-				id: 1,
-				valor: null,
-				correcta: true,
-			}
-			mesa_default = {
-				id: 1,
-				materia: '',
-				curso: '',
-				fecha: null,
-			}
+		//VARIABLES
+		examen_default = {
+			id: 1,
+			materia: 'Laboratorio de programación',
+			fecha: null,
+			preguntas: [],
+		}
+
+		respuesta_default = {
+			id: 1,
+			valor: null,
+			correcta: true,
+		}
+
+		
 	</script>
 </head>
   <body>

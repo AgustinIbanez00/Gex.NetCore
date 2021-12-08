@@ -1,11 +1,12 @@
 <template>
 	<v-app class="light-blue">
 		<v-app-bar dark dense fixed><!-- Menú -->
-			<v-btn v-show="tab_actual != 'examen'" large to="/examen" exact active-class>Exámenes</v-btn>
-			<v-btn v-show="tab_actual != 'materia'" large to="/materia" exact>Materias</v-btn>
-			<v-btn v-show="tab_actual != 'mesa'" large to="/mesa" exact>Mesas</v-btn>
-			<v-btn v-show="tab_actual != 'curso'" large to="/curso" exact>Cursos</v-btn>
-			<v-btn v-show="tab_actual != 'alumno'" large to="/alumno" exact>Alumnos</v-btn>
+			<v-btn :outlined="tab_actual == 'examen'" large to="/examen" exact active-class>Exámenes</v-btn>
+			<v-btn :outlined="tab_actual == 'materia'" large to="/materia" exact>Materias</v-btn>
+			<v-btn :outlined="tab_actual == 'mesa'" large to="/mesa" exact>Mesas</v-btn>
+			<v-btn :outlined="tab_actual == 'curso'" large to="/curso" exact>Cursos</v-btn>
+			<v-btn :outlined="tab_actual == 'alumno'" large to="/alumno" exact>Alumnos</v-btn>
+			<v-btn :outlined="tab_actual == 'inscripcion'" large to="/inscripcion" exact>Inscripciones</v-btn>
 			<v-spacer></v-spacer>
 			<v-menu left bottom>
 				<!-- Opciones -->

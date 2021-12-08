@@ -39,7 +39,7 @@
 													</v-btn>
 												</RouterLink>
 												<v-btn text icon color="pink lighten-2" @click="eliminar_pregunta(pregunta)">
-													<v-icon >mdi-close</v-icon>
+													<v-icon>mdi-close</v-icon>
 												</v-btn>
 											</v-list-item-icon>
 										</v-list-item>
@@ -63,7 +63,7 @@
 	</v-app>
 </template>
 <script>
-	import mixin_base from '../assets/mixin_base';
+	import mixin_base from '../../assets/mixin_base';
 	export default {
 		name: "comp_materia_preguntas",
 		mixins: [mixin_base],
@@ -198,14 +198,6 @@
 			},
 			eliminar_pregunta(pregunta){
 				var vm = this;
-				if(vm.todas_preguntas.filter((p) => { return p.periodo == pregunta.periodo;}).length == 1){
-					vm.todas_preguntas.push({
-						id: 0,
-						periodo: pregunta.periodo,
-						name: '',
-						estado: 0
-					});
-				}
 				vm.todas_preguntas = vm.todas_preguntas.filter((p) => { return p.id != pregunta.id;});
 			},
 			agregar_pregunta(periodo){
