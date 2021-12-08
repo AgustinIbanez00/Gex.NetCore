@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace Gex.NetCore.Models;
+namespace Gex.Models;
 public partial class MesaExamen
 {
     [Key]

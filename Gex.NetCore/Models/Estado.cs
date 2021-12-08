@@ -1,4 +1,4 @@
-﻿namespace Gex.NetCore.Models
+﻿namespace Gex.Models
 {
     public enum Estado
     {

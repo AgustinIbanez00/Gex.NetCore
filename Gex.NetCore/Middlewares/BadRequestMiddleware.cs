@@ -1,12 +1,11 @@
 ﻿using System.Linq;
-using Gex.NetCore.Utils;
+using Gex.Utils;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Gex.NetCore.Middlewares;
-public static class BadRequestConfig
+namespace Gex.Middlewares;
+public static class BadRequestMiddleware
 {
-    // error 400 handling - remove extra fields in error model - remove if(ModelState.IsValid)
     public static IMvcBuilder AddBadRequestServices(this IMvcBuilder services)
     {
         services.ConfigureApiBehaviorOptions(options =>
@@ -24,9 +23,9 @@ public static class BadRequestConfig
                     kvp => kvp.Key,
                     kvp => kvp.Value.Errors.Select(e => e.ErrorMessage).ToArray()
                 ),
-                Success = false,
+                    Success = false,
                     Message = "Se encontraron uno o más errores."
-                });;
+                }); ;
             };
         });
 

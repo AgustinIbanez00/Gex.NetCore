@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace Gex.NetCore.Migrations
+namespace Gex.Migrations
 {
     public partial class ModifyAutoryCreatedAt : Migration
     {

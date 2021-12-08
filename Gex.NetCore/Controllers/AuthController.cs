@@ -3,10 +3,10 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using Gex.NetCore.DTO;
-using Gex.NetCore.Helpers;
-using Gex.NetCore.Models;
-using Gex.NetCore.Utils;
+using Gex.DTO;
+using Gex.Helpers;
+using Gex.Models;
+using Gex.Utils;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,7 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Gex.NetCore.Controllers;
+namespace Gex.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]

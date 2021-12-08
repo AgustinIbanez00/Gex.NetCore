@@ -1,7 +1,7 @@
-﻿using Gex.NetCore.Models;
+﻿using Gex.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Gex.NetCore;
+namespace Gex;
 
 public partial class GexContext : DbContext
 {
@@ -20,7 +20,6 @@ public partial class GexContext : DbContext
     public virtual DbSet<Respuesta> Respuestas { get; set; }
     public virtual DbSet<RespuestaAlumno> RespuestasAlumnos { get; set; }
     public virtual DbSet<MesaExamenPregunta> PreguntasExamen { get; set; }
-    public virtual DbSet<Tema> Temas { get; set; }
     public virtual DbSet<Usuario> Usuarios { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

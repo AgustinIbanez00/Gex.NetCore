@@ -1,107 +1,91 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Gex.Services.Interface;
 using System.Threading.Tasks;
+using Gex.DTO;
+using Gex.Utils;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Gex.NetCore.Models;
+using Gex.Helpers;
+using System.Collections.Generic;
+using Gex.Models;
 
-namespace Gex.NetCore.Controllers
+namespace Gex.Controllers;
+
+[Route("api/[controller]")]
+[Authorize]
+[ApiController]
+public class MateriaController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class MateriasController : ControllerBase
+    private readonly IMateriaService _service;
+
+    public MateriaController(IMateriaService service)
     {
-        private readonly GexContext _context;
-
-        public MateriasController(GexContext context)
-        {
-            _context = context;
-        }
-
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Materia>>> GetMaterias()
-        {
-            return await _context.Materias.ToListAsync();
-        }
-
-        // GET: api/Materias/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Materia>> GetMaterias(long id)
-        {
-            var materias = await _context.Materias.FindAsync(id);
-
-            if (materias == null)
-            {
-                return NotFound();
-            }
-
-            return materias;
-        }
-
-        // PUT: api/Materias/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutMaterias(long id, Materia materias)
-        {
-            if (id != materias.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(materias).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!MateriasExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/Materias
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Materia>> PostMaterias(Materia materias)
-        {
-            _context.Materias.Add(materias);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetMaterias", new { id = materias.Id }, materias);
-        }
-
-        // DELETE: api/Materias/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteMaterias(long id)
-        {
-            var materias = await _context.Materias.FindAsync(id);
-            if (materias == null)
-            {
-                return NotFound();
-            }
-
-            _context.Materias.Remove(materias);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool MateriasExists(long id)
-        {
-            return _context.Materias.Any(e => e.Id == id);
-        }
+        _service = service;
     }
+
+    [HttpGet]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResponse<ICollection<MateriaDTO>>))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [Authorize(Roles = nameof(UsuarioTipo.Alumno))]
+    public async Task<ActionResult<GexResponse<ICollection<MateriaDTO>>>> GetAll()
+    {
+        var materias = await _service.GetMateriasAsync();
+
+        if (!materias.Success)
+            return StatusCode(ResponseHelper.GetHttpError(materias.ErrorCode), materias);
+
+        return Ok(materias);
+    }
+
+    [HttpGet("{id:int}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResponse<MateriaDTO>))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<GexResponse<MateriaDTO>>> Get(int id)
+    {
+        var materia = await _service.GetMateriaAsync(id);
+
+        if (!materia.Success)
+            return StatusCode(ResponseHelper.GetHttpError(materia.ErrorCode), materia);
+
+        return Ok(materia);
+    }
+
+    [HttpPost]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResponse<MateriaDTO>))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    public async Task<ActionResult<GexResponse<MateriaDTO>>> CreateMateria([FromBody] MateriaDTO MateriaDTO)
+    {
+        var materia = await _service.CreateMateriaAsync(MateriaDTO);
+
+        if (!materia.Success)
+            return StatusCode(ResponseHelper.GetHttpError(materia.ErrorCode), materia);
+        return Created(nameof(Get), materia);
+    }
+
+    [HttpPatch]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResponse<MateriaDTO>))]
+    public async Task<ActionResult<GexResponse<MateriaDTO>>> UpdateMateria([FromBody] MateriaDTO MateriaDTO)
+    {
+        var materia = await _service.UpdateMateriaAsync(MateriaDTO);
+
+        if (!materia.Success)
+            return StatusCode(ResponseHelper.GetHttpError(materia.ErrorCode), materia);
+        return Ok(materia);
+    }
+
+    [HttpDelete]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResponse<MateriaDTO>))]
+    public async Task<ActionResult<GexResponse<MateriaDTO>>> DeleteMateria(int id)
+    {
+        var materia = await _service.DeleteMateriaAsync(id);
+
+        if (!materia.Success)
+            return StatusCode(ResponseHelper.GetHttpError(materia.ErrorCode), materia);
+        return Ok(materia);
+    }
+
+
 }

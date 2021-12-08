@@ -142,4 +142,24 @@
     <value>Identificador</value>
     <comment>Created by XLocalizer</comment>
   </data>
+  <data isActive="false">
+    <key>nota regular</key>
+    <value>nota regular</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
+  <data isActive="false">
+    <key>nota de promoción</key>
+    <value>nota de promoción</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
+  <data isActive="false">
+    <key>tipo de exámen</key>
+    <value>tipo de exámen</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
+  <data isActive="false">
+    <key>materia</key>
+    <value>materia</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
 </root>

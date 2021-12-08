@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
 
-namespace Gex.NetCore.Validation
+namespace Gex.Validation
 {
     public class CustomValidationMetadataProvider : IValidationMetadataProvider
     {

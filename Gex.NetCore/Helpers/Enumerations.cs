@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Reflection;
 
-namespace Gex.NetCore.Helpers;
+namespace Gex.Helpers;
 public static class Enumerations
 {
     public static string GetEnumDescription(Enum value)

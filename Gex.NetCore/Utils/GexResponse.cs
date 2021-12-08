@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using Gex.NetCore.Helpers;
+using Gex.Helpers;
 using SmartFormat;
 
-namespace Gex.NetCore.Utils;
+namespace Gex.Utils;
 public class GexResponse<T> where T : class
 {
     public T Data { get; set; }
@@ -23,7 +23,7 @@ public class GexResponse<T> where T : class
             ErrorCode = error,
             Success = false,
             Message = Smart.Format(Enumerations.GetEnumDescription(error), options),
-            ErrorMessages = string.IsNullOrEmpty(message) ? new Dictionary<string, string[]>() : new Dictionary<string, string[]>() { { "", new string[] { message } } }
+            ErrorMessages = string.IsNullOrEmpty(message) ? new Dictionary<string, string[]>() : new Dictionary<string, string[]>() { { error == GexErrorMessage.Generic ? "Error" : "", new string[] { message } } }
         };
     }
 

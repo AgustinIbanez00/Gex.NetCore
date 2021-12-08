@@ -1,15 +1,13 @@
 ﻿using AutoMapper;
-using Gex.NetCore.DTO;
-using Gex.NetCore.Models;
+using Gex.DTO;
+using Gex.Models;
 
-namespace Gex.NetCore.Utils
+namespace Gex.Utils;
+public class AutoMapperProfiles : Profile
 {
-    public class AutoMapperProfiles : Profile
+    public AutoMapperProfiles()
     {
-        public AutoMapperProfiles()
-        {
-            CreateMap<Comision, ComisionDTO>().ReverseMap();
-        }
-
+        CreateMap<Comision, ComisionDTO>().ReverseMap();
+        CreateMap<Examen, ExamenDTO>().ReverseMap();
     }
 }

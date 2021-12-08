@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Gex.NetCore.Validation.Attributes;
+namespace Gex.Validation.Attributes;
 public class DateAttribute : RangeAttribute
 {
     public DateAttribute()
@@ -8,6 +8,6 @@ public class DateAttribute : RangeAttribute
 
     public override string FormatErrorMessage(string name)
     {
-        return String.Format("El campo {0} debe estar entre {1} y {2}.", name, Minimum, Maximum);
+        return string.Format("El campo {0} debe estar entre {1} y {2}.", name, Minimum, Maximum);
     }
 }

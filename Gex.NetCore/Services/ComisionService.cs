@@ -4,14 +4,14 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 using EntityFramework.Exceptions.Common;
-using Gex.NetCore.DTO;
-using Gex.NetCore.Helpers;
-using Gex.NetCore.Models;
-using Gex.NetCore.Repository.Interface;
-using Gex.NetCore.Services.Interface;
-using Gex.NetCore.Utils;
+using Gex.DTO;
+using Gex.Helpers;
+using Gex.Models;
+using Gex.Repository.Interface;
+using Gex.Services.Interface;
+using Gex.Utils;
 
-namespace Gex.NetCore.Services;
+namespace Gex.Services;
 public class ComisionService : IComisionService, IGexResponse<ComisionDTO>
 {
     private readonly IMapper _mapper;
@@ -59,7 +59,7 @@ public class ComisionService : IComisionService, IGexResponse<ComisionDTO>
         }
         catch (Exception ex)
         {
-            return Error(GexErrorMessage.CouldNotCreate, $"Detalles: {ex.Message}");
+            return Error(GexErrorMessage.Generic, $"Detalles: {ex.Message}");
         }
     }
     public async Task<GexResponse<ComisionDTO>> DeleteComisionAsync(int id)
@@ -80,7 +80,7 @@ public class ComisionService : IComisionService, IGexResponse<ComisionDTO>
         }
         catch (Exception ex)
         {
-            return Error(GexErrorMessage.CouldNotDelete, $"Detalles: {ex.Message}");
+            return Error(GexErrorMessage.Generic, $"Detalles: {ex.Message}");
         }
     }
     public async Task<GexResponse<ComisionDTO>> GetComisionAsync(int id)
@@ -96,7 +96,7 @@ public class ComisionService : IComisionService, IGexResponse<ComisionDTO>
         }
         catch (Exception ex)
         {
-            return Error(GexErrorMessage.NotFound, ex.Message);
+            return Error(GexErrorMessage.Generic, ex.Message);
         }
     }
     public async Task<GexResponse<ComisionDTO>> GetComisionAsync(string nombre)
@@ -112,7 +112,7 @@ public class ComisionService : IComisionService, IGexResponse<ComisionDTO>
         }
         catch (Exception ex)
         {
-            return Error(GexErrorMessage.NotFound, ex.Message);
+            return Error(GexErrorMessage.Generic, ex.Message);
         }
     }
     public async Task<GexResponse<ICollection<ComisionDTO>>> GetComisionsAsync()
@@ -120,6 +120,9 @@ public class ComisionService : IComisionService, IGexResponse<ComisionDTO>
         try
         {
             var comisiones = await _repository.GetComisionsAsync();
+
+            if (comisiones.Count == 0)
+                return CollectionMessage(GexErrorMessage.NotFound);
 
             var comisiontesDTO = new List<ComisionDTO>();
 
@@ -131,7 +134,7 @@ public class ComisionService : IComisionService, IGexResponse<ComisionDTO>
         }
         catch (Exception ex)
         {
-            return CollectionMessage(GexErrorMessage.NotFound, ex.Message);
+            return CollectionMessage(GexErrorMessage.Generic, ex.Message);
         }
     }
     public async Task<GexResponse<ComisionDTO>> UpdateComisionAsync(ComisionDTO comisionDTO)
@@ -156,7 +159,7 @@ public class ComisionService : IComisionService, IGexResponse<ComisionDTO>
         }
         catch (Exception ex)
         {
-            return Error(GexErrorMessage.CouldNotUpdate, ex.Message);
+            return Error(GexErrorMessage.Generic, ex.Message);
         }
     }
 

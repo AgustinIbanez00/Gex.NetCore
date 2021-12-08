@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Gex.NetCore.Models;
-using Gex.NetCore.Repository.Interface;
+using Gex.Models;
+using Gex.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
 
-namespace Gex.NetCore.Repository;
+namespace Gex.Repository;
 
 public class ComisionRepository : IComisionRepository
 {

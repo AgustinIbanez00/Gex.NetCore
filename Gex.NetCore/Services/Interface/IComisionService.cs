@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Gex.NetCore.DTO;
-using Gex.NetCore.Utils;
+using Gex.DTO;
+using Gex.Utils;
 
-namespace Gex.NetCore.Services.Interface;
+namespace Gex.Services.Interface;
 public interface IComisionService
 {
     Task<GexResponse<ICollection<ComisionDTO>>> GetComisionsAsync();

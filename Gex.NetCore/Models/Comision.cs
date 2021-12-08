@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-namespace Gex.NetCore.Models;
+namespace Gex.Models;
 public class Comision : Auditory
 {
     [Key]

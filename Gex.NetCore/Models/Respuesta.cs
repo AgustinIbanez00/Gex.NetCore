@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Gex.NetCore.Models;
+namespace Gex.Models;
 public partial class Respuesta
 {
     [Key]
     public long Id { get; set; }
-    public virtual Pregunta Pregunta { get; set; }
+    //public virtual Pregunta Pregunta { get; set; }
     /// <summary>
     /// Valor de la respuesta.
     /// </summary>

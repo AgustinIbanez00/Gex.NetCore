@@ -1,8 +1,7 @@
 ﻿using System.ComponentModel;
 using Microsoft.AspNetCore.Http;
 
-namespace Gex.NetCore.Helpers;
-
+namespace Gex.Helpers;
 public enum Gender
 {
     MALE,
@@ -10,7 +9,7 @@ public enum Gender
 }
 public enum GexErrorMessage
 {
-    [Description("Error inesperado.")]
+    [Description("Se produjo un error interno.")]
     Generic,
     [Description("No existe ninguna cuenta asociada con ese correo electrónico.")]
     InvalidEmail,
@@ -55,7 +54,7 @@ public static class ResponseHelper
         return gexError switch
         {
             GexErrorMessage.NotFound => StatusCodes.Status404NotFound,
-            GexErrorMessage.CouldNotDelete or GexErrorMessage.CouldNotDelete or GexErrorMessage.CouldNotUpdate => StatusCodes.Status500InternalServerError,
+            GexErrorMessage.Generic or GexErrorMessage.CouldNotDelete or GexErrorMessage.CouldNotDelete or GexErrorMessage.CouldNotUpdate => StatusCodes.Status500InternalServerError,
             _ => StatusCodes.Status400BadRequest
         };
     }

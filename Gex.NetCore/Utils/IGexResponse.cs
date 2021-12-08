@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using Gex.NetCore.Helpers;
+using Gex.Helpers;
 
-namespace Gex.NetCore.Utils;
+namespace Gex.Utils;
 public interface IGexResponse<T> where T : class
 {
     public GexResponse<T> Error(GexErrorMessage error, [Optional] string message);

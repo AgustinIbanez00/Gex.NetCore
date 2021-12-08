@@ -9,21 +9,22 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using XLocalizer;
-using Gex.NetCore.LocalizationResources;
+using Gex.LocalizationResources;
 using System.Globalization;
 using XLocalizer.Routing;
 using XLocalizer.Xml;
-using Gex.NetCore.Services.Interface;
-using Gex.NetCore.Services;
+using Gex.Services.Interface;
+using Gex.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Gex.NetCore.Repository.Interface;
-using Gex.NetCore.Repository;
+using Gex.Repository.Interface;
+using Gex.Repository;
 using EntityFramework.Exceptions.MySQL.Pomelo;
-using Gex.NetCore.Middlewares;
-using Gex.NetCore.Filters;
+using Gex.Filters;
+using Gex.Models;
+using Gex.Middlewares;
 
-namespace Gex.NetCore;
+namespace Gex;
 
 public class Startup
 {
@@ -47,8 +48,12 @@ public class Startup
 
         /* INYECCION DE REPOSITORIOS */
         services.AddScoped<IComisionRepository, ComisionRepository>();
+        services.AddScoped<IExamenRepository, ExamenRepository>();
+        services.AddScoped<IMateriaRepository, MateriaRepository>();
         /* INYECCION DE SERVICIOS */
-        services.AddScoped<IComisionService, ComisionService>();
+        services.AddScoped<IComisionRepository, ComisionRepository>();
+        services.AddScoped<IExamenService, ExamenService>();
+        services.AddScoped<IMateriaService, MateriaService>();
 
         services.AddCors();
 
@@ -70,8 +75,12 @@ public class Startup
         });
         services.AddAuthorization(options =>
         {
-            options.AddPolicy("AlumnosyProfesores",
-                 policy => policy.RequireRole("Administrator", "asds"));
+            options.AddPolicy("ProfesoresOnly",
+                 policy => policy.RequireRole(nameof(UsuarioTipo.Administrador), nameof(UsuarioTipo.Profesor)));
+            options.AddPolicy("AlumnosOnly",
+                 policy => policy.RequireRole(nameof(UsuarioTipo.Administrador), nameof(UsuarioTipo.Alumno)));
+            options.AddPolicy("AdministratorsOnly",
+                 policy => policy.RequireRole(nameof(UsuarioTipo.Administrador)));
         });
 
         services.AddControllers(options =>

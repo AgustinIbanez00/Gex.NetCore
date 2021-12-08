@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace Gex.NetCore.Filters;
+namespace Gex.Filters;
 
 public class HttpResponseExceptionFilter : IActionFilter, IOrderedFilter
 {

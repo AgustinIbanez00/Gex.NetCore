@@ -1,2 +1,2 @@
-﻿namespace Gex.NetCore.Utils;
+﻿namespace Gex.Utils;
 

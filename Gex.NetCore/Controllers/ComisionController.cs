@@ -1,16 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using Gex.NetCore.Services.Interface;
+using Gex.Services.Interface;
 using System.Threading.Tasks;
-using Gex.NetCore.DTO;
-using Gex.NetCore.Utils;
+using Gex.DTO;
+using Gex.Utils;
 using Microsoft.AspNetCore.Http;
-using Gex.NetCore.Helpers;
-using System.Collections;
+using Gex.Helpers;
 using System.Collections.Generic;
-using Gex.NetCore.Models;
+using Gex.Models;
 
-namespace Gex.NetCore.Controllers;
+namespace Gex.Controllers;
 
 [Route("api/[controller]")]
 [Authorize]

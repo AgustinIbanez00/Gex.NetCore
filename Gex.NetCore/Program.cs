@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Gex.NetCore
+namespace Gex
 {
     public class Program
     {

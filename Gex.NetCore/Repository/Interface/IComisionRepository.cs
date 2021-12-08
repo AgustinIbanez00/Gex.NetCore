@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Gex.NetCore.Models;
+using Gex.Models;
 
-namespace Gex.NetCore.Repository.Interface;
+namespace Gex.Repository.Interface;
 
 public interface IComisionRepository
 {

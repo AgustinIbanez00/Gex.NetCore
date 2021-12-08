@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace Gex.NetCore.DTO;
+namespace Gex.DTO;
 public class CredentialsDTO
 {
     [Required]

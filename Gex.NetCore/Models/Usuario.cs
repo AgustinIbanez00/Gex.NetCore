@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace Gex.NetCore.Models;
+namespace Gex.Models;
 public enum UsuarioTipo
 {
     Alumno,
