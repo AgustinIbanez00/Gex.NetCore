@@ -3,11 +3,10 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using Gex.DTO;
 using Gex.Helpers;
 using Gex.Models;
 using Gex.Utils;
-
+using Gex.ViewModels.Request;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -32,7 +31,7 @@ public class AuthController : ControllerBase
 
     [Route("Login")]
     [HttpPost]
-    public async Task<ActionResult<GexResponse<string>>> Login([FromBody] CredentialsDTO credentials)
+    public async Task<ActionResult<GexResponse<string>>> Login([FromBody] LoginRequest credentials)
     {
         var options = new GexResponseOptions()
         {
@@ -72,7 +71,7 @@ public class AuthController : ControllerBase
 
     [Route("Register")]
     [HttpPost]
-    public async Task<ActionResult<GexResponse<string>>> Register([FromBody] RegistrationDTO registerModel)
+    public async Task<ActionResult<GexResponse<string>>> Register([FromBody] RegistroRequest registerModel)
     {
         if (await _context.Usuarios.Where(x => x.Email == registerModel.Email).AnyAsync())
             return BadRequest(GexResponse<string>.Error("Error", nameof(registerModel.Email), $"Esa dirección de correo electrónico {registerModel.Email} ya existe."));

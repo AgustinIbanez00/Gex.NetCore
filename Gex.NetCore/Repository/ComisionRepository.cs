@@ -58,7 +58,7 @@ public class ComisionRepository : IComisionRepository
 
     public async Task<bool> UpdateComisionAsync(Comision comision)
     {
-        if (comision == null)
+        if (comision == null || comision.Estado == Estado.BAJA)
             return false;
 
         _context.Comisiones.Update(comision);

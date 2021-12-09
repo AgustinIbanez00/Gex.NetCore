@@ -51,10 +51,14 @@ public class Startup
         services.AddScoped<IComisionRepository, ComisionRepository>();
         services.AddScoped<IExamenRepository, ExamenRepository>();
         services.AddScoped<IMateriaRepository, MateriaRepository>();
+        services.AddScoped<IMesaExamenRepository, MesaExamenRepository>();
+        services.AddScoped<IPreguntaRepository, PreguntaRepository>();
         /* INYECCION DE SERVICIOS */
         services.AddScoped<IComisionService, ComisionService>();
         services.AddScoped<IExamenService, ExamenService>();
         services.AddScoped<IMateriaService, MateriaService>();
+        services.AddScoped<IMesaExamenService, MesaExamenService>();
+        services.AddScoped<IPreguntaService, PreguntaService>();
 
         services.AddCors();
 

@@ -15,17 +15,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CredentialsDTO"
+                "$ref": "#/components/schemas/LoginRequest"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/CredentialsDTO"
+                "$ref": "#/components/schemas/LoginRequest"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/CredentialsDTO"
+                "$ref": "#/components/schemas/LoginRequest"
               }
             }
           }
@@ -63,17 +63,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/RegistrationDTO"
+                "$ref": "#/components/schemas/RegistroRequest"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/RegistrationDTO"
+                "$ref": "#/components/schemas/RegistroRequest"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/RegistrationDTO"
+                "$ref": "#/components/schemas/RegistroRequest"
               }
             }
           }
@@ -125,17 +125,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/ComisionDTOICollectionGexResponse"
+                  "$ref": "#/components/schemas/ComisionRequestICollectionGexResponse"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ComisionDTOICollectionGexResponse"
+                  "$ref": "#/components/schemas/ComisionRequestICollectionGexResponse"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ComisionDTOICollectionGexResponse"
+                  "$ref": "#/components/schemas/ComisionRequestICollectionGexResponse"
                 }
               }
             }
@@ -170,17 +170,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ComisionDTO"
+                "$ref": "#/components/schemas/ComisionRequest"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/ComisionDTO"
+                "$ref": "#/components/schemas/ComisionRequest"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/ComisionDTO"
+                "$ref": "#/components/schemas/ComisionRequest"
               }
             }
           }
@@ -191,17 +191,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/ComisionDTOGexResponse"
+                  "$ref": "#/components/schemas/ComisionRequestGexResponse"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ComisionDTOGexResponse"
+                  "$ref": "#/components/schemas/ComisionRequestGexResponse"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ComisionDTOGexResponse"
+                  "$ref": "#/components/schemas/ComisionRequestGexResponse"
                 }
               }
             }
@@ -251,17 +251,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/ComisionDTOGexResponse"
+                  "$ref": "#/components/schemas/ComisionRequestGexResponse"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ComisionDTOGexResponse"
+                  "$ref": "#/components/schemas/ComisionRequestGexResponse"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ComisionDTOGexResponse"
+                  "$ref": "#/components/schemas/ComisionRequestGexResponse"
                 }
               }
             }
@@ -276,17 +276,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ComisionDTO"
+                "$ref": "#/components/schemas/ComisionRequest"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/ComisionDTO"
+                "$ref": "#/components/schemas/ComisionRequest"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/ComisionDTO"
+                "$ref": "#/components/schemas/ComisionRequest"
               }
             }
           }
@@ -297,17 +297,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/ComisionDTOGexResponse"
+                  "$ref": "#/components/schemas/ComisionRequestGexResponse"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ComisionDTOGexResponse"
+                  "$ref": "#/components/schemas/ComisionRequestGexResponse"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ComisionDTOGexResponse"
+                  "$ref": "#/components/schemas/ComisionRequestGexResponse"
                 }
               }
             }
@@ -334,17 +334,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/ComisionDTOGexResponse"
+                  "$ref": "#/components/schemas/ComisionRequestGexResponse"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ComisionDTOGexResponse"
+                  "$ref": "#/components/schemas/ComisionRequestGexResponse"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ComisionDTOGexResponse"
+                  "$ref": "#/components/schemas/ComisionRequestGexResponse"
                 }
               }
             }
@@ -374,17 +374,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/ComisionDTOGexResponse"
+                  "$ref": "#/components/schemas/ComisionRequestGexResponse"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ComisionDTOGexResponse"
+                  "$ref": "#/components/schemas/ComisionRequestGexResponse"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ComisionDTOGexResponse"
+                  "$ref": "#/components/schemas/ComisionRequestGexResponse"
                 }
               }
             }
@@ -454,17 +454,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/ComisionDTOGexResponse"
+                  "$ref": "#/components/schemas/ComisionRequestGexResponse"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ComisionDTOGexResponse"
+                  "$ref": "#/components/schemas/ComisionRequestGexResponse"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ComisionDTOGexResponse"
+                  "$ref": "#/components/schemas/ComisionRequestGexResponse"
                 }
               }
             }
@@ -523,17 +523,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/ExamenDTOICollectionGexResponse"
+                  "$ref": "#/components/schemas/ExamenRequestICollectionGexResponse"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ExamenDTOICollectionGexResponse"
+                  "$ref": "#/components/schemas/ExamenRequestICollectionGexResponse"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ExamenDTOICollectionGexResponse"
+                  "$ref": "#/components/schemas/ExamenRequestICollectionGexResponse"
                 }
               }
             }
@@ -568,17 +568,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ExamenDTO"
+                "$ref": "#/components/schemas/ExamenRequest"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/ExamenDTO"
+                "$ref": "#/components/schemas/ExamenRequest"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/ExamenDTO"
+                "$ref": "#/components/schemas/ExamenRequest"
               }
             }
           }
@@ -589,17 +589,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/ExamenDTOGexResponse"
+                  "$ref": "#/components/schemas/ExamenRequestGexResponse"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ExamenDTOGexResponse"
+                  "$ref": "#/components/schemas/ExamenRequestGexResponse"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ExamenDTOGexResponse"
+                  "$ref": "#/components/schemas/ExamenRequestGexResponse"
                 }
               }
             }
@@ -649,17 +649,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/ExamenDTOGexResponse"
+                  "$ref": "#/components/schemas/ExamenRequestGexResponse"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ExamenDTOGexResponse"
+                  "$ref": "#/components/schemas/ExamenRequestGexResponse"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ExamenDTOGexResponse"
+                  "$ref": "#/components/schemas/ExamenRequestGexResponse"
                 }
               }
             }
@@ -674,17 +674,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ExamenDTO"
+                "$ref": "#/components/schemas/ExamenRequest"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/ExamenDTO"
+                "$ref": "#/components/schemas/ExamenRequest"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/ExamenDTO"
+                "$ref": "#/components/schemas/ExamenRequest"
               }
             }
           }
@@ -695,17 +695,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/ExamenDTOGexResponse"
+                  "$ref": "#/components/schemas/ExamenRequestGexResponse"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ExamenDTOGexResponse"
+                  "$ref": "#/components/schemas/ExamenRequestGexResponse"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ExamenDTOGexResponse"
+                  "$ref": "#/components/schemas/ExamenRequestGexResponse"
                 }
               }
             }
@@ -732,17 +732,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/ExamenDTOGexResponse"
+                  "$ref": "#/components/schemas/ExamenRequestGexResponse"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ExamenDTOGexResponse"
+                  "$ref": "#/components/schemas/ExamenRequestGexResponse"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ExamenDTOGexResponse"
+                  "$ref": "#/components/schemas/ExamenRequestGexResponse"
                 }
               }
             }
@@ -772,17 +772,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/ExamenDTOGexResponse"
+                  "$ref": "#/components/schemas/ExamenResponseGexResponse"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ExamenDTOGexResponse"
+                  "$ref": "#/components/schemas/ExamenResponseGexResponse"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ExamenDTOGexResponse"
+                  "$ref": "#/components/schemas/ExamenResponseGexResponse"
                 }
               }
             }
@@ -853,17 +853,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/MateriaDTOICollectionGexResponse"
+                  "$ref": "#/components/schemas/MateriaRequestICollectionGexResponse"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MateriaDTOICollectionGexResponse"
+                  "$ref": "#/components/schemas/MateriaRequestICollectionGexResponse"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MateriaDTOICollectionGexResponse"
+                  "$ref": "#/components/schemas/MateriaRequestICollectionGexResponse"
                 }
               }
             }
@@ -898,17 +898,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/MateriaDTO"
+                "$ref": "#/components/schemas/MateriaRequest"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/MateriaDTO"
+                "$ref": "#/components/schemas/MateriaRequest"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/MateriaDTO"
+                "$ref": "#/components/schemas/MateriaRequest"
               }
             }
           }
@@ -919,17 +919,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/MateriaDTOGexResponse"
+                  "$ref": "#/components/schemas/MateriaRequestGexResponse"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MateriaDTOGexResponse"
+                  "$ref": "#/components/schemas/MateriaRequestGexResponse"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MateriaDTOGexResponse"
+                  "$ref": "#/components/schemas/MateriaRequestGexResponse"
                 }
               }
             }
@@ -979,17 +979,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/MateriaDTOGexResponse"
+                  "$ref": "#/components/schemas/MateriaRequestGexResponse"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MateriaDTOGexResponse"
+                  "$ref": "#/components/schemas/MateriaRequestGexResponse"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MateriaDTOGexResponse"
+                  "$ref": "#/components/schemas/MateriaRequestGexResponse"
                 }
               }
             }
@@ -1004,17 +1004,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/MateriaDTO"
+                "$ref": "#/components/schemas/MateriaRequest"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/MateriaDTO"
+                "$ref": "#/components/schemas/MateriaRequest"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/MateriaDTO"
+                "$ref": "#/components/schemas/MateriaRequest"
               }
             }
           }
@@ -1025,17 +1025,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/MateriaDTOGexResponse"
+                  "$ref": "#/components/schemas/MateriaRequestGexResponse"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MateriaDTOGexResponse"
+                  "$ref": "#/components/schemas/MateriaRequestGexResponse"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MateriaDTOGexResponse"
+                  "$ref": "#/components/schemas/MateriaRequestGexResponse"
                 }
               }
             }
@@ -1062,17 +1062,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/MateriaDTOGexResponse"
+                  "$ref": "#/components/schemas/MateriaRequestGexResponse"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MateriaDTOGexResponse"
+                  "$ref": "#/components/schemas/MateriaRequestGexResponse"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MateriaDTOGexResponse"
+                  "$ref": "#/components/schemas/MateriaRequestGexResponse"
                 }
               }
             }
@@ -1102,17 +1102,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/MateriaDTOGexResponse"
+                  "$ref": "#/components/schemas/MateriaRequestGexResponse"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MateriaDTOGexResponse"
+                  "$ref": "#/components/schemas/MateriaRequestGexResponse"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MateriaDTOGexResponse"
+                  "$ref": "#/components/schemas/MateriaRequestGexResponse"
                 }
               }
             }
@@ -1171,17 +1171,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/MesaExamenDTOICollectionGexResponse"
+                  "$ref": "#/components/schemas/MesaExamenRequestICollectionGexResponse"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MesaExamenDTOICollectionGexResponse"
+                  "$ref": "#/components/schemas/MesaExamenRequestICollectionGexResponse"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MesaExamenDTOICollectionGexResponse"
+                  "$ref": "#/components/schemas/MesaExamenRequestICollectionGexResponse"
                 }
               }
             }
@@ -1216,17 +1216,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/MesaExamenDTO"
+                "$ref": "#/components/schemas/MesaExamenRequest"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/MesaExamenDTO"
+                "$ref": "#/components/schemas/MesaExamenRequest"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/MesaExamenDTO"
+                "$ref": "#/components/schemas/MesaExamenRequest"
               }
             }
           }
@@ -1237,17 +1237,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/MesaExamenDTOGexResponse"
+                  "$ref": "#/components/schemas/MesaExamenRequestGexResponse"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MesaExamenDTOGexResponse"
+                  "$ref": "#/components/schemas/MesaExamenRequestGexResponse"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MesaExamenDTOGexResponse"
+                  "$ref": "#/components/schemas/MesaExamenRequestGexResponse"
                 }
               }
             }
@@ -1297,17 +1297,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/MesaExamenDTOGexResponse"
+                  "$ref": "#/components/schemas/MesaExamenRequestGexResponse"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MesaExamenDTOGexResponse"
+                  "$ref": "#/components/schemas/MesaExamenRequestGexResponse"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MesaExamenDTOGexResponse"
+                  "$ref": "#/components/schemas/MesaExamenRequestGexResponse"
                 }
               }
             }
@@ -1322,17 +1322,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/MesaExamenDTO"
+                "$ref": "#/components/schemas/MesaExamenRequest"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/MesaExamenDTO"
+                "$ref": "#/components/schemas/MesaExamenRequest"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/MesaExamenDTO"
+                "$ref": "#/components/schemas/MesaExamenRequest"
               }
             }
           }
@@ -1343,17 +1343,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/MesaExamenDTOGexResponse"
+                  "$ref": "#/components/schemas/MesaExamenRequestGexResponse"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MesaExamenDTOGexResponse"
+                  "$ref": "#/components/schemas/MesaExamenRequestGexResponse"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MesaExamenDTOGexResponse"
+                  "$ref": "#/components/schemas/MesaExamenRequestGexResponse"
                 }
               }
             }
@@ -1380,17 +1380,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/MesaExamenDTOGexResponse"
+                  "$ref": "#/components/schemas/MesaExamenRequestGexResponse"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MesaExamenDTOGexResponse"
+                  "$ref": "#/components/schemas/MesaExamenRequestGexResponse"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MesaExamenDTOGexResponse"
+                  "$ref": "#/components/schemas/MesaExamenRequestGexResponse"
                 }
               }
             }
@@ -1420,17 +1420,335 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/MesaExamenDTOGexResponse"
+                  "$ref": "#/components/schemas/MesaExamenRequestGexResponse"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MesaExamenDTOGexResponse"
+                  "$ref": "#/components/schemas/MesaExamenRequestGexResponse"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MesaExamenDTOGexResponse"
+                  "$ref": "#/components/schemas/MesaExamenRequestGexResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Pregunta": {
+      "get": {
+        "tags": [
+          "Pregunta"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreguntaRequestICollectionGexResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreguntaRequestICollectionGexResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreguntaRequestICollectionGexResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Pregunta"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PreguntaRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PreguntaRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PreguntaRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreguntaRequestGexResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreguntaRequestGexResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreguntaRequestGexResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreguntaRequestGexResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreguntaRequestGexResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreguntaRequestGexResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Pregunta"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PreguntaRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PreguntaRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PreguntaRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreguntaRequestGexResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreguntaRequestGexResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreguntaRequestGexResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Pregunta"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreguntaRequestGexResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreguntaRequestGexResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreguntaRequestGexResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Pregunta/{id}": {
+      "get": {
+        "tags": [
+          "Pregunta"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreguntaRequestGexResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreguntaRequestGexResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreguntaRequestGexResponse"
                 }
               }
             }
@@ -1481,7 +1799,7 @@
   },
   "components": {
     "schemas": {
-      "CredentialsDTO": {
+      "LoginRequest": {
         "required": [
           "email",
           "password"
@@ -1493,6 +1811,8 @@
             "format": "email"
           },
           "password": {
+            "maxLength": 255,
+            "minLength": 6,
             "type": "string",
             "format": "password"
           }
@@ -1544,7 +1864,7 @@
           }
         }
       },
-      "RegistrationDTO": {
+      "RegistroRequest": {
         "required": [
           "confirmPassword",
           "email",
@@ -1560,13 +1880,13 @@
             "format": "email"
           },
           "password": {
-            "maxLength": 8,
+            "maxLength": 255,
             "minLength": 6,
             "type": "string",
             "format": "password"
           },
           "confirmPassword": {
-            "maxLength": 8,
+            "maxLength": 255,
             "minLength": 6,
             "type": "string",
             "format": "password"
@@ -1588,7 +1908,7 @@
           }
         }
       },
-      "ComisionDTO": {
+      "ComisionRequest": {
         "required": [
           "cicloLectivo",
           "id",
@@ -1613,13 +1933,13 @@
           }
         }
       },
-      "ComisionDTOICollectionGexResponse": {
+      "ComisionRequestICollectionGexResponse": {
         "type": "object",
         "properties": {
           "data": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ComisionDTO"
+              "$ref": "#/components/schemas/ComisionRequest"
             },
             "nullable": true
           },
@@ -1674,11 +1994,11 @@
           "type": "object"
         }
       },
-      "ComisionDTOGexResponse": {
+      "ComisionRequestGexResponse": {
         "type": "object",
         "properties": {
           "data": {
-            "$ref": "#/components/schemas/ComisionDTO"
+            "$ref": "#/components/schemas/ComisionRequest"
           },
           "success": {
             "type": "boolean"
@@ -1712,7 +2032,7 @@
         "type": "integer",
         "format": "int32"
       },
-      "ExamenDTO": {
+      "ExamenRequest": {
         "required": [
           "id",
           "materiaId",
@@ -1745,20 +2065,18 @@
             "type": "boolean"
           },
           "materiaId": {
-            "maximum": 2147483647,
-            "minimum": 1,
             "type": "integer",
             "format": "int64"
           }
         }
       },
-      "ExamenDTOICollectionGexResponse": {
+      "ExamenRequestICollectionGexResponse": {
         "type": "object",
         "properties": {
           "data": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ExamenDTO"
+              "$ref": "#/components/schemas/ExamenRequest"
             },
             "nullable": true
           },
@@ -1784,11 +2102,11 @@
           }
         }
       },
-      "ExamenDTOGexResponse": {
+      "ExamenRequestGexResponse": {
         "type": "object",
         "properties": {
           "data": {
-            "$ref": "#/components/schemas/ExamenDTO"
+            "$ref": "#/components/schemas/ExamenRequest"
           },
           "success": {
             "type": "boolean"
@@ -1821,7 +2139,7 @@
         "type": "integer",
         "format": "int32"
       },
-      "MateriaDTO": {
+      "MateriaResponse": {
         "type": "object",
         "properties": {
           "id": {
@@ -1837,13 +2155,143 @@
           }
         }
       },
-      "MateriaDTOICollectionGexResponse": {
+      "PreguntaTipo": {
+        "enum": [
+          0,
+          1,
+          2
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "RespuestaResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "valor": {
+            "type": "string",
+            "nullable": true
+          },
+          "correcto": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "PreguntaResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "periodo": {
+            "type": "string",
+            "nullable": true
+          },
+          "descripcion": {
+            "type": "string",
+            "nullable": true
+          },
+          "tipo": {
+            "$ref": "#/components/schemas/PreguntaTipo"
+          },
+          "respuestas": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RespuestaResponse"
+            },
+            "nullable": true
+          }
+        }
+      },
+      "ExamenResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "materia": {
+            "$ref": "#/components/schemas/MateriaResponse"
+          },
+          "tipo": {
+            "$ref": "#/components/schemas/ExamenTipo"
+          },
+          "notaRegular": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "notaPromo": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "recuperatorio": {
+            "type": "boolean"
+          },
+          "preguntas": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PreguntaResponse"
+            },
+            "nullable": true
+          }
+        }
+      },
+      "ExamenResponseGexResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ExamenResponse"
+          },
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "errorMessages": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "nullable": true
+          },
+          "errorCode": {
+            "$ref": "#/components/schemas/GexErrorMessage"
+          }
+        }
+      },
+      "MateriaRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "nombre": {
+            "type": "string",
+            "nullable": true
+          },
+          "tipo": {
+            "$ref": "#/components/schemas/MateriaTipo"
+          }
+        }
+      },
+      "MateriaRequestICollectionGexResponse": {
         "type": "object",
         "properties": {
           "data": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/MateriaDTO"
+              "$ref": "#/components/schemas/MateriaRequest"
             },
             "nullable": true
           },
@@ -1869,11 +2317,11 @@
           }
         }
       },
-      "MateriaDTOGexResponse": {
+      "MateriaRequestGexResponse": {
         "type": "object",
         "properties": {
           "data": {
-            "$ref": "#/components/schemas/MateriaDTO"
+            "$ref": "#/components/schemas/MateriaRequest"
           },
           "success": {
             "type": "boolean"
@@ -1897,10 +2345,12 @@
           }
         }
       },
-      "MesaExamenDTO": {
+      "MesaExamenRequest": {
         "required": [
           "examenId",
-          "id"
+          "fecha",
+          "id",
+          "mostrarRespuestas"
         ],
         "type": "object",
         "properties": {
@@ -1910,13 +2360,14 @@
           },
           "fecha": {
             "type": "string",
-            "format": "date-time",
-            "nullable": true
+            "format": "date-time"
           },
           "mostrarRespuestas": {
             "type": "boolean"
           },
           "duracion": {
+            "maximum": 10000,
+            "minimum": 5,
             "type": "integer",
             "format": "int32"
           },
@@ -1925,18 +2376,18 @@
             "format": "int64"
           },
           "profesorId": {
-            "type": "string",
-            "nullable": true
+            "type": "integer",
+            "format": "int32"
           }
         }
       },
-      "MesaExamenDTOICollectionGexResponse": {
+      "MesaExamenRequestICollectionGexResponse": {
         "type": "object",
         "properties": {
           "data": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/MesaExamenDTO"
+              "$ref": "#/components/schemas/MesaExamenRequest"
             },
             "nullable": true
           },
@@ -1962,11 +2413,97 @@
           }
         }
       },
-      "MesaExamenDTOGexResponse": {
+      "MesaExamenRequestGexResponse": {
         "type": "object",
         "properties": {
           "data": {
-            "$ref": "#/components/schemas/MesaExamenDTO"
+            "$ref": "#/components/schemas/MesaExamenRequest"
+          },
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "errorMessages": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "nullable": true
+          },
+          "errorCode": {
+            "$ref": "#/components/schemas/GexErrorMessage"
+          }
+        }
+      },
+      "PreguntaRequest": {
+        "required": [
+          "descripcion",
+          "id",
+          "periodo",
+          "tipo"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "periodo": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string"
+          },
+          "descripcion": {
+            "type": "string"
+          },
+          "tipo": {
+            "$ref": "#/components/schemas/PreguntaTipo"
+          }
+        }
+      },
+      "PreguntaRequestICollectionGexResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PreguntaRequest"
+            },
+            "nullable": true
+          },
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "errorMessages": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "nullable": true
+          },
+          "errorCode": {
+            "$ref": "#/components/schemas/GexErrorMessage"
+          }
+        }
+      },
+      "PreguntaRequestGexResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/PreguntaRequest"
           },
           "success": {
             "type": "boolean"

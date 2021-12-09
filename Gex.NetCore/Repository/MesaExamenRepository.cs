@@ -15,11 +15,11 @@ public class MesaExamenRepository : IMesaExamenRepository
         _context = context;
     }
 
-    public async Task<bool> CreateMesaExamenAsync(MesaExamen mesaexamen)
+    public async Task<bool> CreateMesaExamenAsync(MesaExamen mesaExamen)
     {
-        mesaexamen.CreatedAt = DateTime.Now;
-        mesaexamen.Id = 0;
-        await _context.MesasExamen.AddAsync(mesaexamen);
+        mesaExamen.CreatedAt = DateTime.Now;
+        mesaExamen.Id = 0;
+        await _context.MesasExamen.AddAsync(mesaExamen);
         return await Save();
     }
 
@@ -29,15 +29,15 @@ public class MesaExamenRepository : IMesaExamenRepository
         return await DeleteMesaExamenAsync(MesaExamen);
     }
 
-    public async Task<bool> DeleteMesaExamenAsync(MesaExamen mesaexamen)
+    public async Task<bool> DeleteMesaExamenAsync(MesaExamen mesaExamen)
     {
-        if (mesaexamen == null)
+        if (mesaExamen == null)
             return false;
 
-        if (mesaexamen.Estado == Estado.BAJA)
+        if (mesaExamen.Estado == Estado.BAJA)
             return false;
 
-        mesaexamen.Estado = Estado.BAJA;
+        mesaExamen.Estado = Estado.BAJA;
         return await Save();
     }
 
@@ -49,13 +49,13 @@ public class MesaExamenRepository : IMesaExamenRepository
 
     public async Task<bool> Save() => await _context.SaveChangesAsync() >= 0;
 
-    public async Task<bool> UpdateMesaExamenAsync(MesaExamen mesaexamen)
+    public async Task<bool> UpdateMesaExamenAsync(MesaExamen mesaExamen)
     {
-        if (mesaexamen == null)
+        if (mesaExamen == null || mesaExamen.Estado == Estado.BAJA)
             return false;
 
-        _context.MesasExamen.Update(mesaexamen);
-        mesaexamen.UpdatedAt = DateTime.Now;
+        _context.MesasExamen.Update(mesaExamen);
+        mesaExamen.UpdatedAt = DateTime.Now;
         return await Save();
     }
 }

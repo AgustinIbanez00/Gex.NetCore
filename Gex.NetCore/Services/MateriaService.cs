@@ -4,15 +4,15 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 using EntityFramework.Exceptions.Common;
-using Gex.DTO;
 using Gex.Helpers;
 using Gex.Models;
 using Gex.Repository.Interface;
 using Gex.Services.Interface;
 using Gex.Utils;
+using Gex.ViewModels.Request;
 
 namespace Gex.Services;
-public class MateriaService : IMateriaService, IGexResponse<MateriaDTO>
+public class MateriaService : IMateriaService, IGexResponse<MateriaRequest>
 {
     private readonly IMapper _mapper;
     private readonly IMateriaRepository _repository;
@@ -25,16 +25,16 @@ public class MateriaService : IMateriaService, IGexResponse<MateriaDTO>
     }
 
     //*********** HANDLING ERRORS ***********//
-    public GexResponse<ICollection<MateriaDTO>> Collection(GexErrorMessage message) => GexResponse<ICollection<MateriaDTO>>.ErrorF(message, _options);
-    public GexResponse<MateriaDTO> Success(GexSuccessMessage message) => GexResponse<MateriaDTO>.Ok(message, _options);
-    public GexResponse<MateriaDTO> Error(GexErrorMessage error, [Optional] string message) => GexResponse<MateriaDTO>.ErrorF(error, _options, message);
-    public GexResponse<ICollection<MateriaDTO>> CollectionMessage(GexErrorMessage error, [Optional] string message) => GexResponse<ICollection<MateriaDTO>>.ErrorF(error, _options, message);
-    public GexResponse<MateriaDTO> Data(MateriaDTO data, GexSuccessMessage gexSuccess) => GexResponse<MateriaDTO>.Ok(data, gexSuccess, _options);
-    public GexResponse<MateriaDTO> Data(MateriaDTO data) => GexResponse<MateriaDTO>.Ok(data);
-    public GexResponse<ICollection<MateriaDTO>> OkCollection(ICollection<MateriaDTO> data) => GexResponse<ICollection<MateriaDTO>>.Ok(data);
+    public GexResponse<ICollection<MateriaRequest>> Collection(GexErrorMessage message) => GexResponse<ICollection<MateriaRequest>>.ErrorF(message, _options);
+    public GexResponse<MateriaRequest> Success(GexSuccessMessage message) => GexResponse<MateriaRequest>.Ok(message, _options);
+    public GexResponse<MateriaRequest> Error(GexErrorMessage error, [Optional] string message) => GexResponse<MateriaRequest>.ErrorF(error, _options, message);
+    public GexResponse<ICollection<MateriaRequest>> CollectionMessage(GexErrorMessage error, [Optional] string message) => GexResponse<ICollection<MateriaRequest>>.ErrorF(error, _options, message);
+    public GexResponse<MateriaRequest> Data(MateriaRequest data, GexSuccessMessage gexSuccess) => GexResponse<MateriaRequest>.Ok(data, gexSuccess, _options);
+    public GexResponse<MateriaRequest> Data(MateriaRequest data) => GexResponse<MateriaRequest>.Ok(data);
+    public GexResponse<ICollection<MateriaRequest>> OkCollection(ICollection<MateriaRequest> data) => GexResponse<ICollection<MateriaRequest>>.Ok(data);
 
     //***************************************//
-    public async Task<GexResponse<MateriaDTO>> CreateMateriaAsync(MateriaDTO materiaDto)
+    public async Task<GexResponse<MateriaRequest>> CreateMateriaAsync(MateriaRequest materiaDto)
     {
         try
         {
@@ -45,8 +45,8 @@ public class MateriaService : IMateriaService, IGexResponse<MateriaDTO>
             if (!await _repository.CreateMateriaAsync(materia))
                 return Error(GexErrorMessage.CouldNotCreate);
 
-            var dto = _mapper.Map<MateriaDTO>(materia);
-            return GexResponse<MateriaDTO>.Ok(dto, GexSuccessMessage.Created, _options);
+            var dto = _mapper.Map<MateriaRequest>(materia);
+            return GexResponse<MateriaRequest>.Ok(dto, GexSuccessMessage.Created, _options);
         }
         catch (UniqueConstraintException)
         {
@@ -57,7 +57,7 @@ public class MateriaService : IMateriaService, IGexResponse<MateriaDTO>
             return Error(GexErrorMessage.Generic, ex.Message);
         }
     }
-    public async Task<GexResponse<MateriaDTO>> DeleteMateriaAsync(int id)
+    public async Task<GexResponse<MateriaRequest>> DeleteMateriaAsync(int id)
     {
         try
         {
@@ -71,14 +71,14 @@ public class MateriaService : IMateriaService, IGexResponse<MateriaDTO>
             if (!await _repository.DeleteMateriaAsync(materia))
                 return Error(GexErrorMessage.CouldNotDelete);
 
-            return Data(_mapper.Map<MateriaDTO>(materia), GexSuccessMessage.Deleted);
+            return Data(_mapper.Map<MateriaRequest>(materia), GexSuccessMessage.Deleted);
         }
         catch (Exception ex)
         {
             return Error(GexErrorMessage.Generic, ex.Message);
         }
     }
-    public async Task<GexResponse<MateriaDTO>> GetMateriaAsync(int id)
+    public async Task<GexResponse<MateriaRequest>> GetMateriaAsync(int id)
     {
         try
         {
@@ -87,14 +87,14 @@ public class MateriaService : IMateriaService, IGexResponse<MateriaDTO>
             if (materia == null)
                 return Error(GexErrorMessage.NotFound);
 
-            return GexResponse<MateriaDTO>.Ok(_mapper.Map<MateriaDTO>(materia));
+            return GexResponse<MateriaRequest>.Ok(_mapper.Map<MateriaRequest>(materia));
         }
         catch (Exception ex)
         {
             return Error(GexErrorMessage.Generic, ex.Message);
         }
     }
-    public async Task<GexResponse<ICollection<MateriaDTO>>> GetMateriasAsync()
+    public async Task<GexResponse<ICollection<MateriaRequest>>> GetMateriasAsync()
     {
         try
         {
@@ -103,11 +103,11 @@ public class MateriaService : IMateriaService, IGexResponse<MateriaDTO>
             if (Materiaes.Count == 0)
                 return CollectionMessage(GexErrorMessage.NotFound);
 
-            var MateriatesDTO = new List<MateriaDTO>();
+            var MateriatesDTO = new List<MateriaRequest>();
 
             foreach (var Materia in Materiaes)
             {
-                MateriatesDTO.Add(_mapper.Map<MateriaDTO>(Materia));
+                MateriatesDTO.Add(_mapper.Map<MateriaRequest>(Materia));
             }
             return OkCollection(MateriatesDTO);
         }
@@ -116,7 +116,7 @@ public class MateriaService : IMateriaService, IGexResponse<MateriaDTO>
             return CollectionMessage(GexErrorMessage.Generic, ex.Message);
         }
     }
-    public async Task<GexResponse<MateriaDTO>> UpdateMateriaAsync(MateriaDTO materiaDto)
+    public async Task<GexResponse<MateriaRequest>> UpdateMateriaAsync(MateriaRequest materiaDto)
     {
         try
         {
@@ -134,7 +134,7 @@ public class MateriaService : IMateriaService, IGexResponse<MateriaDTO>
             if (!await _repository.UpdateMateriaAsync(materia))
                 return Error(GexErrorMessage.CouldNotUpdate);
 
-            return Data(_mapper.Map<MateriaDTO>(materia), GexSuccessMessage.Modified);
+            return Data(_mapper.Map<MateriaRequest>(materia), GexSuccessMessage.Modified);
         }
         catch (Exception ex)
         {

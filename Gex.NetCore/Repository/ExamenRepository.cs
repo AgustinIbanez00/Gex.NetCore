@@ -18,7 +18,7 @@ public class ExamenRepository : IExamenRepository
     public async Task<bool> CreateExamenAsync(Examen examen)
     {
         examen.CreatedAt = DateTime.Now;
-        examen.Id = 0;   
+        examen.Id = 0;
 
         await _context.Examenes.AddAsync(examen);
         return await Save();
@@ -26,37 +26,40 @@ public class ExamenRepository : IExamenRepository
 
     public async Task<bool> DeleteExamenAsync(long id)
     {
-        Examen Examen = await GetExamenAsync(id);
-        return await DeleteExamenAsync(Examen);
+        Examen examen = await GetExamenAsync(id);
+        return await DeleteExamenAsync(examen);
     }
 
-    public async Task<bool> DeleteExamenAsync(Examen Examen)
+    public async Task<bool> DeleteExamenAsync(Examen examen)
     {
-        if (Examen == null)
+        if (examen == null)
             return false;
 
-        if (Examen.Estado == Estado.BAJA)
+        if (examen.Estado == Estado.BAJA)
             return false;
 
-        Examen.Estado = Estado.BAJA;
+        examen.Estado = Estado.BAJA;
         return await Save();
     }
 
     public async Task<bool> ExistsExamenAsync(long id) => await _context.Examenes.FindAsync(id) != null;
 
-    public async Task<Examen> GetExamenAsync(long id) => await _context.Examenes.FindAsync(id);
+    public async Task<Examen> GetExamenAsync(long id)
+    {
+        return await _context.Examenes.Include(e => e.Materia).FirstOrDefaultAsync(e => e.Id == id);
+    }
 
-    public async Task<ICollection<Examen>> GetExamensAsync() => await _context.Examenes.ToListAsync();
+    public async Task<ICollection<Examen>> GetExamensAsync() => await _context.Examenes.Include(c => c.Materia).ToListAsync();
 
     public async Task<bool> Save() => await _context.SaveChangesAsync() >= 0;
 
-    public async Task<bool> UpdateExamenAsync(Examen Examen)
+    public async Task<bool> UpdateExamenAsync(Examen examen)
     {
-        if (Examen == null)
+        if (examen == null || examen.Estado == Estado.BAJA)
             return false;
 
-        _context.Examenes.Update(Examen);
-        Examen.UpdatedAt = DateTime.Now;
+        _context.Examenes.Update(examen);
+        examen.UpdatedAt = DateTime.Now;
         return await Save();
     }
 }

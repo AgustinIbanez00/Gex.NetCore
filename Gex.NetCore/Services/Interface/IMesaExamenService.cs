@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Gex.DTO;
 using Gex.Utils;
+using Gex.ViewModels.Request;
 
 namespace Gex.Services.Interface;
 public interface IMesaExamenService
 {
-    Task<GexResponse<ICollection<MesaExamenDTO>>> GetMesaExamensAsync();
-    Task<GexResponse<MesaExamenDTO>> GetMesaExamenAsync(int id);
-    Task<GexResponse<MesaExamenDTO>> CreateMesaExamenAsync(MesaExamenDTO mesaexamenDto);
-    Task<GexResponse<MesaExamenDTO>> UpdateMesaExamenAsync(MesaExamenDTO mesaexamenDto);
-    Task<GexResponse<MesaExamenDTO>> DeleteMesaExamenAsync(int id);
+    Task<GexResponse<ICollection<MesaExamenRequest>>> GetMesaExamensAsync();
+    Task<GexResponse<MesaExamenRequest>> GetMesaExamenAsync(int id);
+    Task<GexResponse<MesaExamenRequest>> CreateMesaExamenAsync(MesaExamenRequest mesaExamenDto);
+    Task<GexResponse<MesaExamenRequest>> UpdateMesaExamenAsync(MesaExamenRequest mesaExamenDto);
+    Task<GexResponse<MesaExamenRequest>> DeleteMesaExamenAsync(int id);
 }

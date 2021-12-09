@@ -6,8 +6,11 @@ namespace Gex.Validation.Attributes
     {
         public override bool IsValid(object value)
         {
-            var x = (int)value;
-            return x > 0;
+            if(int.TryParse(value.ToString(), out int intParsed))
+                return intParsed > 0;
+            if (long.TryParse(value.ToString(), out long longParsed))
+                return longParsed > 0;
+            return false;
         }
 
         public override string FormatErrorMessage(string name)

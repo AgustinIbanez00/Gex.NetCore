@@ -162,4 +162,24 @@
     <value>materia</value>
     <comment>Created by XLocalizer</comment>
   </data>
+  <data isActive="false">
+    <key>El campo {0} debe coincidir con la siguiente expresión regular: '{1}'.</key>
+    <value>El campo {0} debe coincidir con la siguiente expresión regular: '{1}'.</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
+  <data isActive="false">
+    <key>exámen</key>
+    <value>exámen</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
+  <data isActive="false">
+    <key>duración</key>
+    <value>duración</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
+  <data isActive="false">
+    <key>profesor</key>
+    <value>profesor</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
 </root>

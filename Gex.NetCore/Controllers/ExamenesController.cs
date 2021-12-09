@@ -2,12 +2,13 @@
 using Microsoft.AspNetCore.Authorization;
 using Gex.Services.Interface;
 using System.Threading.Tasks;
-using Gex.DTO;
 using Gex.Utils;
 using Microsoft.AspNetCore.Http;
 using Gex.Helpers;
 using System.Collections.Generic;
 using Gex.Models;
+using Gex.ViewModels.Request;
+using Gex.ViewModels.Response;
 
 namespace Gex.Controllers;
 
@@ -24,52 +25,52 @@ public class ExamenController : ControllerBase
     }
 
     [HttpGet]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResponse<ICollection<ExamenDTO>>))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResponse<ICollection<ExamenRequest>>))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Authorize(Roles = nameof(UsuarioTipo.Alumno))]
-    public async Task<ActionResult<GexResponse<ICollection<ExamenDTO>>>> GetAll()
+    public async Task<ActionResult<GexResponse<ICollection<ExamenRequest>>>> GetAll()
     {
-        var Examenes = await _service.GetExamensAsync();
+        var examenes = await _service.GetExamensAsync();
 
-        if (!Examenes.Success)
-            return StatusCode(ResponseHelper.GetHttpError(Examenes.ErrorCode), Examenes);
+        if (!examenes.Success)
+            return StatusCode(ResponseHelper.GetHttpError(examenes.ErrorCode), examenes);
 
-        return Ok(Examenes);
+        return Ok(examenes);
     }
 
     [HttpGet("{id:int}")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResponse<ExamenDTO>))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResponse<ExamenResponse>))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<GexResponse<ExamenDTO>>> Get(int id)
+    public async Task<ActionResult<GexResponse<ExamenResponse>>> Get(int id)
     {
-        var Examen = await _service.GetExamenAsync(id);
+        var examen = await _service.GetExamenAsync(id);
 
-        if (!Examen.Success)
-            return StatusCode(ResponseHelper.GetHttpError(Examen.ErrorCode), Examen);
+        if (!examen.Success)
+            return StatusCode(ResponseHelper.GetHttpError(examen.ErrorCode), examen);
 
-        return Ok(Examen);
+        return Ok(examen);
     }
 
     [HttpPost]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResponse<ExamenDTO>))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResponse<ExamenRequest>))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    public async Task<ActionResult<GexResponse<ExamenDTO>>> CreateExamen([FromBody] ExamenDTO ExamenDTO)
+    public async Task<ActionResult<GexResponse<ExamenRequest>>> CreateExamen([FromBody] ExamenRequest request)
     {
-        var Examen = await _service.CreateExamenAsync(ExamenDTO);
+        var examen = await _service.CreateExamenAsync(request);
 
-        if (!Examen.Success)
-            return StatusCode(ResponseHelper.GetHttpError(Examen.ErrorCode), Examen);
-        return Created(nameof(Get), Examen);
+        if (!examen.Success)
+            return StatusCode(ResponseHelper.GetHttpError(examen.ErrorCode), examen);
+        return Created(nameof(Get), examen);
     }
 
     [HttpPatch]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResponse<ExamenDTO>))]
-    public async Task<ActionResult<GexResponse<ExamenDTO>>> UpdateExamen([FromBody] ExamenDTO ExamenDTO)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResponse<ExamenRequest>))]
+    public async Task<ActionResult<GexResponse<ExamenRequest>>> UpdateExamen([FromBody] ExamenRequest request)
     {
-        var Examen = await _service.UpdateExamenAsync(ExamenDTO);
+        var Examen = await _service.UpdateExamenAsync(request);
 
         if (!Examen.Success)
             return StatusCode(ResponseHelper.GetHttpError(Examen.ErrorCode), Examen);
@@ -77,14 +78,14 @@ public class ExamenController : ControllerBase
     }
 
     [HttpDelete]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResponse<ExamenDTO>))]
-    public async Task<ActionResult<GexResponse<ExamenDTO>>> DeleteExamen(int id)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResponse<ExamenRequest>))]
+    public async Task<ActionResult<GexResponse<ExamenRequest>>> DeleteExamen(int id)
     {
-        var Examen = await _service.DeleteExamenAsync(id);
+        var examen = await _service.DeleteExamenAsync(id);
 
-        if (!Examen.Success)
-            return StatusCode(ResponseHelper.GetHttpError(Examen.ErrorCode), Examen);
-        return Ok(Examen);
+        if (!examen.Success)
+            return StatusCode(ResponseHelper.GetHttpError(examen.ErrorCode), examen);
+        return Ok(examen);
     }
 
 

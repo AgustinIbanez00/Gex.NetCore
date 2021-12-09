@@ -2,12 +2,12 @@
 using Microsoft.AspNetCore.Authorization;
 using Gex.Services.Interface;
 using System.Threading.Tasks;
-using Gex.DTO;
 using Gex.Utils;
 using Microsoft.AspNetCore.Http;
 using Gex.Helpers;
 using System.Collections.Generic;
 using Gex.Models;
+using Gex.ViewModels.Request;
 
 namespace Gex.Controllers;
 
@@ -24,66 +24,66 @@ public class MesaExamenController : ControllerBase
     }
 
     [HttpGet]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResponse<ICollection<MesaExamenDTO>>))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResponse<ICollection<MesaExamenRequest>>))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Authorize(Roles = nameof(UsuarioTipo.Alumno))]
-    public async Task<ActionResult<GexResponse<ICollection<MesaExamenDTO>>>> GetAll()
+    public async Task<ActionResult<GexResponse<ICollection<MesaExamenRequest>>>> GetAll()
     {
-        var mesaexamens = await _service.GetMesaExamensAsync();
+        var mesaExamens = await _service.GetMesaExamensAsync();
 
-        if (!mesaexamens.Success)
-            return StatusCode(ResponseHelper.GetHttpError(mesaexamens.ErrorCode), mesaexamens);
+        if (!mesaExamens.Success)
+            return StatusCode(ResponseHelper.GetHttpError(mesaExamens.ErrorCode), mesaExamens);
 
-        return Ok(mesaexamens);
+        return Ok(mesaExamens);
     }
 
     [HttpGet("{id:int}")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResponse<MesaExamenDTO>))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResponse<MesaExamenRequest>))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<GexResponse<MesaExamenDTO>>> Get(int id)
+    public async Task<ActionResult<GexResponse<MesaExamenRequest>>> Get(int id)
     {
-        var mesaexamen = await _service.GetMesaExamenAsync(id);
+        var mesaExamen = await _service.GetMesaExamenAsync(id);
 
-        if (!mesaexamen.Success)
-            return StatusCode(ResponseHelper.GetHttpError(mesaexamen.ErrorCode), mesaexamen);
+        if (!mesaExamen.Success)
+            return StatusCode(ResponseHelper.GetHttpError(mesaExamen.ErrorCode), mesaExamen);
 
-        return Ok(mesaexamen);
+        return Ok(mesaExamen);
     }
 
     [HttpPost]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResponse<MesaExamenDTO>))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResponse<MesaExamenRequest>))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    public async Task<ActionResult<GexResponse<MesaExamenDTO>>> CreateMesaExamen([FromBody] MesaExamenDTO MesaExamenDTO)
+    public async Task<ActionResult<GexResponse<MesaExamenRequest>>> CreateMesaExamen([FromBody] MesaExamenRequest MesaExamenDTO)
     {
-        var mesaexamen = await _service.CreateMesaExamenAsync(MesaExamenDTO);
+        var mesaExamen = await _service.CreateMesaExamenAsync(MesaExamenDTO);
 
-        if (!mesaexamen.Success)
-            return StatusCode(ResponseHelper.GetHttpError(mesaexamen.ErrorCode), mesaexamen);
-        return Created(nameof(Get), mesaexamen);
+        if (!mesaExamen.Success)
+            return StatusCode(ResponseHelper.GetHttpError(mesaExamen.ErrorCode), mesaExamen);
+        return Created(nameof(Get), mesaExamen);
     }
 
     [HttpPatch]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResponse<MesaExamenDTO>))]
-    public async Task<ActionResult<GexResponse<MesaExamenDTO>>> UpdateMesaExamen([FromBody] MesaExamenDTO MesaExamenDTO)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResponse<MesaExamenRequest>))]
+    public async Task<ActionResult<GexResponse<MesaExamenRequest>>> UpdateMesaExamen([FromBody] MesaExamenRequest MesaExamenDTO)
     {
-        var mesaexamen = await _service.UpdateMesaExamenAsync(MesaExamenDTO);
+        var mesaExamen = await _service.UpdateMesaExamenAsync(MesaExamenDTO);
 
-        if (!mesaexamen.Success)
-            return StatusCode(ResponseHelper.GetHttpError(mesaexamen.ErrorCode), mesaexamen);
-        return Ok(mesaexamen);
+        if (!mesaExamen.Success)
+            return StatusCode(ResponseHelper.GetHttpError(mesaExamen.ErrorCode), mesaExamen);
+        return Ok(mesaExamen);
     }
 
     [HttpDelete]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResponse<MesaExamenDTO>))]
-    public async Task<ActionResult<GexResponse<MesaExamenDTO>>> DeleteMesaExamen(int id)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResponse<MesaExamenRequest>))]
+    public async Task<ActionResult<GexResponse<MesaExamenRequest>>> DeleteMesaExamen(int id)
     {
-        var mesaexamen = await _service.DeleteMesaExamenAsync(id);
+        var mesaExamen = await _service.DeleteMesaExamenAsync(id);
 
-        if (!mesaexamen.Success)
-            return StatusCode(ResponseHelper.GetHttpError(mesaexamen.ErrorCode), mesaexamen);
-        return Ok(mesaexamen);
+        if (!mesaExamen.Success)
+            return StatusCode(ResponseHelper.GetHttpError(mesaExamen.ErrorCode), mesaExamen);
+        return Ok(mesaExamen);
     }
 }

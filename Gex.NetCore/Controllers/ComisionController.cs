@@ -2,12 +2,12 @@
 using Microsoft.AspNetCore.Authorization;
 using Gex.Services.Interface;
 using System.Threading.Tasks;
-using Gex.DTO;
 using Gex.Utils;
 using Microsoft.AspNetCore.Http;
 using Gex.Helpers;
 using System.Collections.Generic;
 using Gex.Models;
+using Gex.ViewModels.Request;
 
 namespace Gex.Controllers;
 
@@ -24,10 +24,10 @@ public class ComisionController : ControllerBase
     }
 
     [HttpGet]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResponse<ICollection<ComisionDTO>>))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResponse<ICollection<ComisionRequest>>))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Authorize(Roles = nameof(UsuarioTipo.Alumno))]
-    public async Task<ActionResult<GexResponse<ICollection<ComisionDTO>>>> GetAll()
+    public async Task<ActionResult<GexResponse<ICollection<ComisionRequest>>>> GetAll()
     {
         var comisiones = await _service.GetComisionsAsync();
 
@@ -38,10 +38,10 @@ public class ComisionController : ControllerBase
     }
 
     [HttpGet("{id:int}")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResponse<ComisionDTO>))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResponse<ComisionRequest>))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<GexResponse<ComisionDTO>>> Get(int id)
+    public async Task<ActionResult<GexResponse<ComisionRequest>>> Get(int id)
     {
         var comision = await _service.GetComisionAsync(id);
 
@@ -52,10 +52,10 @@ public class ComisionController : ControllerBase
     }
 
     [HttpGet("nombre/{nombre}")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResponse<ComisionDTO>))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResponse<ComisionRequest>))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<GexResponse<ComisionDTO>>> GetByName(string nombre)
+    public async Task<ActionResult<GexResponse<ComisionRequest>>> GetByName(string nombre)
     {
         var comision = await _service.GetComisionAsync(nombre);
 
@@ -65,11 +65,11 @@ public class ComisionController : ControllerBase
     }
 
     [HttpPost]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResponse<ComisionDTO>))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResponse<ComisionRequest>))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    public async Task<ActionResult<GexResponse<ComisionDTO>>> CreateComision([FromBody] ComisionDTO comisionDTO)
+    public async Task<ActionResult<GexResponse<ComisionRequest>>> CreateComision([FromBody] ComisionRequest comisionDTO)
     {
         var comision = await _service.CreateComisionAsync(comisionDTO);
 
@@ -79,8 +79,8 @@ public class ComisionController : ControllerBase
     }
 
     [HttpPatch]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResponse<ComisionDTO>))]
-    public async Task<ActionResult<GexResponse<ComisionDTO>>> UpdateComision([FromBody] ComisionDTO comisionDTO)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResponse<ComisionRequest>))]
+    public async Task<ActionResult<GexResponse<ComisionRequest>>> UpdateComision([FromBody] ComisionRequest comisionDTO)
     {
         var comision = await _service.UpdateComisionAsync(comisionDTO);
 
@@ -90,8 +90,8 @@ public class ComisionController : ControllerBase
     }
 
     [HttpDelete]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResponse<ComisionDTO>))]
-    public async Task<ActionResult<GexResponse<ComisionDTO>>> DeleteComision(int id)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResponse<ComisionRequest>))]
+    public async Task<ActionResult<GexResponse<ComisionRequest>>> DeleteComision(int id)
     {
         var comision = await _service.DeleteComisionAsync(id);
 

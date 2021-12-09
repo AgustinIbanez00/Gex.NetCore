@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Gex.Models;
 
-namespace Gex.DTO;
-public class MateriaDTO
+namespace Gex.ViewModels.Request;
+public class MateriaRequest
 {
     [Display(Name = "identificador")]
     public long Id { get; set; }

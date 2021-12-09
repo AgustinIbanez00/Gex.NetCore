@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 namespace Gex.Models;
-public partial class Respuesta
+public partial class Respuesta : Auditory
 {
     [Key]
     public long Id { get; set; }

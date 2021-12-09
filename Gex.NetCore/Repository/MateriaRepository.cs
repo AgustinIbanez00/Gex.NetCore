@@ -25,8 +25,8 @@ public class MateriaRepository : IMateriaRepository
 
     public async Task<bool> DeleteMateriaAsync(long id)
     {
-        Materia Materia = await GetMateriaAsync(id);
-        return await DeleteMateriaAsync(Materia);
+        Materia materia = await GetMateriaAsync(id);
+        return await DeleteMateriaAsync(materia);
     }
 
     public async Task<bool> DeleteMateriaAsync(Materia materia)
@@ -51,7 +51,7 @@ public class MateriaRepository : IMateriaRepository
 
     public async Task<bool> UpdateMateriaAsync(Materia materia)
     {
-        if (materia == null)
+        if (materia == null || materia.Estado == Estado.BAJA)
             return false;
 
         _context.Materias.Update(materia);

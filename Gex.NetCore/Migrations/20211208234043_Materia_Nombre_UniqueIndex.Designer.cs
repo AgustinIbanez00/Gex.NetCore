@@ -3,6 +3,7 @@ using System;
 using Gex;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Gex.Migrations
 {
     [DbContext(typeof(GexContext))]
-    partial class GexContextModelSnapshot : ModelSnapshot
+    [Migration("20211208234043_Materia_Nombre_UniqueIndex")]
+    partial class Materia_Nombre_UniqueIndex
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

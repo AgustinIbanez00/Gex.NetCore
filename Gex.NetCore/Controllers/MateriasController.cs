@@ -2,12 +2,12 @@
 using Microsoft.AspNetCore.Authorization;
 using Gex.Services.Interface;
 using System.Threading.Tasks;
-using Gex.DTO;
 using Gex.Utils;
 using Microsoft.AspNetCore.Http;
 using Gex.Helpers;
 using System.Collections.Generic;
 using Gex.Models;
+using Gex.ViewModels.Request;
 
 namespace Gex.Controllers;
 
@@ -24,10 +24,10 @@ public class MateriaController : ControllerBase
     }
 
     [HttpGet]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResponse<ICollection<MateriaDTO>>))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResponse<ICollection<MateriaRequest>>))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Authorize(Roles = nameof(UsuarioTipo.Alumno))]
-    public async Task<ActionResult<GexResponse<ICollection<MateriaDTO>>>> GetAll()
+    public async Task<ActionResult<GexResponse<ICollection<MateriaRequest>>>> GetAll()
     {
         var materias = await _service.GetMateriasAsync();
 
@@ -38,10 +38,10 @@ public class MateriaController : ControllerBase
     }
 
     [HttpGet("{id:int}")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResponse<MateriaDTO>))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResponse<MateriaRequest>))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<GexResponse<MateriaDTO>>> Get(int id)
+    public async Task<ActionResult<GexResponse<MateriaRequest>>> Get(int id)
     {
         var materia = await _service.GetMateriaAsync(id);
 
@@ -52,11 +52,11 @@ public class MateriaController : ControllerBase
     }
 
     [HttpPost]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResponse<MateriaDTO>))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResponse<MateriaRequest>))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    public async Task<ActionResult<GexResponse<MateriaDTO>>> CreateMateria([FromBody] MateriaDTO materiaDto)
+    public async Task<ActionResult<GexResponse<MateriaRequest>>> CreateMateria([FromBody] MateriaRequest materiaDto)
     {
         var materia = await _service.CreateMateriaAsync(materiaDto);
 
@@ -66,8 +66,8 @@ public class MateriaController : ControllerBase
     }
 
     [HttpPatch]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResponse<MateriaDTO>))]
-    public async Task<ActionResult<GexResponse<MateriaDTO>>> UpdateMateria([FromBody] MateriaDTO materiaDto)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResponse<MateriaRequest>))]
+    public async Task<ActionResult<GexResponse<MateriaRequest>>> UpdateMateria([FromBody] MateriaRequest materiaDto)
     {
         var materia = await _service.UpdateMateriaAsync(materiaDto);
 
@@ -77,8 +77,8 @@ public class MateriaController : ControllerBase
     }
 
     [HttpDelete]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResponse<MateriaDTO>))]
-    public async Task<ActionResult<GexResponse<MateriaDTO>>> DeleteMateria(int id)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResponse<MateriaRequest>))]
+    public async Task<ActionResult<GexResponse<MateriaRequest>>> DeleteMateria(int id)
     {
         var materia = await _service.DeleteMateriaAsync(id);
 
