@@ -58,7 +58,17 @@
 		data: () => ({
 			periodos: [],
 			buscar_preguntas_texto: '',
-			examen: JSON.parse(JSON.stringify(examen_default)),
+			examen: {
+				id: 1,
+				tipo: 'Final',
+				materia: 'Laboratorio de programación',
+				fecha: null,
+				preguntas: [],
+				nota_regular: 0,
+				nota_promocional: 0,
+				recuperatorio: false,
+				preguntas:[]
+			},
 			colores: ['red','pink','purple','deep-purple','indigo','blue','light-blue','cyan','teal','green','light-green','lime','yellow','amber','orange','deep-orange','brown','blue-grey','grey'],
 			tipos_colores : ['',' lighten',' darken',' accent'],
 			colores_preguntas: [],

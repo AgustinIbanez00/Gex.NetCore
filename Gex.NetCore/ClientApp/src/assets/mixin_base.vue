@@ -113,6 +113,7 @@
 						case "curso": titulo = "Cursos"; break;
 						case "alumno": titulo = "Alumnos"; break;
 						case "inscripcion": titulo = "Inscripciones"; break;
+						case "usuario": titulo = "Usuarios"; break;
 					}
 				} 
 				return titulo;
@@ -127,6 +128,7 @@
 					case 'curso': res = 'Cursos'; break;
 					case 'alumno': res = 'Alumnos'; break;
 					case 'inscripcion': res = 'Inscripciones'; break;
+					case 'usuario': res = 'Usuarios'; break;
 				}
 				return res;
 			},
@@ -140,6 +142,7 @@
 					case 'curso': res = 'Curso'; break;
 					case 'alumno': res = 'Alumno'; break;
 					case 'inscripcion': res = 'Inscripción'; break;
+					case 'usuario': res = 'Usuario'; break;
 				}
 				return res;
 			},

@@ -7,7 +7,7 @@
 				</v-btn>
 			</RouterLink>
 			<RouterLink :to="`/${tab_actual}`" v-show="route == `editar_${tab_actual}` || route == `crear_${tab_actual}`">
-				<v-btn @click="lista" colo ="pink" dark absolute bottom style="top:65px; height:45px;font-size:16px; z-index:2; padding-right: 4px; right: 60px;">
+				<v-btn @click="lista" color="pink" dark absolute bottom style="top:65px; height:45px;font-size:16px; z-index:2; padding-right: 4px; right: 60px;">
 					{{elementos}} <v-icon>mdi-chevron-right</v-icon>
 				</v-btn>
 			</RouterLink>
