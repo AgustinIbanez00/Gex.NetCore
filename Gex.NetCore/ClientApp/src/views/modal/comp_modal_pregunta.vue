@@ -60,7 +60,7 @@
   </v-row>
 </template>
 <script>
-	import mixin_base from '../assets/mixin_base';
+	import mixin_base from '../../assets/mixin_base';
 	export default {
 		mixins: [mixin_base],
 		watch: {

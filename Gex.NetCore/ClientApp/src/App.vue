@@ -7,6 +7,7 @@
 			<v-btn :outlined="tab_actual == 'curso'" large to="/curso" exact>Cursos</v-btn>
 			<v-btn :outlined="tab_actual == 'alumno'" large to="/alumno" exact>Alumnos</v-btn>
 			<v-btn :outlined="tab_actual == 'inscripcion'" large to="/inscripcion" exact>Inscripciones</v-btn>
+			<v-btn :outlined="tab_actual == 'usuario'" large to="/usuario" exact>Contactos</v-btn>
 			<v-spacer></v-spacer>
 			<v-menu left bottom>
 				<!-- Opciones -->

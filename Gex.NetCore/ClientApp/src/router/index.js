@@ -1,15 +1,17 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '../views/Login.vue'
-import Examen from '../views/examenes/comp_examen.vue'
-import ExamenPreguntas from '../views/examenes/comp_examen_preguntas.vue'
-import Materia from '../views/materias/comp_materia.vue'
-import MateriaPreguntas from '../views/materias/comp_materia_preguntas.vue'
-import Mesa from '../views/mesas/comp_mesa.vue'
-import ModalPregunta from '../views/comp_modal_pregunta.vue'
-import Curso from '../views/cursos/comp_curso.vue'
-import Alumno from '../views/alumnos/comp_alumno.vue'
-import Inscripcion from '../views/inscripciones/comp_inscripcion.vue'
+import Examen from '../views/examen/comp_examen.vue'
+import ExamenPreguntas from '../views/examen/comp_examen_preguntas.vue'
+import Materia from '../views/materia/comp_materia.vue'
+import MateriaPreguntas from '../views/materia/comp_materia_preguntas.vue'
+import Mesa from '../views/mesa/comp_mesa.vue'
+import Curso from '../views/curso/comp_curso.vue'
+import Alumno from '../views/alumno/comp_alumno.vue'
+import Inscripcion from '../views/inscripcion/comp_inscripcion.vue'
+import Usuario from '../views/usuario/comp_usuario.vue'
+import ModalRendir from '../views/modal/comp_modal_rendir.vue'
+import ModalPregunta from '../views/modal/comp_modal_pregunta.vue'
 Vue.use(VueRouter)
 const routes = [
 	{
@@ -17,6 +19,30 @@ const routes = [
 		name: 'Iniciar sesión',
 		component: Login
 	},
+
+	//-- USUARIOS --
+	{
+		path: '/usuario',
+		name: 'listar_usuario',
+		//ADMIN    -> AMIGOS|ALUMNOS|USUARIOS|PROFESORES
+		//PROFESOR -> AMIGOS|ALUMNOS
+		//ALUMNO   -> AMIGOS
+		component: Usuario,
+		children: [
+			{
+				path: 'crear',
+				name: 'crear_usuario',
+			},
+		]
+	},
+	//-- USUARIO
+	{
+		path: '/usuario/:id',
+		name: 'editar_usuario',
+		component: Usuario,
+	},
+	//-- /USUARIOS --
+
 	//-- MATERIAS --
 	{
 		path: '/materia',
@@ -105,7 +131,7 @@ const routes = [
 			},
 		]
 	},
-	//-- MESAS --
+	//-- MESA --
 	{
 		path: '/mesa/:id',
 		name: 'editar_mesa',
@@ -135,6 +161,11 @@ const routes = [
 				path: 'preguntas',
 				name: 'examen_preguntas',
 				component: ExamenPreguntas,
+			},
+			{
+				path: 'rendir',
+				name: 'examen_rendir',
+				component: ModalRendir,
 			}
 		]
 	},
