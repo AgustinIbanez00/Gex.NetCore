@@ -67,6 +67,11 @@ public class PreguntaController : ControllerBase
         return Created(nameof(Get), pregunta);
     }
     */
+    /// <summary>
+    /// Permite crear múltiples preguntas en un solo llamado.
+    /// </summary>
+    /// <param name="preguntasDto"></param>
+    /// <returns></returns>
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResult<PreguntaResponse>))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
