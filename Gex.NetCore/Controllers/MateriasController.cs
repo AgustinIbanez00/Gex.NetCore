@@ -66,6 +66,7 @@ public class MateriaController : ControllerBase
     }
 
     [HttpPatch]
+		[Authorize(Roles = nameof(UsuarioTipo.Alumno))]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResponse<MateriaRequest>))]
     public async Task<ActionResult<GexResponse<MateriaRequest>>> UpdateMateria([FromBody] MateriaRequest materiaDto)
     {
@@ -77,6 +78,7 @@ public class MateriaController : ControllerBase
     }
 
     [HttpDelete]
+		[Authorize(Roles = nameof(UsuarioTipo.Alumno))]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResponse<MateriaRequest>))]
     public async Task<ActionResult<GexResponse<MateriaRequest>>> DeleteMateria(int id)
     {

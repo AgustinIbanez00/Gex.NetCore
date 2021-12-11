@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Linq;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Gex.Models;
 using Gex.Repository.Interface;
@@ -45,7 +46,7 @@ public class MateriaRepository : IMateriaRepository
 
     public async Task<Materia> GetMateriaAsync(long id) => await _context.Materias.FindAsync(id);
 
-    public async Task<ICollection<Materia>> GetMateriasAsync() => await _context.Materias.ToListAsync();
+    public async Task<ICollection<Materia>> GetMateriasAsync() => await _context.Materias.Where(m => m.Estado == Estado.NORMAL).ToListAsync();
 
     public async Task<bool> Save() => await _context.SaveChangesAsync() >= 0;
 

@@ -7,6 +7,7 @@
 			estado_actual: 1,
 			id: 0,
 			titulo_txt: '',
+			eliminar_txt: '',
 		},
 		mutations: {
 			estado(state, estado) {
@@ -24,6 +25,8 @@
 				edicion: 3,
 				preguntas: 4,
 			},
+			modal_eliminar: false,
+			url_api: 'http://localhost:5000/api',
 		}),
 		methods: {
 			...Vuex.mapMutations(['estado']),
@@ -36,10 +39,12 @@
 			},
 			lista: function(recargar){
 				var vm = this;
-				//if(recargar) vm.cargar_tabla();
-				vm.estado_actual = vm.estados.lista;
 				vm.top();
+				let tabla = vm.$refs.table && vm.$refs.table[`tabla_${vm.tab_actual}`];
+				if(tabla) vm.cargar_tabla();
+				else vm.$router.push(`/${vm.tab_actual}`);
 			},
+				
 			cancelar: function(){
 				var vm = this;
 				vm.estado_actual =vm.estados.lista;
@@ -50,13 +55,21 @@
 				vm.estado_actual = vm.estados.creacion;
 				vm.top();
 			},
-			edicion: function(id,modo_preguntas = false){
+			edicion: function(id){
 				var vm = this;
-				//var examen = vm.examenes.find(e =>e.id = id);
-				//vm.examen = examen;
-
-				vm.estado_actual = modo_preguntas ? vm.estados.preguntas : vm.estados.edicion;
+				vm.$router.push(`/${vm.tab_actual}/${id}`);
 				vm.top();
+			},
+			eliminar(){
+				var vm = this;
+				console.log(vm.$route.params.eliminar_id)
+				axios.delete(`${vm.url_api}/${vm.tab_actual}?id=${vm.$route.params.eliminar_id}`, vm.axios_headers)
+				.then(function (response) {
+					vm.lista();
+					vm.modal_eliminar = false;
+				}).catch(function (error) {
+					console.log(error);
+				});
 			},
 			//Omg
 			formatDate (date) {
@@ -80,7 +93,7 @@
 			}
 		},
 		computed:{
-			...Vuex.mapState(['estado_actual', 'id','titulo_txt']),
+			...Vuex.mapState(['estado_actual', 'id','titulo_txt','eliminar_txt']),
 			estado_actual:{
 				get: function () {return this.$store.state.estado_actual;},
 				set: function (val) {this.$store.state.estado_actual = val;}
@@ -93,6 +106,10 @@
 				get: function () {return this.$store.state.titulo_txt;},
 				set: function (val) {this.$store.state.titulo_txt = val;}
 			},
+			eliminar_txt:{
+				get: function () {return this.$store.state.eliminar_txt;},
+				set: function (val) {this.$store.state.eliminar_txt = val;}
+			},
 			route: function(){
 				var vm = this;
 				return vm.$route.name;
@@ -100,6 +117,14 @@
 			tab_actual: function(){
 				var vm = this;
 				return vm.$route.path.split('/')[1];
+			},
+			axios_headers(){
+				return {
+					headers: {
+						'Content-Type': 'application/json',
+						'Authorization': `Bearer ${window.$cookies.get("gex_session")}`
+					}
+				}
 			},
 			titulo(){
 				var vm = this;
@@ -150,3 +175,4 @@
 	}
 	export default mixin_base;
 </script>
+

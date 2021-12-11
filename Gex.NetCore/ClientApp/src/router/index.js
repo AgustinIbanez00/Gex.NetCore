@@ -12,6 +12,7 @@ import Inscripcion from '../views/inscripcion/comp_inscripcion.vue'
 import Usuario from '../views/usuario/comp_usuario.vue'
 import ModalRendir from '../views/modal/comp_modal_rendir.vue'
 import ModalPregunta from '../views/modal/comp_modal_pregunta.vue'
+import ModalEliminar from '../views/modal/comp_modal_eliminar.vue'
 Vue.use(VueRouter)
 const routes = [
 	{
@@ -24,9 +25,9 @@ const routes = [
 	{
 		path: '/usuario',
 		name: 'listar_usuario',
-		//ADMIN    -> AMIGOS|ALUMNOS|USUARIOS|PROFESORES
-		//PROFESOR -> AMIGOS|ALUMNOS
-		//ALUMNO   -> AMIGOS
+		//ADMIN    -> USUARIOS
+		//PROFESOR -> ALUMNOS
+		//ALUMNO   -> COMPAÑEROS|PROFESORES
 		component: Usuario,
 		children: [
 			{
@@ -48,12 +49,14 @@ const routes = [
 		path: '/materia',
 		name: 'listar_materia',
 		component: Materia,
-		children: [
-			{
-				path: 'crear',
-				name: 'crear_materia',
-			},
-		]
+		children: [{
+			path: 'crear',
+			name: 'crear_materia',
+		},{
+			path: 'eliminar/:eliminar_id',
+			name: 'eliminar_materia',
+			component: ModalEliminar,
+		},]
 	},
 	//-- MATERIA --
 	{
