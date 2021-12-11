@@ -90,7 +90,7 @@ public class MateriaController : ControllerBase
         return Ok(materia);
     }
 
-    [HttpGet("{id:materiaId}/preguntas")]
+    [HttpGet("{materiaId:int}/preguntas")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResult<PreguntaResponse>))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
