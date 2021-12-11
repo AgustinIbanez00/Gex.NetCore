@@ -52,7 +52,7 @@ public class PreguntaController : ControllerBase
 
         return Ok(pregunta);
     }
-
+    /*
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResult<PreguntaResponse>))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -66,7 +66,7 @@ public class PreguntaController : ControllerBase
             return StatusCode(ResponseHelper.GetHttpError(pregunta.ErrorCode), pregunta);
         return Created(nameof(Get), pregunta);
     }
-
+    */
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResult<PreguntaResponse>))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
