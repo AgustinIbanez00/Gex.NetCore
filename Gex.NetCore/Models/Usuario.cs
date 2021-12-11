@@ -1,12 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Gex.Attributes;
+using Gex.Models.Enums;
+using Microsoft.AspNetCore.Identity;
 
 namespace Gex.Models;
-public enum UsuarioTipo
-{
-    Alumno,
-    Profesor,
-    Administrador
-}
+[GexDescription("usuario", Humanizer.GrammaticalGender.Masculine)]
 public partial class Usuario : IdentityUser<int>
 {
     public DateTimeOffset? EmailVerifiedAt { get; set; }

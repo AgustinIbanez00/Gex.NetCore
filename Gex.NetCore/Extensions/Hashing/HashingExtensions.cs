@@ -2,10 +2,10 @@
 using System.Text;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
-namespace Gex.Helpers;
-public class HashHelper
+namespace Gex.Extensions.Hashing;
+public static class HashingExtensions
 {
-    public static HashedPassword Hash(string password)
+    public static HashedPassword Hash(this string password)
     {
         byte[] salt = new byte[128 / 8];
         using (var rng = RandomNumberGenerator.Create())
@@ -41,8 +41,3 @@ public class HashHelper
     }
 }
 
-public class HashedPassword
-{
-    public string Password { get; set; }
-    public string Salt { get; set; }
-}

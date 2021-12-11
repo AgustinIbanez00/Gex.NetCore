@@ -1,22 +1,23 @@
 ﻿using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-
 using AutoMapper;
 using EntityFramework.Exceptions.Common;
-using Gex.Helpers;
+using Gex.Extensions.Response;
 using Gex.Models;
+using Gex.Models.Enums;
 using Gex.Repository.Interface;
 using Gex.Services.Interface;
 using Gex.Utils;
 using Gex.ViewModels.Request;
+using Gex.ViewModels.Response;
 
 namespace Gex.Services;
-public class ComisionService : IComisionService, IGexResponse<ComisionRequest>
+using static GexResponse;
+
+public class ComisionService : IComisionService
 {
     private readonly IMapper _mapper;
     private readonly IComisionRepository _repository;
-    private readonly GexResponseOptions _options = Comision.Options;
 
     public ComisionService(IMapper mapper, IComisionRepository repository)
     {
@@ -24,138 +25,130 @@ public class ComisionService : IComisionService, IGexResponse<ComisionRequest>
         _repository = repository;
     }
 
-    //*********** HANDLING ERRORS ***********//
-    public GexResponse<ICollection<ComisionRequest>> Collection(GexErrorMessage message) => GexResponse<ICollection<ComisionRequest>>.ErrorF(message, _options);
-    public GexResponse<ComisionRequest> Success(GexSuccessMessage message) => GexResponse<ComisionRequest>.Ok(message, _options);
-    public GexResponse<ComisionRequest> Error(GexErrorMessage error, [Optional] string message) => GexResponse<ComisionRequest>.ErrorF(error, _options, message);
-    public GexResponse<ICollection<ComisionRequest>> CollectionMessage(GexErrorMessage error, [Optional] string message) => GexResponse<ICollection<ComisionRequest>>.ErrorF(error, _options, message);
-    public GexResponse<ComisionRequest> Data(ComisionRequest data, GexSuccessMessage gexSuccess) => GexResponse<ComisionRequest>.Ok(data, gexSuccess, _options);
-    public GexResponse<ComisionRequest> Data(ComisionRequest data) => GexResponse<ComisionRequest>.Ok(data);
-    public GexResponse<ICollection<ComisionRequest>> OkCollection(ICollection<ComisionRequest> data) => GexResponse<ICollection<ComisionRequest>>.Ok(data);
-
-    //***************************************//
-    public async Task<GexResponse<ComisionRequest>> CreateComisionAsync(ComisionRequest comisionDTO)
+    public async Task<GexResult<ComisionResponse>> CreateComisionAsync(ComisionRequest comisionDto)
     {
         try
         {
-            if (await _repository.ExistsComisionAsync(comisionDTO.Id))
-                return Error(GexErrorMessage.AlreadyExists);
+            if (await _repository.ExistsComisionAsync(comisionDto.Id))
+                return Error<Comision, ComisionResponse>(GexErrorMessage.AlreadyExists);
 
-            var comision = _mapper.Map<Comision>(comisionDTO);
+            var comision = _mapper.Map<Comision>(comisionDto);
             if (!await _repository.CreateComisionAsync(comision))
-                return Error(GexErrorMessage.CouldNotCreate);
+                return Error<Comision, ComisionResponse>(GexErrorMessage.CouldNotCreate);
 
-            var dto = _mapper.Map<ComisionRequest>(comision);
-            return GexResponse<ComisionRequest>.Ok(dto, GexSuccessMessage.Created, _options);
+            var dto = _mapper.Map<ComisionResponse>(comision);
+            return Ok<Comision, ComisionResponse>(dto, GexSuccessMessage.Created);
         }
         catch (UniqueConstraintException)
         {
-            return Error(GexErrorMessage.AlreadyExists);
+            return Error<Comision, ComisionResponse>(GexErrorMessage.AlreadyExists);
         }
         catch (Exception ex)
         {
-            return Error(GexErrorMessage.Generic, $"Detalles: {ex.Message}");
+            return Error<Comision, ComisionResponse>(GexErrorMessage.Generic, ex.Message);
         }
     }
-    public async Task<GexResponse<ComisionRequest>> DeleteComisionAsync(int id)
+    public async Task<GexResult<ComisionResponse>> DeleteComisionAsync(long id)
     {
         try
         {
             var comision = await _repository.GetComisionAsync(id);
             if (comision == null)
-                return Error(GexErrorMessage.NotFound);
+                return Error<Comision, ComisionResponse>(GexErrorMessage.NotFound);
 
             if (comision.Estado == Estado.BAJA)
-                return Error(GexErrorMessage.AlreadyDeleted);
+                return Error<Comision, ComisionResponse>(GexErrorMessage.AlreadyDeleted);
 
             if (!await _repository.DeleteComisionAsync(comision))
-                return Error(GexErrorMessage.CouldNotDelete);
+                return Error<Comision, ComisionResponse>(GexErrorMessage.CouldNotDelete);
 
-            return Data(_mapper.Map<ComisionRequest>(comision), GexSuccessMessage.Deleted);
+            return Ok<Comision, ComisionResponse>(_mapper.Map<ComisionResponse>(comision), GexSuccessMessage.Deleted);
         }
         catch (Exception ex)
         {
-            return Error(GexErrorMessage.Generic, $"Detalles: {ex.Message}");
+            return Error<Comision, ComisionResponse>(GexErrorMessage.Generic, ex.Message);
         }
     }
-    public async Task<GexResponse<ComisionRequest>> GetComisionAsync(int id)
+    public async Task<GexResult<ComisionResponse>> GetComisionAsync(long id)
     {
         try
         {
             var comision = await _repository.GetComisionAsync(id);
 
             if (comision == null)
-                return Error(GexErrorMessage.NotFound);
+                return Error<Comision, ComisionResponse>(GexErrorMessage.NotFound);
 
-            return GexResponse<ComisionRequest>.Ok(_mapper.Map<ComisionRequest>(comision));
+            return Ok(_mapper.Map<ComisionResponse>(comision));
         }
         catch (Exception ex)
         {
-            return Error(GexErrorMessage.Generic, ex.Message);
+            return Error<Comision, ComisionResponse>(GexErrorMessage.Generic, ex.Message);
         }
     }
-    public async Task<GexResponse<ComisionRequest>> GetComisionAsync(string nombre)
+
+    public async Task<GexResult<ComisionResponse>> GetComisionAsync(string nombre)
     {
         try
         {
             var comision = await _repository.GetComisionAsync(nombre);
 
             if (comision == null)
-                return Error(GexErrorMessage.NotFound);
+                return Error<Comision, ComisionResponse>(GexErrorMessage.NotFound);
 
-            return GexResponse<ComisionRequest>.Ok(_mapper.Map<ComisionRequest>(comision));
+            return Ok(_mapper.Map<ComisionResponse>(comision));
         }
         catch (Exception ex)
         {
-            return Error(GexErrorMessage.Generic, ex.Message);
+            return Error<Comision, ComisionResponse>(GexErrorMessage.Generic, ex.Message);
         }
     }
-    public async Task<GexResponse<ICollection<ComisionRequest>>> GetComisionsAsync()
+
+    public async Task<GexResult<ICollection<ComisionResponse>>> GetComisionsAsync()
     {
         try
         {
-            var comisiones = await _repository.GetComisionsAsync();
+            var comisions = await _repository.GetComisionsAsync();
 
-            if (comisiones.Count == 0)
-                return CollectionMessage(GexErrorMessage.NotFound);
+            if (comisions.Count == 0)
+                return Error<Comision, ICollection<ComisionResponse>>(GexErrorMessage.NotFound);
 
-            var comisiontesDTO = new List<ComisionRequest>();
+            var comisionsDto = new List<ComisionResponse>();
 
-            foreach (var comision in comisiones)
+            foreach (var Comision in comisions)
             {
-                comisiontesDTO.Add(_mapper.Map<ComisionRequest>(comision));
+                comisionsDto.Add(_mapper.Map<ComisionResponse>(Comision));
             }
-            return OkCollection(comisiontesDTO);
+            return Ok<ICollection<ComisionResponse>>(comisionsDto);
         }
         catch (Exception ex)
         {
-            return CollectionMessage(GexErrorMessage.Generic, ex.Message);
+            return Error<Comision, ICollection<ComisionResponse>>(GexErrorMessage.Generic, ex.Message);
         }
     }
-    public async Task<GexResponse<ComisionRequest>> UpdateComisionAsync(ComisionRequest comisionDTO)
+
+    public async Task<GexResult<ComisionResponse>> UpdateComisionAsync(ComisionRequest comisionDto)
     {
         try
         {
-            if (comisionDTO.Id == 0)
-                return Error(GexErrorMessage.InvalidId);
+            if (comisionDto.Id == 0)
+                return Error<Comision, ComisionResponse>(GexErrorMessage.InvalidId);
 
-            var comision = await _repository.GetComisionAsync(comisionDTO.Id);
+            var comision = await _repository.GetComisionAsync(comisionDto.Id);
 
             if (comision == null)
-                return Error(GexErrorMessage.NotFound);
+                return Error<Comision, ComisionResponse>(GexErrorMessage.NotFound);
 
-            comision.Nombre = comisionDTO.Nombre;
-            comision.CicloLectivo = comisionDTO.CicloLectivo;
+            comision.Nombre = comisionDto.Nombre;
+            comision.CicloLectivo = comisionDto.CicloLectivo;
 
             if (!await _repository.UpdateComisionAsync(comision))
-                return Error(GexErrorMessage.CouldNotUpdate);
+                return Error<Comision, ComisionResponse>(GexErrorMessage.CouldNotUpdate);
 
-            return Data(_mapper.Map<ComisionRequest>(comision), GexSuccessMessage.Modified);
+            return Ok<Comision, ComisionResponse>(_mapper.Map<ComisionResponse>(comision), GexSuccessMessage.Modified);
         }
         catch (Exception ex)
         {
-            return Error(GexErrorMessage.Generic, ex.Message);
+            return Error<Comision, ComisionResponse>(GexErrorMessage.Generic, ex.Message);
         }
     }
-
 }

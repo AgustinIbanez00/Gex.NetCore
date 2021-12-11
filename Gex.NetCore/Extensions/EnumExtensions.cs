@@ -2,10 +2,10 @@
 using System.Linq;
 using System.Reflection;
 
-namespace Gex.Helpers;
-public static class Enumerations
+namespace Gex.Extensions;
+public static class EnumExtensions
 {
-    public static string GetEnumDescription(Enum value)
+    public static string GetDescription(this Enum value)
     {
         FieldInfo fi = value.GetType().GetField(value.ToString());
 

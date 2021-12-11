@@ -1,53 +1,98 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
-using Gex.Helpers;
+using Gex.Attributes;
+using Gex.Extensions;
+using Gex.Extensions.Response;
+using Humanizer;
 using SmartFormat;
 
 namespace Gex.Utils;
-public class GexResponse<T> where T : class
+public static class GexResponse
 {
-    public T Data { get; set; }
-    public bool Success { get; set; } = true;
-    public string Message { get; set; } = null;
-    public IDictionary<string, string[]> ErrorMessages { get; set; } = null;
-    public GexErrorMessage ErrorCode { get; set; }
-
-    public static GexResponse<T> Error(string title, string message)
+    /*
+    public static GexResult Error(string title, string message)
     {
-        return new GexResponse<T> { ErrorCode = GexErrorMessage.Generic, Success = false, Message = title, ErrorMessages = new Dictionary<string, string[]>() { { "", new string[] { message } } } };
+        return new GexResult { ErrorCode = GexErrorMessage.Generic, Success = false, Message = title, ErrorMessages = new Dictionary<string, string[]>() { { "", new string[] { message } } } };
     }
-    public static GexResponse<T> ErrorF(GexErrorMessage error, GexResponseOptions options, [Optional] string message)
+    */
+    /*
+    public static GexResult Error(GexErrorMessage error, GexResponseOptions options, [Optional] string message)
     {
-        return new GexResponse<T>
+        return new GexResult
         {
             ErrorCode = error,
             Success = false,
-            Message = Smart.Format(Enumerations.GetEnumDescription(error), options),
+            Message = Smart.Format(EnumExtensions.GetDescription(error), options),
             ErrorMessages = string.IsNullOrEmpty(message) ? new Dictionary<string, string[]>() : new Dictionary<string, string[]>() { { error == GexErrorMessage.Generic ? "Error" : "", new string[] { message } } }
         };
     }
+    */
 
-    public static GexResponse<T> Error(string title, string key, string message)
+    public static GexResult<TResult> KeyError<TResult>(string key, string message) where TResult : class
     {
-        return new GexResponse<T>
+        return new GexResult<TResult>
         {
+            ErrorCode = GexErrorMessage.Generic,
             Success = false,
-            Message = title,
-            ErrorMessages = string.IsNullOrEmpty(message) ? new Dictionary<string, string[]>() : new Dictionary<string, string[]>() { { key, new string[] { message } } }
+            Message = GexErrorMessage.Generic.GetDescription(),
+            ErrorMessages = string.IsNullOrEmpty(message) ? new Dictionary<string, string[]>() : new Dictionary<string, string[]>() { { new string(key.ToSnakeCase().ToArray()), new string[] { message } } }
         };
     }
-    public static GexResponse<T> Error(string message)
+
+    public static GexResult<TResult> KeyError<TEntity, TResult>(string key, GexErrorMessage error) where TResult : class
     {
-        return new GexResponse<T>
+        return new GexResult<TResult>
         {
+            ErrorCode = error,
+            Data = default(TResult),
             Success = false,
-            Message = message,
-            ErrorMessages = new Dictionary<string, string[]>()
+            Message = "Se encontraron uno o más errores.",
+            ErrorMessages =  new Dictionary<string, string[]>() { { new string(key.ToSnakeCase().ToArray()), new string[] { Smart.Format(EnumExtensions.GetDescription(error), Options<TEntity>()) } } }
         };
     }
-    public static GexResponse<T> Ok(T data)
+
+    /// <summary>
+    /// Devuelve un objeto personalizado del sistema del tipo TResult con el mensaje de error computado de TEntity.
+    /// </summary>
+    /// <typeparam name="TEntity"></typeparam>
+    /// <typeparam name="TResult"></typeparam>
+    /// <param name="error"></param>
+    /// <param name="message"></param>
+    /// <returns></returns>
+    public static GexResult<TResult> Error<TEntity, TResult>(GexErrorMessage error, [Optional] string message) where TResult : class
     {
-        return new GexResponse<T>
+        return new GexResult<TResult>
+        {
+            ErrorCode = error,
+            Data = default(TResult),
+            Success = false,
+            Message = Smart.Format(EnumExtensions.GetDescription(error), Options<TEntity>()),
+            ErrorMessages = string.IsNullOrEmpty(message) ? new Dictionary<string, string[]>() : new Dictionary<string, string[]>() { { "error", new string[] { message } } }
+        };
+    }
+
+
+
+    private static GexResponseOptions Options<TEntity>()
+    {
+        var options = new GexResponseOptions()
+        {
+            Entity = typeof(TEntity).GetAttributeValue<GexDescriptionAttribute, string>(c => c.Name),
+            Gender = typeof(TEntity).GetAttributeValue<GexDescriptionAttribute, GrammaticalGender>(c => c.Gender)
+        };
+
+        if(string.IsNullOrEmpty(options.Entity))
+        {
+            options.Entity = typeof(TEntity).Name.Humanize();
+            options.Gender = GrammaticalGender.Masculine;
+        }
+        return options;
+    }
+
+    public static GexResult<TResult> Ok<TResult>(TResult data) where TResult : class
+    {
+        return new GexResult<TResult>
         {
             Data = data,
             Success = true,
@@ -55,18 +100,20 @@ public class GexResponse<T> where T : class
             ErrorMessages = new Dictionary<string, string[]>()
         };
     }
-    public static GexResponse<T> Ok(GexSuccessMessage message, GexResponseOptions options)
+    /*
+    public static GexResult Ok(GexSuccessMessage message, GexResponseOptions options)
     {
-        return new GexResponse<T>
+        return new GexResult
         {
             Success = true,
-            Message = Smart.Format(Enumerations.GetEnumDescription(message), options),
+            Message = Smart.Format(EnumExtensions.GetDescription(message), options),
             ErrorMessages = new Dictionary<string, string[]>()
         };
     }
-    public static GexResponse<T> Ok(T data, string message)
+    */
+    public static GexResult<TResult> Ok<TResult>(TResult data, string message) where TResult : class
     {
-        return new GexResponse<T>
+        return new GexResult<TResult>
         {
             Data = data,
             Success = true,
@@ -74,15 +121,16 @@ public class GexResponse<T> where T : class
             ErrorMessages = new Dictionary<string, string[]>()
         };
     }
-    public static GexResponse<T> Ok(T data, GexSuccessMessage message, GexResponseOptions options)
+
+    public static GexResult<TResult> Ok<TEntity, TResult>(TResult data, GexSuccessMessage message) where TResult : class
     {
-        return new GexResponse<T>
+        return new GexResult<TResult>
         {
             Data = data,
             Success = true,
-            Message = Smart.Format(Enumerations.GetEnumDescription(message), options),
+            Message = Smart.Format(message.GetDescription(), Options<TEntity>()),
             ErrorMessages = new Dictionary<string, string[]>()
         };
     }
-    
+
 }

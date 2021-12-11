@@ -9,11 +9,13 @@ public class AutoMapperProfiles : Profile
     public AutoMapperProfiles()
     {
         CreateMap<Comision, ComisionRequest>().ReverseMap();
+        CreateMap<Comision, ComisionResponse>().ReverseMap();
         CreateMap<Examen, ExamenRequest>().ReverseMap();
         CreateMap<Examen, ExamenResponse>().ReverseMap();
         CreateMap<Materia, MateriaRequest>().ReverseMap();
         CreateMap<Materia, MateriaResponse>().ReverseMap();
         CreateMap<MesaExamen, MesaExamenRequest>().ReverseMap();
+        CreateMap<MesaExamen, MesaExamenResponse>().ReverseMap();
         CreateMap<Pregunta, PreguntaRequest>().ReverseMap();
         CreateMap<Pregunta, PreguntaResponse>().ReverseMap();
     }

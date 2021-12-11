@@ -1,20 +1,12 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using Gex.Helpers;
+using Gex.Attributes;
+using Gex.Models.Enums;
+using Humanizer;
 
 namespace Gex.Models;
-public enum ExamenTipo
-{
-    [Description("Final")]
-    FINAL,
-    [Description("Parcial")]
-    PARCIAL,
-    [Description("Global")]
-    GLOBAL,
-    TEST
-}
 
+[GexDescription("exámen", GrammaticalGender.Masculine)]
 public partial class Examen : Auditory
 {
     [Key]
@@ -28,10 +20,4 @@ public partial class Examen : Auditory
     public int NotaPromo { get; set; }
     public bool Recuperatorio { get; set; }
     public virtual ICollection<Pregunta> Preguntas { get; set; }
-
-    public static GexResponseOptions Options => new GexResponseOptions()
-    {
-        Entity = "exámen",
-        Gender = Gender.MALE
-    };
 }

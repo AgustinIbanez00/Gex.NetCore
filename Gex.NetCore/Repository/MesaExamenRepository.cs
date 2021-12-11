@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Gex.Models;
+using Gex.Models.Enums;
 using Gex.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
 
@@ -41,11 +43,11 @@ public class MesaExamenRepository : IMesaExamenRepository
         return await Save();
     }
 
-    public async Task<bool> ExistsMesaExamenAsync(long id) => await _context.MesasExamen.FindAsync(id) != null;
+    public async Task<bool> ExistsMesaExamenAsync(long id) => await GetMesaExamenAsync(id) != null;
 
-    public async Task<MesaExamen> GetMesaExamenAsync(long id) => await _context.MesasExamen.FindAsync(id);
+    public async Task<MesaExamen> GetMesaExamenAsync(long id) => await _context.MesasExamen.FirstOrDefaultAsync(m => m.Estado == Estado.NORMAL && m.Id == id);
 
-    public async Task<ICollection<MesaExamen>> GetMesasExamenAsync() => await _context.MesasExamen.ToListAsync();
+    public async Task<ICollection<MesaExamen>> GetMesasExamenAsync() => await _context.MesasExamen.Where(m => m.Estado == Estado.NORMAL).ToListAsync();
 
     public async Task<bool> Save() => await _context.SaveChangesAsync() >= 0;
 

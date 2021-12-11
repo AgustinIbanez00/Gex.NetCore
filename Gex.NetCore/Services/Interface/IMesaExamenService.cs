@@ -2,13 +2,14 @@
 using System.Threading.Tasks;
 using Gex.Utils;
 using Gex.ViewModels.Request;
+using Gex.ViewModels.Response;
 
 namespace Gex.Services.Interface;
 public interface IMesaExamenService
 {
-    Task<GexResponse<ICollection<MesaExamenRequest>>> GetMesaExamensAsync();
-    Task<GexResponse<MesaExamenRequest>> GetMesaExamenAsync(int id);
-    Task<GexResponse<MesaExamenRequest>> CreateMesaExamenAsync(MesaExamenRequest mesaExamenDto);
-    Task<GexResponse<MesaExamenRequest>> UpdateMesaExamenAsync(MesaExamenRequest mesaExamenDto);
-    Task<GexResponse<MesaExamenRequest>> DeleteMesaExamenAsync(int id);
+    Task<GexResult<ICollection<MesaExamenResponse>>> GetMesasExamenesAsync();
+    Task<GexResult<MesaExamenResponse>> GetMesaExamenAsync(long id);
+    Task<GexResult<MesaExamenResponse>> CreateMesaExamenAsync(MesaExamenRequest mesaExamenDto);
+    Task<GexResult<MesaExamenResponse>> UpdateMesaExamenAsync(MesaExamenRequest mesaExamenDto);
+    Task<GexResult<MesaExamenResponse>> DeleteMesaExamenAsync(long id);
 }

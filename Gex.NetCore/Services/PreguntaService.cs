@@ -4,142 +4,173 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 using EntityFramework.Exceptions.Common;
-using Gex.Helpers;
+using Gex.Extensions.Response;
 using Gex.Models;
+using Gex.Models.Enums;
 using Gex.Repository.Interface;
 using Gex.Services.Interface;
 using Gex.Utils;
 using Gex.ViewModels.Request;
+using Gex.ViewModels.Response;
 
 namespace Gex.Services;
-public class PreguntaService : IPreguntaService, IGexResponse<PreguntaRequest>
+using static GexResponse;
+
+public class PreguntaService : IPreguntaService
 {
     private readonly IMapper _mapper;
     private readonly IPreguntaRepository _repository;
-    private readonly GexResponseOptions _options = Pregunta.Options;
+    private readonly IExamenRepository _examenRepository;
+    private readonly IMateriaRepository _materiaRepository;
 
-    public PreguntaService(IMapper mapper, IPreguntaRepository repository)
+    public PreguntaService(IMapper mapper, IPreguntaRepository repository, IExamenRepository examenRepository, IMateriaRepository materiaRepository)
     {
         _mapper = mapper;
         _repository = repository;
+        _examenRepository = examenRepository;
+        _materiaRepository = materiaRepository;
     }
 
-    //*********** HANDLING ERRORS ***********//
-    public GexResponse<ICollection<PreguntaRequest>> Collection(GexErrorMessage message) => GexResponse<ICollection<PreguntaRequest>>.ErrorF(message, _options);
-    public GexResponse<PreguntaRequest> Success(GexSuccessMessage message) => GexResponse<PreguntaRequest>.Ok(message, _options);
-    public GexResponse<PreguntaRequest> Error(GexErrorMessage error, [Optional] string message) => GexResponse<PreguntaRequest>.ErrorF(error, _options, message);
-    public GexResponse<ICollection<PreguntaRequest>> CollectionMessage(GexErrorMessage error, [Optional] string message) => GexResponse<ICollection<PreguntaRequest>>.ErrorF(error, _options, message);
-    public GexResponse<PreguntaRequest> Data(PreguntaRequest data, GexSuccessMessage gexSuccess) => GexResponse<PreguntaRequest>.Ok(data, gexSuccess, _options);
-    public GexResponse<PreguntaRequest> Data(PreguntaRequest data) => GexResponse<PreguntaRequest>.Ok(data);
-    public GexResponse<ICollection<PreguntaRequest>> OkCollection(ICollection<PreguntaRequest> data) => GexResponse<ICollection<PreguntaRequest>>.Ok(data);
-
-    //***************************************//
-    public async Task<GexResponse<PreguntaRequest>> CreatePreguntaAsync(PreguntaRequest preguntaDto)
+    public async Task<GexResult<PreguntaResponse>> CreatePreguntaAsync(PreguntaRequest preguntaDto)
     {
         try
         {
             if (await _repository.ExistsPreguntaAsync(preguntaDto.Id))
-                return Error(GexErrorMessage.AlreadyExists);
+                return Error<Pregunta, PreguntaResponse>(GexErrorMessage.AlreadyExists);
 
             var pregunta = _mapper.Map<Pregunta>(preguntaDto);
-            if (!await _repository.CreatePreguntaAsync(pregunta))
-                return Error(GexErrorMessage.CouldNotCreate);
 
-            var dto = _mapper.Map<PreguntaRequest>(pregunta);
-            return GexResponse<PreguntaRequest>.Ok(dto, GexSuccessMessage.Created, _options);
+            if(preguntaDto.MateriaId.HasValue && await _materiaRepository.ExistsMateriaAsync(preguntaDto.MateriaId.Value))
+                pregunta.MateriaId = preguntaDto.MateriaId;
+
+            if (preguntaDto.ExamenId.HasValue && await _examenRepository.ExistsExamenAsync(preguntaDto.ExamenId.Value))
+                pregunta.ExamenId = preguntaDto.ExamenId;
+
+            if (!preguntaDto.ExamenId.HasValue && !preguntaDto.MateriaId.HasValue)
+                return Error<Pregunta, PreguntaResponse>(GexErrorMessage.CouldNotCreate, "Se debe seleccionar un exámen o una materia.");
+
+            if (!await _repository.CreatePreguntaAsync(pregunta))
+                return Error<Pregunta, PreguntaResponse>(GexErrorMessage.CouldNotCreate);
+
+            var dto = _mapper.Map<PreguntaResponse>(pregunta);
+            return Ok<Pregunta, PreguntaResponse>(dto, GexSuccessMessage.Created);
         }
         catch (UniqueConstraintException)
         {
-            return Error(GexErrorMessage.AlreadyExists);
+            return Error<Pregunta, PreguntaResponse>(GexErrorMessage.AlreadyExists);
         }
         catch (Exception ex)
         {
-            return Error(GexErrorMessage.Generic, ex.Message);
+            return Error<Pregunta, PreguntaResponse>(GexErrorMessage.Generic, ex.Message);
         }
     }
-    public async Task<GexResponse<PreguntaRequest>> DeletePreguntaAsync(int id)
+    public async Task<GexResult<PreguntaResponse>> DeletePreguntaAsync(int id)
     {
         try
         {
             var pregunta = await _repository.GetPreguntaAsync(id);
             if (pregunta == null)
-                return Error(GexErrorMessage.NotFound);
+                return Error<Pregunta, PreguntaResponse>(GexErrorMessage.NotFound);
 
             if (pregunta.Estado == Estado.BAJA)
-                return Error(GexErrorMessage.AlreadyDeleted);
+                return Error<Pregunta, PreguntaResponse>(GexErrorMessage.AlreadyDeleted);
 
             if (!await _repository.DeletePreguntaAsync(pregunta))
-                return Error(GexErrorMessage.CouldNotDelete);
+                return Error<Pregunta, PreguntaResponse>(GexErrorMessage.CouldNotDelete);
 
-            return Data(_mapper.Map<PreguntaRequest>(pregunta), GexSuccessMessage.Deleted);
+            return Ok<Pregunta, PreguntaResponse>(_mapper.Map<PreguntaResponse>(pregunta), GexSuccessMessage.Deleted);
         }
         catch (Exception ex)
         {
-            return Error(GexErrorMessage.Generic, ex.Message);
+            return Error<Pregunta, PreguntaResponse>(GexErrorMessage.Generic, ex.Message);
         }
     }
-    public async Task<GexResponse<PreguntaRequest>> GetPreguntaAsync(int id)
+    public async Task<GexResult<PreguntaResponse>> GetPreguntaAsync(int id)
     {
         try
         {
             var pregunta = await _repository.GetPreguntaAsync(id);
 
             if (pregunta == null)
-                return Error(GexErrorMessage.NotFound);
+                return Error<Pregunta, PreguntaResponse>(GexErrorMessage.NotFound);
 
-            return GexResponse<PreguntaRequest>.Ok(_mapper.Map<PreguntaRequest>(pregunta));
+            return Ok(_mapper.Map<PreguntaResponse>(pregunta));
         }
         catch (Exception ex)
         {
-            return Error(GexErrorMessage.Generic, ex.Message);
+            return Error<Pregunta, PreguntaResponse>(GexErrorMessage.Generic, ex.Message);
         }
     }
-    public async Task<GexResponse<ICollection<PreguntaRequest>>> GetPreguntasAsync()
+    public async Task<GexResult<ICollection<PreguntaResponse>>> GetPreguntasAsync()
     {
         try
         {
-            var Preguntaes = await _repository.GetPreguntasAsync();
+            var preguntas = await _repository.GetPreguntasAsync();
 
-            if (Preguntaes.Count == 0)
-                return CollectionMessage(GexErrorMessage.NotFound);
+            if (preguntas.Count == 0)
+                return Error<Pregunta, ICollection<PreguntaResponse>>(GexErrorMessage.NotFound);
 
-            var PreguntatesDTO = new List<PreguntaRequest>();
+            var preguntasDto = new List<PreguntaResponse>();
 
-            foreach (var Pregunta in Preguntaes)
+            foreach (var Pregunta in preguntas)
             {
-                PreguntatesDTO.Add(_mapper.Map<PreguntaRequest>(Pregunta));
+                preguntasDto.Add(_mapper.Map<PreguntaResponse>(Pregunta));
             }
-            return OkCollection(PreguntatesDTO);
+            return Ok<ICollection<PreguntaResponse>>(preguntasDto);
         }
         catch (Exception ex)
         {
-            return CollectionMessage(GexErrorMessage.Generic, ex.Message);
+            return Error<Pregunta, ICollection<PreguntaResponse>>(GexErrorMessage.Generic, ex.Message);
         }
     }
-    public async Task<GexResponse<PreguntaRequest>> UpdatePreguntaAsync(PreguntaRequest preguntaDto)
+
+    public async Task<GexResult<ICollection<PreguntaResponse>>> GetPreguntasByExamenIdAsync(long examenId)
+    {
+        try
+        {
+            var preguntas = await _repository.GetPreguntasByExamenIdAsync(examenId);
+
+            if (preguntas.Count == 0)
+                return Error<Pregunta, ICollection<PreguntaResponse>>(GexErrorMessage.NotFound);
+
+            var preguntasDto = new List<PreguntaResponse>();
+
+            foreach (var Pregunta in preguntas)
+            {
+                preguntasDto.Add(_mapper.Map<PreguntaResponse>(Pregunta));
+            }
+            return Ok<ICollection<PreguntaResponse>>(preguntasDto);
+        }
+        catch (Exception ex)
+        {
+            return Error<Pregunta, ICollection<PreguntaResponse>>(GexErrorMessage.Generic, ex.Message);
+        }
+    }
+
+    public async Task<GexResult<PreguntaResponse>> UpdatePreguntaAsync(PreguntaRequest preguntaDto)
     {
         try
         {
             if (preguntaDto.Id == 0)
-                return Error(GexErrorMessage.InvalidId);
+                return Error<Pregunta, PreguntaResponse>(GexErrorMessage.InvalidId);
 
             var pregunta = await _repository.GetPreguntaAsync(preguntaDto.Id);
 
             if (pregunta == null)
-                return Error(GexErrorMessage.NotFound);
+                return Error<Pregunta, PreguntaResponse>(GexErrorMessage.NotFound);
 
-            pregunta.Periodo = preguntaDto.Periodo;
+            pregunta.Tema = preguntaDto.Tema;
             pregunta.Descripcion = preguntaDto.Descripcion;
             pregunta.Tipo = preguntaDto.Tipo;
 
             if (!await _repository.UpdatePreguntaAsync(pregunta))
-                return Error(GexErrorMessage.CouldNotUpdate);
+                return Error<Pregunta, PreguntaResponse>(GexErrorMessage.CouldNotUpdate);
 
-            return Data(_mapper.Map<PreguntaRequest>(pregunta), GexSuccessMessage.Modified);
+            return Ok<Pregunta, PreguntaResponse>(_mapper.Map<PreguntaResponse>(pregunta), GexSuccessMessage.Modified);
         }
         catch (Exception ex)
         {
-            return Error(GexErrorMessage.Generic, ex.Message);
+            return Error<Pregunta, PreguntaResponse>(GexErrorMessage.Generic, ex.Message);
         }
     }
 }

@@ -6,7 +6,7 @@ namespace Gex.Repository.Interface;
 
 public interface IExamenRepository
 {
-    Task<ICollection<Examen>> GetExamensAsync();
+    Task<ICollection<Examen>> GetExamenesAsync();
     Task<Examen> GetExamenAsync(long id);
     Task<bool> ExistsExamenAsync(long id);
     Task<bool> CreateExamenAsync(Examen Examen);

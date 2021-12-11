@@ -1,38 +1,24 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Gex.Helpers;
+using System.ComponentModel.DataAnnotations.Schema;
+using Gex.Attributes;
+using Gex.Models.Enums;
+using Humanizer;
 
 namespace Gex.Models;
-
-public enum PreguntaTipo
-{
-    /// <summary>
-    /// Sólo se puede contestar con sí o no.
-    /// </summary>
-    CERRADA,
-    /// <summary>
-    /// Debe realizar una justificación de la respuesta.
-    /// </summary>
-    TEXTO,
-    /// <summary>
-    /// Se podrán responder con múltiples valores.
-    /// </summary>
-    MULTIPLECHOICE
-}
+[GexDescription("pregunta", GrammaticalGender.Feminine)]
 public partial class Pregunta : Auditory
 {
     [Key]
     public long Id { get; set; }
-    public string Periodo { get; set; }
+    public string Tema { get; set; }
     public string Descripcion { get; set; }
     public PreguntaTipo Tipo { get; set; }
     public virtual ICollection<Respuesta> Respuestas { get; set; }
 
-    public static GexResponseOptions Options =>
-        new GexResponseOptions()
-        {
-            Entity = "pregunta",
-            Gender = Gender.FEMALE
-        };
+    //[ForeignKey(nameof(Examen))]
+    public long? ExamenId { get; set; }
+    //[ForeignKey(nameof(Materia))]
+    public long? MateriaId { get; set; }
 
 }

@@ -3,8 +3,10 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using Gex.Helpers;
+using Gex.Extensions.Hashing;
+using Gex.Extensions.Response;
 using Gex.Models;
+using Gex.Models.Enums;
 using Gex.Utils;
 using Gex.ViewModels.Request;
 using Microsoft.AspNetCore.Authorization;
@@ -14,6 +16,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Gex.Controllers;
+using static GexResponse;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -31,19 +34,13 @@ public class AuthController : ControllerBase
 
     [Route("Login")]
     [HttpPost]
-    public async Task<ActionResult<GexResponse<string>>> Login([FromBody] LoginRequest credentials)
+    public async Task<ActionResult<GexResult<object>>> Login([FromBody] LoginRequest credentials)
     {
-        var options = new GexResponseOptions()
-        {
-            Entity = "usuario",
-            Gender = Gender.MALE
-        };
-
         Usuario Usuario = await _context.Usuarios.Where(x => x.Email == credentials.Email).FirstOrDefaultAsync();
         if (Usuario == null)
-            return BadRequest(GexResponse<string>.ErrorF(GexErrorMessage.InvalidEmail, options));
+            return BadRequest(KeyError<Usuario, object>(nameof(credentials.Email), GexErrorMessage.InvalidEmail));
 
-        if (HashHelper.CheckHash(credentials.Password, Usuario.Password, Usuario.Salt))
+        if (HashingExtensions.CheckHash(credentials.Password, Usuario.Password, Usuario.Salt))
         {
             var secretKey = _configuration.GetValue<string>("SecretKey");
             var key = Encoding.ASCII.GetBytes(secretKey);
@@ -64,19 +61,19 @@ public class AuthController : ControllerBase
 
             string bearer_token = tokenHandler.WriteToken(createdToken);
 
-            return GexResponse<string>.Ok(bearer_token);
+            return Ok(bearer_token);
         }
-        return BadRequest(GexResponse<string>.ErrorF(GexErrorMessage.InvalidPassword, options));
+        return BadRequest(KeyError<Usuario, object>(nameof(credentials.Password), GexErrorMessage.InvalidPassword));
     }
 
     [Route("Register")]
     [HttpPost]
-    public async Task<ActionResult<GexResponse<string>>> Register([FromBody] RegistroRequest registerModel)
+    public async Task<ActionResult<GexResult<object>>> Register([FromBody] RegistroRequest registerModel)
     {
         if (await _context.Usuarios.Where(x => x.Email == registerModel.Email).AnyAsync())
-            return BadRequest(GexResponse<string>.Error("Error", nameof(registerModel.Email), $"Esa dirección de correo electrónico {registerModel.Email} ya existe."));
+            return BadRequest(KeyError<object>(nameof(registerModel.Email), $"Esa dirección de correo electrónico {registerModel.Email} ya existe."));
 
-        HashedPassword Password = HashHelper.Hash(registerModel.Password);
+        HashedPassword Password = registerModel.Password.Hash();
 
         Usuario user = new Usuario()
         {
@@ -89,7 +86,7 @@ public class AuthController : ControllerBase
         _context.Usuarios.Add(user);
         await _context.SaveChangesAsync();
 
-        return Ok(GexResponse<string>.Ok(null, "Usuario creado correctamente."));
+        return Ok(Ok<Usuario, object>(null, GexSuccessMessage.Created));
     }
 
     [Route("Me")]

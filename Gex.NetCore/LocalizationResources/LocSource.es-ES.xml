@@ -182,4 +182,34 @@
     <value>profesor</value>
     <comment>Created by XLocalizer</comment>
   </data>
+  <data isActive="false">
+    <key>periodo</key>
+    <value>periodo</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
+  <data isActive="false">
+    <key>descripción</key>
+    <value>descripción</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
+  <data isActive="false">
+    <key>tipo</key>
+    <value>tipo</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
+  <data isActive="false">
+    <key>fecha</key>
+    <value>fecha</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
+  <data isActive="false">
+    <key>mostrar respuestas</key>
+    <value>mostrar respuestas</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
+  <data isActive="false">
+    <key>tema</key>
+    <value>tema</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
 </root>

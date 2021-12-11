@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Gex.Models.Enums;
 using Gex.Models;
 
 namespace Gex.Fakers;

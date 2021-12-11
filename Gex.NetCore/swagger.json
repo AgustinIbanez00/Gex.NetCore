@@ -3,10 +3,14 @@
   "info": {
     "title": "Gex",
     "description": "Colleción de API's correspondientes al sistema de exámenes Gex.",
+    "contact": {
+      "name": "Agustin Ibañez",
+      "email": "admin@gexsystem.com"
+    },
     "version": "v1"
   },
   "paths": {
-    "/api/Auth/Login": {
+    "/api/auth/login": {
       "post": {
         "tags": [
           "Auth"
@@ -36,17 +40,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/StringGexResponse"
+                  "$ref": "#/components/schemas/ObjectGexResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/StringGexResponse"
+                  "$ref": "#/components/schemas/ObjectGexResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/StringGexResponse"
+                  "$ref": "#/components/schemas/ObjectGexResult"
                 }
               }
             }
@@ -54,7 +58,7 @@
         }
       }
     },
-    "/api/Auth/Register": {
+    "/api/auth/register": {
       "post": {
         "tags": [
           "Auth"
@@ -84,17 +88,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/StringGexResponse"
+                  "$ref": "#/components/schemas/ObjectGexResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/StringGexResponse"
+                  "$ref": "#/components/schemas/ObjectGexResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/StringGexResponse"
+                  "$ref": "#/components/schemas/ObjectGexResult"
                 }
               }
             }
@@ -102,7 +106,7 @@
         }
       }
     },
-    "/api/Auth/Me": {
+    "/api/auth/me": {
       "get": {
         "tags": [
           "Auth"
@@ -114,7 +118,7 @@
         }
       }
     },
-    "/api/Comision": {
+    "/api/comision": {
       "get": {
         "tags": [
           "Comision"
@@ -125,17 +129,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/ComisionRequestICollectionGexResponse"
+                  "$ref": "#/components/schemas/ComisionResponseGexResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ComisionRequestICollectionGexResponse"
+                  "$ref": "#/components/schemas/ComisionResponseGexResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ComisionRequestICollectionGexResponse"
+                  "$ref": "#/components/schemas/ComisionResponseGexResult"
                 }
               }
             }
@@ -191,17 +195,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/ComisionRequestGexResponse"
+                  "$ref": "#/components/schemas/ComisionResponseGexResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ComisionRequestGexResponse"
+                  "$ref": "#/components/schemas/ComisionResponseGexResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ComisionRequestGexResponse"
+                  "$ref": "#/components/schemas/ComisionResponseGexResult"
                 }
               }
             }
@@ -251,17 +255,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/ComisionRequestGexResponse"
+                  "$ref": "#/components/schemas/ComisionResponseGexResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ComisionRequestGexResponse"
+                  "$ref": "#/components/schemas/ComisionResponseGexResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ComisionRequestGexResponse"
+                  "$ref": "#/components/schemas/ComisionResponseGexResult"
                 }
               }
             }
@@ -297,17 +301,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/ComisionRequestGexResponse"
+                  "$ref": "#/components/schemas/ComisionResponseGexResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ComisionRequestGexResponse"
+                  "$ref": "#/components/schemas/ComisionResponseGexResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ComisionRequestGexResponse"
+                  "$ref": "#/components/schemas/ComisionResponseGexResult"
                 }
               }
             }
@@ -334,17 +338,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/ComisionRequestGexResponse"
+                  "$ref": "#/components/schemas/ComisionResponseGexResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ComisionRequestGexResponse"
+                  "$ref": "#/components/schemas/ComisionResponseGexResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ComisionRequestGexResponse"
+                  "$ref": "#/components/schemas/ComisionResponseGexResult"
                 }
               }
             }
@@ -352,7 +356,7 @@
         }
       }
     },
-    "/api/Comision/{id}": {
+    "/api/comision/{id}": {
       "get": {
         "tags": [
           "Comision"
@@ -374,17 +378,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/ComisionRequestGexResponse"
+                  "$ref": "#/components/schemas/ComisionResponseGexResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ComisionRequestGexResponse"
+                  "$ref": "#/components/schemas/ComisionResponseGexResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ComisionRequestGexResponse"
+                  "$ref": "#/components/schemas/ComisionResponseGexResult"
                 }
               }
             }
@@ -432,7 +436,7 @@
         }
       }
     },
-    "/api/Comision/nombre/{nombre}": {
+    "/api/comision/nombre/{nombre}": {
       "get": {
         "tags": [
           "Comision"
@@ -454,17 +458,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/ComisionRequestGexResponse"
+                  "$ref": "#/components/schemas/ComisionResponseGexResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ComisionRequestGexResponse"
+                  "$ref": "#/components/schemas/ComisionResponseGexResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ComisionRequestGexResponse"
+                  "$ref": "#/components/schemas/ComisionResponseGexResult"
                 }
               }
             }
@@ -512,7 +516,7 @@
         }
       }
     },
-    "/api/Examen": {
+    "/api/examen": {
       "get": {
         "tags": [
           "Examen"
@@ -523,17 +527,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/ExamenRequestICollectionGexResponse"
+                  "$ref": "#/components/schemas/ExamenResponseICollectionGexResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ExamenRequestICollectionGexResponse"
+                  "$ref": "#/components/schemas/ExamenResponseICollectionGexResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ExamenRequestICollectionGexResponse"
+                  "$ref": "#/components/schemas/ExamenResponseICollectionGexResult"
                 }
               }
             }
@@ -589,17 +593,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/ExamenRequestGexResponse"
+                  "$ref": "#/components/schemas/ExamenResponseGexResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ExamenRequestGexResponse"
+                  "$ref": "#/components/schemas/ExamenResponseGexResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ExamenRequestGexResponse"
+                  "$ref": "#/components/schemas/ExamenResponseGexResult"
                 }
               }
             }
@@ -649,17 +653,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/ExamenRequestGexResponse"
+                  "$ref": "#/components/schemas/ExamenResponseGexResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ExamenRequestGexResponse"
+                  "$ref": "#/components/schemas/ExamenResponseGexResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ExamenRequestGexResponse"
+                  "$ref": "#/components/schemas/ExamenResponseGexResult"
                 }
               }
             }
@@ -695,17 +699,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/ExamenRequestGexResponse"
+                  "$ref": "#/components/schemas/ExamenResponseGexResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ExamenRequestGexResponse"
+                  "$ref": "#/components/schemas/ExamenResponseGexResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ExamenRequestGexResponse"
+                  "$ref": "#/components/schemas/ExamenResponseGexResult"
                 }
               }
             }
@@ -722,7 +726,7 @@
             "in": "query",
             "schema": {
               "type": "integer",
-              "format": "int32"
+              "format": "int64"
             }
           }
         ],
@@ -732,17 +736,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/ExamenRequestGexResponse"
+                  "$ref": "#/components/schemas/ExamenResponseGexResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ExamenRequestGexResponse"
+                  "$ref": "#/components/schemas/ExamenResponseGexResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ExamenRequestGexResponse"
+                  "$ref": "#/components/schemas/ExamenResponseGexResult"
                 }
               }
             }
@@ -750,7 +754,7 @@
         }
       }
     },
-    "/api/Examen/{id}": {
+    "/api/examen/{id}/preguntas": {
       "get": {
         "tags": [
           "Examen"
@@ -762,7 +766,7 @@
             "required": true,
             "schema": {
               "type": "integer",
-              "format": "int32"
+              "format": "int64"
             }
           }
         ],
@@ -772,17 +776,57 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/ExamenResponseGexResponse"
+                  "$ref": "#/components/schemas/ExamenResponseGexResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ExamenResponseGexResponse"
+                  "$ref": "#/components/schemas/ExamenResponseGexResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ExamenResponseGexResponse"
+                  "$ref": "#/components/schemas/ExamenResponseGexResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/examen/{id}": {
+      "get": {
+        "tags": [
+          "Examen"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExamenResponseGexResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExamenResponseGexResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExamenResponseGexResult"
                 }
               }
             }
@@ -842,7 +886,7 @@
         }
       }
     },
-    "/api/Materia": {
+    "/api/materia": {
       "get": {
         "tags": [
           "Materia"
@@ -853,17 +897,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/MateriaRequestICollectionGexResponse"
+                  "$ref": "#/components/schemas/MateriaResponseICollectionGexResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MateriaRequestICollectionGexResponse"
+                  "$ref": "#/components/schemas/MateriaResponseICollectionGexResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MateriaRequestICollectionGexResponse"
+                  "$ref": "#/components/schemas/MateriaResponseICollectionGexResult"
                 }
               }
             }
@@ -919,17 +963,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/MateriaRequestGexResponse"
+                  "$ref": "#/components/schemas/MateriaResponseGexResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MateriaRequestGexResponse"
+                  "$ref": "#/components/schemas/MateriaResponseGexResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MateriaRequestGexResponse"
+                  "$ref": "#/components/schemas/MateriaResponseGexResult"
                 }
               }
             }
@@ -979,17 +1023,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/MateriaRequestGexResponse"
+                  "$ref": "#/components/schemas/MateriaResponseGexResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MateriaRequestGexResponse"
+                  "$ref": "#/components/schemas/MateriaResponseGexResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MateriaRequestGexResponse"
+                  "$ref": "#/components/schemas/MateriaResponseGexResult"
                 }
               }
             }
@@ -1025,17 +1069,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/MateriaRequestGexResponse"
+                  "$ref": "#/components/schemas/MateriaResponseGexResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MateriaRequestGexResponse"
+                  "$ref": "#/components/schemas/MateriaResponseGexResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MateriaRequestGexResponse"
+                  "$ref": "#/components/schemas/MateriaResponseGexResult"
                 }
               }
             }
@@ -1062,17 +1106,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/MateriaRequestGexResponse"
+                  "$ref": "#/components/schemas/MateriaResponseGexResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MateriaRequestGexResponse"
+                  "$ref": "#/components/schemas/MateriaResponseGexResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MateriaRequestGexResponse"
+                  "$ref": "#/components/schemas/MateriaResponseGexResult"
                 }
               }
             }
@@ -1080,7 +1124,7 @@
         }
       }
     },
-    "/api/Materia/{id}": {
+    "/api/materia/{id}": {
       "get": {
         "tags": [
           "Materia"
@@ -1102,17 +1146,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/MateriaRequestGexResponse"
+                  "$ref": "#/components/schemas/MateriaResponseGexResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MateriaRequestGexResponse"
+                  "$ref": "#/components/schemas/MateriaResponseGexResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MateriaRequestGexResponse"
+                  "$ref": "#/components/schemas/MateriaResponseGexResult"
                 }
               }
             }
@@ -1160,7 +1204,7 @@
         }
       }
     },
-    "/api/MesaExamen": {
+    "/api/mesaexamen": {
       "get": {
         "tags": [
           "MesaExamen"
@@ -1171,17 +1215,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/MesaExamenRequestICollectionGexResponse"
+                  "$ref": "#/components/schemas/MesaExamenResponseICollectionGexResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MesaExamenRequestICollectionGexResponse"
+                  "$ref": "#/components/schemas/MesaExamenResponseICollectionGexResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MesaExamenRequestICollectionGexResponse"
+                  "$ref": "#/components/schemas/MesaExamenResponseICollectionGexResult"
                 }
               }
             }
@@ -1237,17 +1281,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/MesaExamenRequestGexResponse"
+                  "$ref": "#/components/schemas/MesaExamenResponseGexResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MesaExamenRequestGexResponse"
+                  "$ref": "#/components/schemas/MesaExamenResponseGexResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MesaExamenRequestGexResponse"
+                  "$ref": "#/components/schemas/MesaExamenResponseGexResult"
                 }
               }
             }
@@ -1297,17 +1341,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/MesaExamenRequestGexResponse"
+                  "$ref": "#/components/schemas/MesaExamenResponseGexResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MesaExamenRequestGexResponse"
+                  "$ref": "#/components/schemas/MesaExamenResponseGexResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MesaExamenRequestGexResponse"
+                  "$ref": "#/components/schemas/MesaExamenResponseGexResult"
                 }
               }
             }
@@ -1343,17 +1387,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/MesaExamenRequestGexResponse"
+                  "$ref": "#/components/schemas/MesaExamenResponseGexResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MesaExamenRequestGexResponse"
+                  "$ref": "#/components/schemas/MesaExamenResponseGexResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MesaExamenRequestGexResponse"
+                  "$ref": "#/components/schemas/MesaExamenResponseGexResult"
                 }
               }
             }
@@ -1380,17 +1424,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/MesaExamenRequestGexResponse"
+                  "$ref": "#/components/schemas/MesaExamenResponseGexResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MesaExamenRequestGexResponse"
+                  "$ref": "#/components/schemas/MesaExamenResponseGexResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MesaExamenRequestGexResponse"
+                  "$ref": "#/components/schemas/MesaExamenResponseGexResult"
                 }
               }
             }
@@ -1398,7 +1442,7 @@
         }
       }
     },
-    "/api/MesaExamen/{id}": {
+    "/api/mesaexamen/{id}": {
       "get": {
         "tags": [
           "MesaExamen"
@@ -1420,17 +1464,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/MesaExamenRequestGexResponse"
+                  "$ref": "#/components/schemas/MesaExamenResponseGexResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MesaExamenRequestGexResponse"
+                  "$ref": "#/components/schemas/MesaExamenResponseGexResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MesaExamenRequestGexResponse"
+                  "$ref": "#/components/schemas/MesaExamenResponseGexResult"
                 }
               }
             }
@@ -1478,7 +1522,7 @@
         }
       }
     },
-    "/api/Pregunta": {
+    "/api/pregunta": {
       "get": {
         "tags": [
           "Pregunta"
@@ -1489,17 +1533,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/PreguntaRequestICollectionGexResponse"
+                  "$ref": "#/components/schemas/PreguntaResponseGexResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PreguntaRequestICollectionGexResponse"
+                  "$ref": "#/components/schemas/PreguntaResponseGexResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PreguntaRequestICollectionGexResponse"
+                  "$ref": "#/components/schemas/PreguntaResponseGexResult"
                 }
               }
             }
@@ -1555,17 +1599,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/PreguntaRequestGexResponse"
+                  "$ref": "#/components/schemas/PreguntaResponseGexResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PreguntaRequestGexResponse"
+                  "$ref": "#/components/schemas/PreguntaResponseGexResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PreguntaRequestGexResponse"
+                  "$ref": "#/components/schemas/PreguntaResponseGexResult"
                 }
               }
             }
@@ -1615,17 +1659,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/PreguntaRequestGexResponse"
+                  "$ref": "#/components/schemas/PreguntaResponseGexResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PreguntaRequestGexResponse"
+                  "$ref": "#/components/schemas/PreguntaResponseGexResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PreguntaRequestGexResponse"
+                  "$ref": "#/components/schemas/PreguntaResponseGexResult"
                 }
               }
             }
@@ -1661,17 +1705,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/PreguntaRequestGexResponse"
+                  "$ref": "#/components/schemas/PreguntaResponseGexResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PreguntaRequestGexResponse"
+                  "$ref": "#/components/schemas/PreguntaResponseGexResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PreguntaRequestGexResponse"
+                  "$ref": "#/components/schemas/PreguntaResponseGexResult"
                 }
               }
             }
@@ -1698,17 +1742,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/PreguntaRequestGexResponse"
+                  "$ref": "#/components/schemas/PreguntaResponseGexResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PreguntaRequestGexResponse"
+                  "$ref": "#/components/schemas/PreguntaResponseGexResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PreguntaRequestGexResponse"
+                  "$ref": "#/components/schemas/PreguntaResponseGexResult"
                 }
               }
             }
@@ -1716,7 +1760,7 @@
         }
       }
     },
-    "/api/Pregunta/{id}": {
+    "/api/pregunta/{id}": {
       "get": {
         "tags": [
           "Pregunta"
@@ -1738,17 +1782,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/PreguntaRequestGexResponse"
+                  "$ref": "#/components/schemas/PreguntaResponseGexResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PreguntaRequestGexResponse"
+                  "$ref": "#/components/schemas/PreguntaResponseGexResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PreguntaRequestGexResponse"
+                  "$ref": "#/components/schemas/PreguntaResponseGexResult"
                 }
               }
             }
@@ -1816,7 +1860,12 @@
             "type": "string",
             "format": "password"
           }
-        }
+        },
+        "nullable": true
+      },
+      "Object": {
+        "type": "object",
+        "nullable": true
       },
       "GexErrorMessage": {
         "enum": [
@@ -1835,12 +1884,11 @@
         "type": "integer",
         "format": "int32"
       },
-      "StringGexResponse": {
+      "ObjectGexResult": {
         "type": "object",
         "properties": {
           "data": {
-            "type": "string",
-            "nullable": true
+            "$ref": "#/components/schemas/Object"
           },
           "success": {
             "type": "boolean"
@@ -1849,27 +1897,30 @@
             "type": "string",
             "nullable": true
           },
-          "errorMessages": {
+          "error_messages": {
             "type": "object",
             "additionalProperties": {
               "type": "array",
               "items": {
-                "type": "string"
-              }
+                "type": "string",
+                "nullable": true
+              },
+              "nullable": true
             },
             "nullable": true
           },
-          "errorCode": {
+          "error_code": {
             "$ref": "#/components/schemas/GexErrorMessage"
           }
-        }
+        },
+        "nullable": true
       },
       "RegistroRequest": {
         "required": [
-          "confirmPassword",
+          "confirm_password",
           "email",
-          "firstName",
-          "lastName",
+          "first_name",
+          "last_name",
           "location",
           "password"
         ],
@@ -1885,18 +1936,18 @@
             "type": "string",
             "format": "password"
           },
-          "confirmPassword": {
+          "confirm_password": {
             "maxLength": 255,
             "minLength": 6,
             "type": "string",
             "format": "password"
           },
-          "firstName": {
+          "first_name": {
             "maxLength": 100,
             "minLength": 0,
             "type": "string"
           },
-          "lastName": {
+          "last_name": {
             "maxLength": 100,
             "minLength": 0,
             "type": "string"
@@ -1906,14 +1957,10 @@
             "minLength": 0,
             "type": "string"
           }
-        }
+        },
+        "nullable": true
       },
-      "ComisionRequest": {
-        "required": [
-          "cicloLectivo",
-          "id",
-          "nombre"
-        ],
+      "ComisionResponse": {
         "type": "object",
         "properties": {
           "id": {
@@ -1921,27 +1968,21 @@
             "format": "int32"
           },
           "nombre": {
-            "maxLength": 50,
-            "minLength": 5,
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
-          "cicloLectivo": {
-            "maximum": 2022,
-            "minimum": 2001,
+          "ciclo_lectivo": {
             "type": "integer",
             "format": "int32"
           }
-        }
+        },
+        "nullable": true
       },
-      "ComisionRequestICollectionGexResponse": {
+      "ComisionResponseGexResult": {
         "type": "object",
         "properties": {
           "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ComisionRequest"
-            },
-            "nullable": true
+            "$ref": "#/components/schemas/ComisionResponse"
           },
           "success": {
             "type": "boolean"
@@ -1950,20 +1991,23 @@
             "type": "string",
             "nullable": true
           },
-          "errorMessages": {
+          "error_messages": {
             "type": "object",
             "additionalProperties": {
               "type": "array",
               "items": {
-                "type": "string"
-              }
+                "type": "string",
+                "nullable": true
+              },
+              "nullable": true
             },
             "nullable": true
           },
-          "errorCode": {
+          "error_code": {
             "$ref": "#/components/schemas/GexErrorMessage"
           }
-        }
+        },
+        "nullable": true
       },
       "ProblemDetails": {
         "type": "object",
@@ -1988,147 +2032,46 @@
           "instance": {
             "type": "string",
             "nullable": true
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/Object"
+            },
+            "nullable": true,
+            "readOnly": true
           }
         },
         "additionalProperties": {
-          "type": "object"
-        }
+          "$ref": "#/components/schemas/Object"
+        },
+        "nullable": true
       },
-      "ComisionRequestGexResponse": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "$ref": "#/components/schemas/ComisionRequest"
-          },
-          "success": {
-            "type": "boolean"
-          },
-          "message": {
-            "type": "string",
-            "nullable": true
-          },
-          "errorMessages": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
-            "nullable": true
-          },
-          "errorCode": {
-            "$ref": "#/components/schemas/GexErrorMessage"
-          }
-        }
-      },
-      "ExamenTipo": {
-        "enum": [
-          0,
-          1,
-          2,
-          3
-        ],
-        "type": "integer",
-        "format": "int32"
-      },
-      "ExamenRequest": {
+      "ComisionRequest": {
         "required": [
+          "ciclo_lectivo",
           "id",
-          "materiaId",
-          "notaPromo",
-          "notaRegular",
-          "tipo"
+          "nombre"
         ],
         "type": "object",
         "properties": {
           "id": {
             "type": "integer",
-            "format": "int64"
-          },
-          "tipo": {
-            "$ref": "#/components/schemas/ExamenTipo"
-          },
-          "notaRegular": {
-            "maximum": 10,
-            "minimum": 0,
-            "type": "integer",
             "format": "int32"
           },
-          "notaPromo": {
-            "maximum": 10,
-            "minimum": 0,
+          "nombre": {
+            "maxLength": 50,
+            "minLength": 5,
+            "type": "string"
+          },
+          "ciclo_lectivo": {
+            "maximum": 2022,
+            "minimum": 2001,
             "type": "integer",
             "format": "int32"
-          },
-          "recuperatorio": {
-            "type": "boolean"
-          },
-          "materiaId": {
-            "type": "integer",
-            "format": "int64"
           }
-        }
-      },
-      "ExamenRequestICollectionGexResponse": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ExamenRequest"
-            },
-            "nullable": true
-          },
-          "success": {
-            "type": "boolean"
-          },
-          "message": {
-            "type": "string",
-            "nullable": true
-          },
-          "errorMessages": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
-            "nullable": true
-          },
-          "errorCode": {
-            "$ref": "#/components/schemas/GexErrorMessage"
-          }
-        }
-      },
-      "ExamenRequestGexResponse": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "$ref": "#/components/schemas/ExamenRequest"
-          },
-          "success": {
-            "type": "boolean"
-          },
-          "message": {
-            "type": "string",
-            "nullable": true
-          },
-          "errorMessages": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
-            "nullable": true
-          },
-          "errorCode": {
-            "$ref": "#/components/schemas/GexErrorMessage"
-          }
-        }
+        },
+        "nullable": true
       },
       "MateriaTipo": {
         "enum": [
@@ -2153,7 +2096,185 @@
           "tipo": {
             "$ref": "#/components/schemas/MateriaTipo"
           }
-        }
+        },
+        "nullable": true
+      },
+      "ExamenTipo": {
+        "enum": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "ExamenResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "materia": {
+            "$ref": "#/components/schemas/MateriaResponse"
+          },
+          "tipo": {
+            "$ref": "#/components/schemas/ExamenTipo"
+          },
+          "nota_regular": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "nota_promo": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "recuperatorio": {
+            "type": "boolean"
+          }
+        },
+        "nullable": true
+      },
+      "ExamenResponseICollectionGexResult": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExamenResponse"
+            },
+            "nullable": true
+          },
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "error_messages": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "nullable": true
+              },
+              "nullable": true
+            },
+            "nullable": true
+          },
+          "error_code": {
+            "$ref": "#/components/schemas/GexErrorMessage"
+          }
+        },
+        "nullable": true
+      },
+      "ExamenRequest": {
+        "required": [
+          "id",
+          "materia_id",
+          "nota_promo",
+          "nota_regular",
+          "tipo"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "tipo": {
+            "$ref": "#/components/schemas/ExamenTipo"
+          },
+          "nota_regular": {
+            "maximum": 10,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32"
+          },
+          "nota_promo": {
+            "maximum": 10,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32"
+          },
+          "recuperatorio": {
+            "type": "boolean"
+          },
+          "materia_id": {
+            "type": "integer",
+            "format": "int64"
+          }
+        },
+        "nullable": true
+      },
+      "ExamenResponseGexResult": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ExamenResponse"
+          },
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "error_messages": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "nullable": true
+              },
+              "nullable": true
+            },
+            "nullable": true
+          },
+          "error_code": {
+            "$ref": "#/components/schemas/GexErrorMessage"
+          }
+        },
+        "nullable": true
+      },
+      "MateriaResponseICollectionGexResult": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MateriaResponse"
+            },
+            "nullable": true
+          },
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "error_messages": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "nullable": true
+              },
+              "nullable": true
+            },
+            "nullable": true
+          },
+          "error_code": {
+            "$ref": "#/components/schemas/GexErrorMessage"
+          }
+        },
+        "nullable": true
       },
       "PreguntaTipo": {
         "enum": [
@@ -2164,22 +2285,230 @@
         "type": "integer",
         "format": "int32"
       },
-      "RespuestaResponse": {
+      "PreguntaRequest": {
+        "required": [
+          "descripcion",
+          "id",
+          "tema",
+          "tipo"
+        ],
         "type": "object",
         "properties": {
           "id": {
             "type": "integer",
             "format": "int64"
           },
-          "valor": {
+          "tema": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string"
+          },
+          "descripcion": {
+            "type": "string"
+          },
+          "tipo": {
+            "$ref": "#/components/schemas/PreguntaTipo"
+          },
+          "materia_id": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "examen_id": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          }
+        },
+        "nullable": true
+      },
+      "MateriaRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "nombre": {
             "type": "string",
             "nullable": true
           },
-          "correcto": {
-            "type": "boolean",
+          "tipo": {
+            "$ref": "#/components/schemas/MateriaTipo"
+          },
+          "preguntas": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PreguntaRequest"
+            },
             "nullable": true
           }
-        }
+        },
+        "nullable": true
+      },
+      "MateriaResponseGexResult": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/MateriaResponse"
+          },
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "error_messages": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "nullable": true
+              },
+              "nullable": true
+            },
+            "nullable": true
+          },
+          "error_code": {
+            "$ref": "#/components/schemas/GexErrorMessage"
+          }
+        },
+        "nullable": true
+      },
+      "MesaExamenResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "fecha": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "mostrar_respuestas": {
+            "type": "boolean"
+          },
+          "duracion": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "examen_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "profesor_id": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "nullable": true
+      },
+      "MesaExamenResponseICollectionGexResult": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MesaExamenResponse"
+            },
+            "nullable": true
+          },
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "error_messages": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "nullable": true
+              },
+              "nullable": true
+            },
+            "nullable": true
+          },
+          "error_code": {
+            "$ref": "#/components/schemas/GexErrorMessage"
+          }
+        },
+        "nullable": true
+      },
+      "MesaExamenRequest": {
+        "required": [
+          "examen_id",
+          "fecha",
+          "id",
+          "mostrar_respuestas"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "fecha": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "mostrar_respuestas": {
+            "type": "boolean"
+          },
+          "duracion": {
+            "maximum": 10000,
+            "minimum": 5,
+            "type": "integer",
+            "format": "int32"
+          },
+          "examen_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "profesor_id": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "nullable": true
+      },
+      "MesaExamenResponseGexResult": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/MesaExamenResponse"
+          },
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "error_messages": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "nullable": true
+              },
+              "nullable": true
+            },
+            "nullable": true
+          },
+          "error_code": {
+            "$ref": "#/components/schemas/GexErrorMessage"
+          }
+        },
+        "nullable": true
       },
       "PreguntaResponse": {
         "type": "object",
@@ -2199,53 +2528,24 @@
           "tipo": {
             "$ref": "#/components/schemas/PreguntaTipo"
           },
-          "respuestas": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/RespuestaResponse"
-            },
+          "examen_id": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "materia_id": {
+            "type": "integer",
+            "format": "int64",
             "nullable": true
           }
-        }
+        },
+        "nullable": true
       },
-      "ExamenResponse": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "materia": {
-            "$ref": "#/components/schemas/MateriaResponse"
-          },
-          "tipo": {
-            "$ref": "#/components/schemas/ExamenTipo"
-          },
-          "notaRegular": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "notaPromo": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "recuperatorio": {
-            "type": "boolean"
-          },
-          "preguntas": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/PreguntaResponse"
-            },
-            "nullable": true
-          }
-        }
-      },
-      "ExamenResponseGexResponse": {
+      "PreguntaResponseGexResult": {
         "type": "object",
         "properties": {
           "data": {
-            "$ref": "#/components/schemas/ExamenResponse"
+            "$ref": "#/components/schemas/PreguntaResponse"
           },
           "success": {
             "type": "boolean"
@@ -2254,278 +2554,23 @@
             "type": "string",
             "nullable": true
           },
-          "errorMessages": {
+          "error_messages": {
             "type": "object",
             "additionalProperties": {
               "type": "array",
               "items": {
-                "type": "string"
-              }
+                "type": "string",
+                "nullable": true
+              },
+              "nullable": true
             },
             "nullable": true
           },
-          "errorCode": {
+          "error_code": {
             "$ref": "#/components/schemas/GexErrorMessage"
           }
-        }
-      },
-      "MateriaRequest": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "nombre": {
-            "type": "string",
-            "nullable": true
-          },
-          "tipo": {
-            "$ref": "#/components/schemas/MateriaTipo"
-          }
-        }
-      },
-      "MateriaRequestICollectionGexResponse": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MateriaRequest"
-            },
-            "nullable": true
-          },
-          "success": {
-            "type": "boolean"
-          },
-          "message": {
-            "type": "string",
-            "nullable": true
-          },
-          "errorMessages": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
-            "nullable": true
-          },
-          "errorCode": {
-            "$ref": "#/components/schemas/GexErrorMessage"
-          }
-        }
-      },
-      "MateriaRequestGexResponse": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "$ref": "#/components/schemas/MateriaRequest"
-          },
-          "success": {
-            "type": "boolean"
-          },
-          "message": {
-            "type": "string",
-            "nullable": true
-          },
-          "errorMessages": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
-            "nullable": true
-          },
-          "errorCode": {
-            "$ref": "#/components/schemas/GexErrorMessage"
-          }
-        }
-      },
-      "MesaExamenRequest": {
-        "required": [
-          "examenId",
-          "fecha",
-          "id",
-          "mostrarRespuestas"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "fecha": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "mostrarRespuestas": {
-            "type": "boolean"
-          },
-          "duracion": {
-            "maximum": 10000,
-            "minimum": 5,
-            "type": "integer",
-            "format": "int32"
-          },
-          "examenId": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "profesorId": {
-            "type": "integer",
-            "format": "int32"
-          }
-        }
-      },
-      "MesaExamenRequestICollectionGexResponse": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MesaExamenRequest"
-            },
-            "nullable": true
-          },
-          "success": {
-            "type": "boolean"
-          },
-          "message": {
-            "type": "string",
-            "nullable": true
-          },
-          "errorMessages": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
-            "nullable": true
-          },
-          "errorCode": {
-            "$ref": "#/components/schemas/GexErrorMessage"
-          }
-        }
-      },
-      "MesaExamenRequestGexResponse": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "$ref": "#/components/schemas/MesaExamenRequest"
-          },
-          "success": {
-            "type": "boolean"
-          },
-          "message": {
-            "type": "string",
-            "nullable": true
-          },
-          "errorMessages": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
-            "nullable": true
-          },
-          "errorCode": {
-            "$ref": "#/components/schemas/GexErrorMessage"
-          }
-        }
-      },
-      "PreguntaRequest": {
-        "required": [
-          "descripcion",
-          "id",
-          "periodo",
-          "tipo"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "periodo": {
-            "maxLength": 255,
-            "minLength": 0,
-            "type": "string"
-          },
-          "descripcion": {
-            "type": "string"
-          },
-          "tipo": {
-            "$ref": "#/components/schemas/PreguntaTipo"
-          }
-        }
-      },
-      "PreguntaRequestICollectionGexResponse": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/PreguntaRequest"
-            },
-            "nullable": true
-          },
-          "success": {
-            "type": "boolean"
-          },
-          "message": {
-            "type": "string",
-            "nullable": true
-          },
-          "errorMessages": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
-            "nullable": true
-          },
-          "errorCode": {
-            "$ref": "#/components/schemas/GexErrorMessage"
-          }
-        }
-      },
-      "PreguntaRequestGexResponse": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "$ref": "#/components/schemas/PreguntaRequest"
-          },
-          "success": {
-            "type": "boolean"
-          },
-          "message": {
-            "type": "string",
-            "nullable": true
-          },
-          "errorMessages": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
-            "nullable": true
-          },
-          "errorCode": {
-            "$ref": "#/components/schemas/GexErrorMessage"
-          }
-        }
+        },
+        "nullable": true
       }
     }
   }

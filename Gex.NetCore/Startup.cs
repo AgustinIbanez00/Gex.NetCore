@@ -21,9 +21,10 @@ using Gex.Repository.Interface;
 using Gex.Repository;
 using EntityFramework.Exceptions.MySQL.Pomelo;
 using Gex.Filters;
-using Gex.Models;
 using Gex.Middlewares;
 using Microsoft.OpenApi.Models;
+using Gex.Utils;
+using Gex.Models.Enums;
 
 namespace Gex;
 
@@ -91,7 +92,11 @@ public class Startup
         services.AddControllers(options =>
         {
             options.Filters.Add<HttpResponseExceptionFilter>();
-        }).AddBadRequestServices();
+        }).AddBadRequestServices()
+           .AddJsonOptions(o => o.JsonSerializerOptions.PropertyNamingPolicy = new SnakeCaseNamingPolicy());
+
+        services.AddRouting(options => options.LowercaseUrls = true);
+
         services.AddDbContext<GexContext>(options =>
         {
             options.UseMySql(Configuration.GetValue<string>("DatabaseConnection"), new MariaDbServerVersion(new Version(10, 4, 17)), o =>
@@ -125,12 +130,14 @@ public class Startup
             options.Description = "Colleción de API's correspondientes al sistema de exámenes Gex.";
             options.Title = "Sistema de Exámenes Gex";
         });
-        services.AddSwaggerGen(c => {
+        services.AddSwaggerGen(c =>
+        {
             c.SwaggerDoc("v1", new OpenApiInfo
             {
                 Title = "Gex",
                 Version = "v1",
-                Description = "Colleción de API's correspondientes al sistema de exámenes Gex."
+                Description = "Colleción de API's correspondientes al sistema de exámenes Gex.",
+                Contact = new OpenApiContact() { Email = "admin@gexsystem.com", Name = "Agustin Ibañez" }
             });
         });
     }

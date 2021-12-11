@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Gex.Models;
+using Gex.Models.Enums;
 using Gex.Validation.Attributes;
 
 namespace Gex.ViewModels.Request;

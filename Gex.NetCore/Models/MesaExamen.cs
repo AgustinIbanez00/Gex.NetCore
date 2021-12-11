@@ -1,8 +1,10 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using Gex.Helpers;
+using Gex.Attributes;
+using Humanizer;
 
 namespace Gex.Models;
+[GexDescription("mesa de exámen", GrammaticalGender.Feminine)]
 public partial class MesaExamen : Auditory
 {
     [Key]
@@ -25,7 +27,5 @@ public partial class MesaExamen : Auditory
     public int Duracion { get; set; }
     public virtual Examen Examen { get; set; }
     public virtual Usuario Profesor { get; set; }
-
-    public static GexResponseOptions Options => new GexResponseOptions() { Entity = "mesa de exámen",  Gender = Gender.FEMALE };
 
 }

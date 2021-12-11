@@ -1,12 +1,6 @@
 ﻿using System.ComponentModel;
-using Microsoft.AspNetCore.Http;
 
-namespace Gex.Helpers;
-public enum Gender
-{
-    MALE,
-    FEMALE
-}
+namespace Gex.Extensions.Response;
 public enum GexErrorMessage
 {
     [Description("Se produjo un error interno.")]
@@ -31,31 +25,4 @@ public enum GexErrorMessage
     CouldNotDelete,
     [Description("No se pudo modificar {Gender:ese|esa} {Entity}.")]
     CouldNotUpdate
-}
-public enum GexSuccessMessage
-{
-    [Description("{Gender:El|La} {Entity} se creó correctamente.")]
-    Created,
-    [Description("{Gender:El|La} {Entity} se eliminó correctamente.")]
-    Deleted,
-    [Description("{Gender:El|La} {Entity} se actualizó correctamente.")]
-    Modified
-}
-public class GexResponseOptions
-{
-    public string Entity { get; set; }
-    public Gender Gender { get; set; }
-
-}
-public static class ResponseHelper
-{
-    public static int GetHttpError(GexErrorMessage gexError)
-    {
-        return gexError switch
-        {
-            GexErrorMessage.NotFound => StatusCodes.Status404NotFound,
-            GexErrorMessage.Generic or GexErrorMessage.CouldNotDelete or GexErrorMessage.CouldNotDelete or GexErrorMessage.CouldNotUpdate => StatusCodes.Status500InternalServerError,
-            _ => StatusCodes.Status400BadRequest
-        };
-    }
 }

@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Gex.Models;
+using Gex.Models.Enums;
 using Gex.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,13 +24,11 @@ public class PreguntaRepository : IPreguntaRepository
         await _context.Preguntas.AddAsync(pregunta);
         return await Save();
     }
-
     public async Task<bool> DeletePreguntaAsync(long id)
     {
         Pregunta pregunta = await GetPreguntaAsync(id);
         return await DeletePreguntaAsync(pregunta);
     }
-
     public async Task<bool> DeletePreguntaAsync(Pregunta pregunta)
     {
         if (pregunta == null)
@@ -41,11 +41,13 @@ public class PreguntaRepository : IPreguntaRepository
         return await Save();
     }
 
-    public async Task<bool> ExistsPreguntaAsync(long id) => await _context.Preguntas.FindAsync(id) != null;
+    public async Task<bool> ExistsPreguntaAsync(long id) => await GetPreguntaAsync(id) != null;
 
-    public async Task<Pregunta> GetPreguntaAsync(long id) => await _context.Preguntas.FindAsync(id);
+    public async Task<Pregunta> GetPreguntaAsync(long id) => await _context.Preguntas.FirstOrDefaultAsync(m => m.Estado == Estado.NORMAL && m.Id == id);
 
-    public async Task<ICollection<Pregunta>> GetPreguntasAsync() => await _context.Preguntas.ToListAsync();
+    public async Task<ICollection<Pregunta>> GetPreguntasAsync() => await _context.Preguntas.Where(m => m.Estado == Estado.NORMAL).ToListAsync();
+
+    public async Task<ICollection<Pregunta>> GetPreguntasByExamenIdAsync(long examenId) => await _context.Preguntas.Where(p => p.ExamenId == examenId).ToListAsync();
 
     public async Task<bool> Save() => await _context.SaveChangesAsync() >= 0;
 

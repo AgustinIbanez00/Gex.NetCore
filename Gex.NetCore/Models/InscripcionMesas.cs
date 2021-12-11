@@ -1,13 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Gex.Models.Enums;
 
 namespace Gex.Models;
-public enum Condicion
-{
-    Regular,
-    Libre,
-    Equivalencia
-}
-
 public partial class InscripcionMesas
 {
     [Key]
@@ -18,7 +12,7 @@ public partial class InscripcionMesas
     /// </summary>
     [Range(-1, 10)]
     public int Nota { get; set; }
-    public Condicion Condicion { get; set; }
+    public InscripcionCondicion Condicion { get; set; }
     public virtual Usuario Alumno { get; set; }
     public virtual MesaExamen MesaExamen { get; set; }
 }

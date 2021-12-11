@@ -1,4 +1,6 @@
-﻿namespace Gex.Models;
+﻿using Gex.Models.Enums;
+
+namespace Gex.Models;
 public class Auditory
 {
     //public Usuario LastUpdateBy { get; set; }

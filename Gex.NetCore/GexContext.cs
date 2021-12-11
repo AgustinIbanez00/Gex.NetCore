@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using Gex.Fakers;
-using Gex.Helpers;
+﻿using Gex.Fakers;
 using Gex.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -32,8 +30,8 @@ public partial class GexContext : DbContext
         modelBuilder.Entity<Comision>()
         .HasIndex(p => new { p.Nombre, p.CicloLectivo }).IsUnique();
 
-        modelBuilder.Entity<Materia>()
-            .HasData(MateriaFaker.Get(300));
+        //modelBuilder.Entity<Materia>()
+        //    .HasData(MateriaFaker.Get(300));
             
         base.OnModelCreating(modelBuilder);
     }

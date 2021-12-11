@@ -4,10 +4,12 @@ using Gex.Services.Interface;
 using System.Threading.Tasks;
 using Gex.Utils;
 using Microsoft.AspNetCore.Http;
-using Gex.Helpers;
-using System.Collections.Generic;
 using Gex.Models;
 using Gex.ViewModels.Request;
+using Gex.Extensions.Response;
+using Gex.Models.Enums;
+using System.Collections.Generic;
+using Gex.ViewModels.Response;
 
 namespace Gex.Controllers;
 
@@ -24,10 +26,10 @@ public class PreguntaController : ControllerBase
     }
 
     [HttpGet]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResponse<ICollection<PreguntaRequest>>))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResult<PreguntaResponse>))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Authorize(Roles = nameof(UsuarioTipo.Alumno))]
-    public async Task<ActionResult<GexResponse<ICollection<PreguntaRequest>>>> GetAll()
+    public async Task<ActionResult<GexResult<ICollection<PreguntaResponse>>>> GetAll()
     {
         var preguntas = await _service.GetPreguntasAsync();
 
@@ -38,10 +40,10 @@ public class PreguntaController : ControllerBase
     }
 
     [HttpGet("{id:int}")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResponse<PreguntaRequest>))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResult<PreguntaResponse>))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<GexResponse<PreguntaRequest>>> Get(int id)
+    public async Task<ActionResult<GexResult<PreguntaResponse>>> Get(int id)
     {
         var pregunta = await _service.GetPreguntaAsync(id);
 
@@ -52,11 +54,11 @@ public class PreguntaController : ControllerBase
     }
 
     [HttpPost]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResponse<PreguntaRequest>))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResult<PreguntaResponse>))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    public async Task<ActionResult<GexResponse<PreguntaRequest>>> CreatePregunta([FromBody] PreguntaRequest preguntaDto)
+    public async Task<ActionResult<GexResult<PreguntaResponse>>> CreatePregunta([FromBody] PreguntaRequest preguntaDto)
     {
         var pregunta = await _service.CreatePreguntaAsync(preguntaDto);
 
@@ -66,8 +68,8 @@ public class PreguntaController : ControllerBase
     }
 
     [HttpPatch]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResponse<PreguntaRequest>))]
-    public async Task<ActionResult<GexResponse<PreguntaRequest>>> UpdatePregunta([FromBody] PreguntaRequest preguntaDto)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResult<PreguntaResponse>))]
+    public async Task<ActionResult<GexResult<PreguntaResponse>>> UpdatePregunta([FromBody] PreguntaRequest preguntaDto)
     {
         var pregunta = await _service.UpdatePreguntaAsync(preguntaDto);
 
@@ -77,8 +79,8 @@ public class PreguntaController : ControllerBase
     }
 
     [HttpDelete]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResponse<PreguntaRequest>))]
-    public async Task<ActionResult<GexResponse<PreguntaRequest>>> DeletePregunta(int id)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResult<PreguntaResponse>))]
+    public async Task<ActionResult<GexResult<PreguntaResponse>>> DeletePregunta(int id)
     {
         var pregunta = await _service.DeletePreguntaAsync(id);
 

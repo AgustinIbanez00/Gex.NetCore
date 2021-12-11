@@ -7,9 +7,9 @@ using Gex.ViewModels.Response;
 namespace Gex.Services.Interface;
 public interface IExamenService
 {
-    Task<GexResponse<ICollection<ExamenResponse>>> GetExamensAsync();
-    Task<GexResponse<ExamenResponse>> GetExamenAsync(int id);
-    Task<GexResponse<ExamenRequest>> CreateExamenAsync(ExamenRequest ExamenDTO);
-    Task<GexResponse<ExamenRequest>> UpdateExamenAsync(ExamenRequest ExamenDTO);
-    Task<GexResponse<ExamenRequest>> DeleteExamenAsync(int id);
+    Task<GexResult<ICollection<ExamenResponse>>> GetExamenesAsync();
+    Task<GexResult<ExamenResponse>> GetExamenAsync(long id);
+    Task<GexResult<ExamenResponse>> CreateExamenAsync(ExamenRequest ExamenDTO);
+    Task<GexResult<ExamenResponse>> UpdateExamenAsync(ExamenRequest ExamenDTO);
+    Task<GexResult<ExamenResponse>> DeleteExamenAsync(long id);
 }

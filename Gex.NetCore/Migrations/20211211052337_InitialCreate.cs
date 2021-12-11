@@ -214,12 +214,16 @@ namespace Gex.Migrations
                 {
                     id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    periodo = table.Column<string>(type: "longtext", nullable: true)
+                    tema = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     descripcion = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     tipo = table.Column<int>(type: "int", nullable: false),
-                    examen_id = table.Column<long>(type: "bigint", nullable: true)
+                    examen_id = table.Column<long>(type: "bigint", nullable: true),
+                    materia_id = table.Column<long>(type: "bigint", nullable: true),
+                    updated_at = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    created_at = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    estado = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -228,6 +232,11 @@ namespace Gex.Migrations
                         name: "fk_preguntas_examenes_examen_id",
                         column: x => x.examen_id,
                         principalTable: "examenes",
+                        principalColumn: "id");
+                    table.ForeignKey(
+                        name: "fk_preguntas_materias_materia_id",
+                        column: x => x.materia_id,
+                        principalTable: "materias",
                         principalColumn: "id");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
@@ -294,7 +303,10 @@ namespace Gex.Migrations
                     valor = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     correcto = table.Column<bool>(type: "tinyint(1)", nullable: true),
-                    pregunta_id = table.Column<long>(type: "bigint", nullable: true)
+                    pregunta_id = table.Column<long>(type: "bigint", nullable: true),
+                    updated_at = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    created_at = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    estado = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -341,24 +353,6 @@ namespace Gex.Migrations
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
-            migrationBuilder.InsertData(
-                table: "materias",
-                columns: new[] { "id", "created_at", "estado", "nombre", "tipo", "updated_at" },
-                values: new object[,]
-                {
-                    { 346628690L, new DateTime(2021, 12, 8, 18, 10, 12, 593, DateTimeKind.Local).AddTicks(1695), 1, "wilson_haley", 0, new DateTime(2021, 12, 8, 18, 10, 12, 593, DateTimeKind.Local).AddTicks(1694) },
-                    { 360029765L, new DateTime(2021, 12, 8, 18, 10, 12, 593, DateTimeKind.Local).AddTicks(4517), 1, "lorenzo", 2, new DateTime(2021, 12, 8, 18, 10, 12, 593, DateTimeKind.Local).AddTicks(4513) },
-                    { 415371795L, new DateTime(2021, 12, 8, 18, 10, 12, 592, DateTimeKind.Local).AddTicks(6570), 1, "valentina_ward", 0, new DateTime(2021, 12, 8, 18, 10, 12, 592, DateTimeKind.Local).AddTicks(6569) },
-                    { 651374082L, new DateTime(2021, 12, 8, 18, 10, 12, 594, DateTimeKind.Local).AddTicks(272), 1, "roosevelt_ruecker", 1, new DateTime(2021, 12, 8, 18, 10, 12, 594, DateTimeKind.Local).AddTicks(271) },
-                    { 665841109L, new DateTime(2021, 12, 8, 18, 10, 12, 592, DateTimeKind.Local).AddTicks(8446), 1, "hildegard", 1, new DateTime(2021, 12, 8, 18, 10, 12, 592, DateTimeKind.Local).AddTicks(8445) },
-                    { 703902824L, new DateTime(2021, 12, 8, 18, 10, 12, 592, DateTimeKind.Local).AddTicks(4882), 1, "tyler", 0, new DateTime(2021, 12, 8, 18, 10, 12, 592, DateTimeKind.Local).AddTicks(4880) },
-                    { 924128811L, new DateTime(2021, 12, 8, 18, 10, 12, 593, DateTimeKind.Local).AddTicks(104), 1, "anderson", 2, new DateTime(2021, 12, 8, 18, 10, 12, 593, DateTimeKind.Local).AddTicks(103) },
-                    { 1153585286L, new DateTime(2021, 12, 8, 18, 10, 12, 593, DateTimeKind.Local).AddTicks(8326), 1, "mekhi.gaylord", 2, new DateTime(2021, 12, 8, 18, 10, 12, 593, DateTimeKind.Local).AddTicks(8324) },
-                    { 1241054937L, new DateTime(2021, 12, 8, 18, 10, 12, 592, DateTimeKind.Local).AddTicks(2248), 1, "dario.mcglynn", 1, new DateTime(2021, 12, 8, 18, 10, 12, 592, DateTimeKind.Local).AddTicks(2236) },
-                    { 1373808374L, new DateTime(2021, 12, 8, 18, 10, 12, 593, DateTimeKind.Local).AddTicks(6643), 1, "gerald", 2, new DateTime(2021, 12, 8, 18, 10, 12, 593, DateTimeKind.Local).AddTicks(6640) },
-                    { 1588826795L, new DateTime(2021, 12, 8, 18, 10, 12, 594, DateTimeKind.Local).AddTicks(2181), 1, "easton.johns", 2, new DateTime(2021, 12, 8, 18, 10, 12, 594, DateTimeKind.Local).AddTicks(2180) }
-                });
-
             migrationBuilder.CreateIndex(
                 name: "ix_comisiones_nombre_ciclo_lectivo",
                 table: "comisiones",
@@ -401,6 +395,12 @@ namespace Gex.Migrations
                 column: "mesa_examen_id");
 
             migrationBuilder.CreateIndex(
+                name: "ix_materias_nombre",
+                table: "materias",
+                column: "nombre",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "ix_mesas_examen_examen_id",
                 table: "mesas_examen",
                 column: "examen_id");
@@ -414,6 +414,11 @@ namespace Gex.Migrations
                 name: "ix_preguntas_examen_id",
                 table: "preguntas",
                 column: "examen_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_preguntas_materia_id",
+                table: "preguntas",
+                column: "materia_id");
 
             migrationBuilder.CreateIndex(
                 name: "ix_preguntas_examen_mesa_examen_id",

@@ -4,159 +4,144 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 using EntityFramework.Exceptions.Common;
-using Gex.Helpers;
+using Gex.Extensions.Response;
 using Gex.Models;
+using Gex.Models.Enums;
 using Gex.Repository.Interface;
 using Gex.Services.Interface;
 using Gex.Utils;
 using Gex.ViewModels.Request;
+using Gex.ViewModels.Response;
 
 namespace Gex.Services;
-public class MesaExamenService : IMesaExamenService, IGexResponse<MesaExamenRequest>
+using static GexResponse;
+
+public class MesaExamenService : IMesaExamenService
 {
     private readonly IMapper _mapper;
     private readonly IMesaExamenRepository _mesaExamenRepository;
     private readonly IExamenRepository _examenRepository;
-    private readonly GexResponseOptions _options = MesaExamen.Options;
 
-    public MesaExamenService(IMapper mapper, IMesaExamenRepository mesaExamenRepository, IExamenRepository examenRepository)
+    public MesaExamenService(IMapper mapper, IMesaExamenRepository repository, IExamenRepository examenRepository)
     {
         _mapper = mapper;
-        _mesaExamenRepository = mesaExamenRepository;
+        _mesaExamenRepository = repository;
         _examenRepository = examenRepository;
-
     }
 
-    //*********** HANDLING ERRORS ***********//
-    public GexResponse<ICollection<MesaExamenRequest>> Collection(GexErrorMessage message) => GexResponse<ICollection<MesaExamenRequest>>.ErrorF(message, _options);
-    public GexResponse<MesaExamenRequest> Success(GexSuccessMessage message) => GexResponse<MesaExamenRequest>.Ok(message, _options);
-    public GexResponse<MesaExamenRequest> Error(GexErrorMessage error, [Optional] string message) => GexResponse<MesaExamenRequest>.ErrorF(error, _options, message);
-    public GexResponse<ICollection<MesaExamenRequest>> CollectionMessage(GexErrorMessage error, [Optional] string message) => GexResponse<ICollection<MesaExamenRequest>>.ErrorF(error, _options, message);
-    public GexResponse<MesaExamenRequest> Data(MesaExamenRequest data, GexSuccessMessage gexSuccess) => GexResponse<MesaExamenRequest>.Ok(data, gexSuccess, _options);
-    public GexResponse<MesaExamenRequest> Data(MesaExamenRequest data) => GexResponse<MesaExamenRequest>.Ok(data);
-    public GexResponse<ICollection<MesaExamenRequest>> OkCollection(ICollection<MesaExamenRequest> data) => GexResponse<ICollection<MesaExamenRequest>>.Ok(data);
-
-    //***************************************//
-    public async Task<GexResponse<MesaExamenRequest>> CreateMesaExamenAsync(MesaExamenRequest mesaExamenDto)
+    public async Task<GexResult<MesaExamenResponse>> CreateMesaExamenAsync(MesaExamenRequest mesaExamenDto)
     {
         try
         {
             if (await _mesaExamenRepository.ExistsMesaExamenAsync(mesaExamenDto.Id))
-                return Error(GexErrorMessage.AlreadyExists);
+                return KeyError<MesaExamen, MesaExamenResponse>(nameof(mesaExamenDto.Id), GexErrorMessage.AlreadyExists);
 
             var mesaExamen = _mapper.Map<MesaExamen>(mesaExamenDto);
 
             mesaExamen.Examen = await _examenRepository.GetExamenAsync(mesaExamenDto.ExamenId);
 
             if (mesaExamen.Examen == null)
-                return GexResponse<MesaExamenRequest>.ErrorF(GexErrorMessage.NotFound, Examen.Options);
-
-            mesaExamen.Profesor = null;
+                return KeyError<Examen, MesaExamenResponse>(nameof(mesaExamenDto.ExamenId), GexErrorMessage.NotFound);
 
             if (!await _mesaExamenRepository.CreateMesaExamenAsync(mesaExamen))
-                return Error(GexErrorMessage.CouldNotCreate);
+                return Error<MesaExamen, MesaExamenResponse>(GexErrorMessage.CouldNotCreate);
 
-            var dto = _mapper.Map<MesaExamenRequest>(mesaExamen);
-            return GexResponse<MesaExamenRequest>.Ok(dto, GexSuccessMessage.Created, _options);
+            var dto = _mapper.Map<MesaExamenResponse>(mesaExamen);
+            return Ok<MesaExamen, MesaExamenResponse>(dto, GexSuccessMessage.Created);
         }
         catch (UniqueConstraintException)
         {
-            return Error(GexErrorMessage.AlreadyExists);
+            return Error<MesaExamen, MesaExamenResponse>(GexErrorMessage.AlreadyExists);
         }
         catch (Exception ex)
         {
-            return Error(GexErrorMessage.Generic, ex.Message);
+            return Error<MesaExamen, MesaExamenResponse>(GexErrorMessage.Generic, ex.Message);
         }
     }
-    public async Task<GexResponse<MesaExamenRequest>> DeleteMesaExamenAsync(int id)
+    public async Task<GexResult<MesaExamenResponse>> DeleteMesaExamenAsync(long id)
     {
         try
         {
             var mesaExamen = await _mesaExamenRepository.GetMesaExamenAsync(id);
             if (mesaExamen == null)
-                return Error(GexErrorMessage.NotFound);
+                return Error<MesaExamen, MesaExamenResponse>(GexErrorMessage.NotFound);
 
             if (mesaExamen.Estado == Estado.BAJA)
-                return Error(GexErrorMessage.AlreadyDeleted);
+                return Error<MesaExamen, MesaExamenResponse>(GexErrorMessage.AlreadyDeleted);
 
             if (!await _mesaExamenRepository.DeleteMesaExamenAsync(mesaExamen))
-                return Error(GexErrorMessage.CouldNotDelete);
+                return Error<MesaExamen, MesaExamenResponse>(GexErrorMessage.CouldNotDelete);
 
-            return Data(_mapper.Map<MesaExamenRequest>(mesaExamen), GexSuccessMessage.Deleted);
+            return Ok<MesaExamen, MesaExamenResponse>(_mapper.Map<MesaExamenResponse>(mesaExamen), GexSuccessMessage.Deleted);
         }
         catch (Exception ex)
         {
-            return Error(GexErrorMessage.Generic, ex.Message);
+            return Error<MesaExamen, MesaExamenResponse>(GexErrorMessage.Generic, ex.Message);
         }
     }
-    public async Task<GexResponse<MesaExamenRequest>> GetMesaExamenAsync(int id)
+    public async Task<GexResult<MesaExamenResponse>> GetMesaExamenAsync(long id)
     {
         try
         {
             var mesaExamen = await _mesaExamenRepository.GetMesaExamenAsync(id);
 
             if (mesaExamen == null)
-                return Error(GexErrorMessage.NotFound);
+                return Error<MesaExamen, MesaExamenResponse>(GexErrorMessage.NotFound);
 
-            return GexResponse<MesaExamenRequest>.Ok(_mapper.Map<MesaExamenRequest>(mesaExamen));
+            return Ok(_mapper.Map<MesaExamenResponse>(mesaExamen));
         }
         catch (Exception ex)
         {
-            return Error(GexErrorMessage.Generic, ex.Message);
+            return Error<MesaExamen, MesaExamenResponse>(GexErrorMessage.Generic, ex.Message);
         }
     }
-    public async Task<GexResponse<ICollection<MesaExamenRequest>>> GetMesaExamensAsync()
+    public async Task<GexResult<ICollection<MesaExamenResponse>>> GetMesasExamenesAsync()
     {
         try
         {
-            var mesaExamenes = await _mesaExamenRepository.GetMesasExamenAsync();
+            var mesaExamens = await _mesaExamenRepository.GetMesasExamenAsync();
 
-            if (mesaExamenes.Count == 0)
-                return CollectionMessage(GexErrorMessage.NotFound);
+            if (mesaExamens.Count == 0)
+                return Error<MesaExamen, ICollection<MesaExamenResponse>>(GexErrorMessage.NotFound);
 
-            var mesaExamenesDto = new List<MesaExamenRequest>();
+            var mesaExamensDto = new List<MesaExamenResponse>();
 
-            foreach (var MesaExamen in mesaExamenes)
+            foreach (var MesaExamen in mesaExamens)
             {
-                mesaExamenesDto.Add(_mapper.Map<MesaExamenRequest>(MesaExamen));
+                mesaExamensDto.Add(_mapper.Map<MesaExamenResponse>(MesaExamen));
             }
-            return OkCollection(mesaExamenesDto);
+            return Ok<ICollection<MesaExamenResponse>>(mesaExamensDto);
         }
         catch (Exception ex)
         {
-            return CollectionMessage(GexErrorMessage.Generic, ex.Message);
+            return Error<MesaExamen, ICollection<MesaExamenResponse>>(GexErrorMessage.Generic, ex.Message);
         }
     }
-    public async Task<GexResponse<MesaExamenRequest>> UpdateMesaExamenAsync(MesaExamenRequest mesaExamenDto)
+
+    public async Task<GexResult<MesaExamenResponse>> UpdateMesaExamenAsync(MesaExamenRequest mesaExamenDto)
     {
         try
         {
             if (mesaExamenDto.Id == 0)
-                return Error(GexErrorMessage.InvalidId);
+                return Error<MesaExamen, MesaExamenResponse>(GexErrorMessage.InvalidId);
 
             var mesaExamen = await _mesaExamenRepository.GetMesaExamenAsync(mesaExamenDto.Id);
 
             if (mesaExamen == null)
-                return Error(GexErrorMessage.NotFound);
-
-            mesaExamen.Examen = await _examenRepository.GetExamenAsync(mesaExamenDto.ExamenId);
-
-            if (mesaExamen.Examen == null)
-                return GexResponse<MesaExamenRequest>.ErrorF(GexErrorMessage.NotFound, Examen.Options);
+                return Error<MesaExamen, MesaExamenResponse>(GexErrorMessage.NotFound);
 
             mesaExamen.Fecha = mesaExamenDto.Fecha;
             mesaExamen.MostrarRespuestas = mesaExamenDto.MostrarRespuestas;
             mesaExamen.Duracion = mesaExamenDto.Duracion;
-            
 
             if (!await _mesaExamenRepository.UpdateMesaExamenAsync(mesaExamen))
-                return Error(GexErrorMessage.CouldNotUpdate);
+                return Error<MesaExamen, MesaExamenResponse>(GexErrorMessage.CouldNotUpdate);
 
-            return Data(_mapper.Map<MesaExamenRequest>(mesaExamen), GexSuccessMessage.Modified);
+            return Ok<MesaExamen, MesaExamenResponse>(_mapper.Map<MesaExamenResponse>(mesaExamen), GexSuccessMessage.Modified);
         }
         catch (Exception ex)
         {
-            return Error(GexErrorMessage.Generic, ex.Message);
+            return Error<MesaExamen, MesaExamenResponse>(GexErrorMessage.Generic, ex.Message);
         }
     }
 }

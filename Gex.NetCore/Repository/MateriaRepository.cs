@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Gex.Models;
+using Gex.Models.Enums;
 using Gex.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
 
@@ -41,11 +43,11 @@ public class MateriaRepository : IMateriaRepository
         return await Save();
     }
 
-    public async Task<bool> ExistsMateriaAsync(long id) => await _context.Materias.FindAsync(id) != null;
+    public async Task<bool> ExistsMateriaAsync(long id) => await GetMateriaAsync(id) != null;
 
-    public async Task<Materia> GetMateriaAsync(long id) => await _context.Materias.FindAsync(id);
+    public async Task<Materia> GetMateriaAsync(long id) => await _context.Materias.FirstOrDefaultAsync(m => m.Estado == Estado.NORMAL && m.Id == id);
 
-    public async Task<ICollection<Materia>> GetMateriasAsync() => await _context.Materias.ToListAsync();
+    public async Task<ICollection<Materia>> GetMateriasAsync() => await _context.Materias.Where(m => m.Estado == Estado.NORMAL).ToListAsync();
 
     public async Task<bool> Save() => await _context.SaveChangesAsync() >= 0;
 

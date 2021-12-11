@@ -4,8 +4,9 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 using EntityFramework.Exceptions.Common;
-using Gex.Helpers;
+using Gex.Extensions.Response;
 using Gex.Models;
+using Gex.Models.Enums;
 using Gex.Repository.Interface;
 using Gex.Services.Interface;
 using Gex.Utils;
@@ -13,12 +14,13 @@ using Gex.ViewModels.Request;
 using Gex.ViewModels.Response;
 
 namespace Gex.Services;
-public class ExamenService : IExamenService, IGexResponse<ExamenRequest>
+using static GexResponse;
+
+public class ExamenService : IExamenService
 {
     private readonly IMapper _mapper;
     private readonly IExamenRepository _examenRepository;
     private readonly IMateriaRepository _materiaRepository;
-    private readonly GexResponseOptions _options = Examen.Options;
 
     public ExamenService(IMapper mapper, IExamenRepository examenRepository, IMateriaRepository materiaRepository)
     {
@@ -27,115 +29,106 @@ public class ExamenService : IExamenService, IGexResponse<ExamenRequest>
         _materiaRepository = materiaRepository;
     }
 
-    //*********** HANDLING ERRORS ***********//
-    public GexResponse<ICollection<ExamenRequest>> Collection(GexErrorMessage message) => GexResponse<ICollection<ExamenRequest>>.ErrorF(message, _options);
-    public GexResponse<ExamenRequest> Success(GexSuccessMessage message) => GexResponse<ExamenRequest>.Ok(message, _options);
-    public GexResponse<ExamenRequest> Error(GexErrorMessage error, [Optional] string message) => GexResponse<ExamenRequest>.ErrorF(error, _options, message);
-    public GexResponse<ICollection<ExamenRequest>> CollectionMessage(GexErrorMessage error, [Optional] string message) => GexResponse<ICollection<ExamenRequest>>.ErrorF(error, _options, message);
-    public GexResponse<ExamenRequest> Data(ExamenRequest data, GexSuccessMessage gexSuccess) => GexResponse<ExamenRequest>.Ok(data, gexSuccess, _options);
-    public GexResponse<ExamenRequest> Data(ExamenRequest data) => GexResponse<ExamenRequest>.Ok(data);
-    public GexResponse<ICollection<ExamenRequest>> OkCollection(ICollection<ExamenRequest> data) => GexResponse<ICollection<ExamenRequest>>.Ok(data);
-
-    //***************************************//
-    public async Task<GexResponse<ExamenRequest>> CreateExamenAsync(ExamenRequest examenDto)
+    public async Task<GexResult<ExamenResponse>> CreateExamenAsync(ExamenRequest examenDto)
     {
         try
         {
             if (await _examenRepository.ExistsExamenAsync(examenDto.Id))
-                return Error(GexErrorMessage.AlreadyExists);
+                return Error<Examen, ExamenResponse>(GexErrorMessage.AlreadyExists);
 
             var examen = _mapper.Map<Examen>(examenDto);
 
             examen.Materia = await _materiaRepository.GetMateriaAsync(examenDto.MateriaId);
 
             if (examen.Materia == null)
-                return GexResponse<ExamenRequest>.ErrorF(GexErrorMessage.NotFound, Materia.Options);
+                return KeyError<Materia, ExamenResponse>(nameof(examenDto.MateriaId), GexErrorMessage.NotFound);
 
             if (!await _examenRepository.CreateExamenAsync(examen))
-                return Error(GexErrorMessage.CouldNotCreate);
+                return Error<Examen, ExamenResponse>(GexErrorMessage.CouldNotCreate);
 
-            var dto = _mapper.Map<ExamenRequest>(examen);
-            return Data(dto, GexSuccessMessage.Created);
+            var dto = _mapper.Map<ExamenResponse>(examen);
+            return Ok<Examen, ExamenResponse>(dto, GexSuccessMessage.Created);
         }
         catch (UniqueConstraintException)
         {
-            return Error(GexErrorMessage.AlreadyExists);
+            return Error<Examen, ExamenResponse>(GexErrorMessage.AlreadyExists);
         }
         catch (Exception ex)
         {
-            return Error(GexErrorMessage.Generic, ex.Message);
+            return Error<Examen, ExamenResponse>(GexErrorMessage.Generic, ex.Message);
         }
     }
-    public async Task<GexResponse<ExamenRequest>> DeleteExamenAsync(int id)
+    public async Task<GexResult<ExamenResponse>> DeleteExamenAsync(long id)
     {
         try
         {
             var examen = await _examenRepository.GetExamenAsync(id);
             if (examen == null)
-                return Error(GexErrorMessage.NotFound);
+                return Error<Examen, ExamenResponse>(GexErrorMessage.NotFound);
 
             if (examen.Estado == Estado.BAJA)
-                return Error(GexErrorMessage.AlreadyDeleted);
+                return Error<Examen, ExamenResponse>(GexErrorMessage.AlreadyDeleted);
 
             if (!await _examenRepository.DeleteExamenAsync(examen))
-                return Error(GexErrorMessage.CouldNotDelete);
+                return Error<Examen, ExamenResponse>(GexErrorMessage.CouldNotDelete);
 
-            return Data(_mapper.Map<ExamenRequest>(examen), GexSuccessMessage.Deleted);
+            return Ok<Examen, ExamenResponse>(_mapper.Map<ExamenResponse>(examen), GexSuccessMessage.Deleted);
         }
         catch (Exception ex)
         {
-            return Error(GexErrorMessage.Generic, ex.Message);
+            return Error<Examen, ExamenResponse>(GexErrorMessage.Generic, ex.Message);
         }
     }
-    public async Task<GexResponse<ExamenResponse>> GetExamenAsync(int id)
+    public async Task<GexResult<ExamenResponse>> GetExamenAsync(long id)
     {
         try
         {
             var examen = await _examenRepository.GetExamenAsync(id);
 
             if (examen == null)
-                return GexResponse<ExamenResponse>.ErrorF(GexErrorMessage.NotFound, Examen.Options);
+                return Error<Examen, ExamenResponse>(GexErrorMessage.NotFound);
 
-            return GexResponse<ExamenResponse>.Ok(_mapper.Map<ExamenResponse>(examen));
+            return Ok(_mapper.Map<ExamenResponse>(examen));
         }
         catch (Exception ex)
         {
-            return GexResponse<ExamenResponse>.ErrorF(GexErrorMessage.Generic, Examen.Options, ex.Message);
+            return Error<Examen, ExamenResponse>(GexErrorMessage.Generic, ex.Message);
         }
     }
-    public async Task<GexResponse<ICollection<ExamenResponse>>> GetExamensAsync()
+    public async Task<GexResult<ICollection<ExamenResponse>>> GetExamenesAsync()
     {
         try
         {
-            var examenes = await _examenRepository.GetExamensAsync();
+            var examens = await _examenRepository.GetExamenesAsync();
 
-            if(examenes.Count == 0)
-                return GexResponse<ICollection<ExamenResponse>>.ErrorF(GexErrorMessage.NotFound, Examen.Options);
+            if (examens.Count == 0)
+                return Error<Examen, ICollection<ExamenResponse>>(GexErrorMessage.NotFound);
 
-            var examenesDto = new List<ExamenResponse>();
+            var examensDto = new List<ExamenResponse>();
 
-            foreach (var Examen in examenes)
+            foreach (var Examen in examens)
             {
-                examenesDto.Add(_mapper.Map<ExamenResponse>(Examen));
+                examensDto.Add(_mapper.Map<ExamenResponse>(Examen));
             }
-            return GexResponse<ICollection<ExamenResponse>>.Ok(examenesDto);
+            return Ok<ICollection<ExamenResponse>>(examensDto);
         }
         catch (Exception ex)
         {
-            return GexResponse<ICollection<ExamenResponse>>.ErrorF(GexErrorMessage.Generic, Examen.Options, ex.Message);
+            return Error<Examen, ICollection<ExamenResponse>>(GexErrorMessage.Generic, ex.Message);
         }
     }
-    public async Task<GexResponse<ExamenRequest>> UpdateExamenAsync(ExamenRequest examenDto)
+
+    public async Task<GexResult<ExamenResponse>> UpdateExamenAsync(ExamenRequest examenDto)
     {
         try
         {
             if (examenDto.Id == 0)
-                return Error(GexErrorMessage.InvalidId);
+                return Error<Examen, ExamenResponse>(GexErrorMessage.InvalidId);
 
             var examen = await _examenRepository.GetExamenAsync(examenDto.Id);
 
             if (examen == null)
-                return Error(GexErrorMessage.NotFound);
+                return Error<Examen, ExamenResponse>(GexErrorMessage.NotFound);
 
             examen.Tipo = examenDto.Tipo;
             examen.NotaRegular = examenDto.NotaRegular;
@@ -143,13 +136,13 @@ public class ExamenService : IExamenService, IGexResponse<ExamenRequest>
             examen.Recuperatorio = examenDto.Recuperatorio;
 
             if (!await _examenRepository.UpdateExamenAsync(examen))
-                return Error(GexErrorMessage.CouldNotUpdate);
+                return Error<Examen, ExamenResponse>(GexErrorMessage.CouldNotUpdate);
 
-            return Data(_mapper.Map<ExamenRequest>(examen), GexSuccessMessage.Modified);
+            return Ok<Examen, ExamenResponse>(_mapper.Map<ExamenResponse>(examen), GexSuccessMessage.Modified);
         }
         catch (Exception ex)
         {
-            return Error(GexErrorMessage.Generic, ex.Message);
+            return Error<Examen, ExamenResponse>(GexErrorMessage.Generic, ex.Message);
         }
     }
 }

@@ -1,5 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Gex.Models;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using Gex.Models.Enums;
 
 namespace Gex.ViewModels.Request;
 public class MateriaRequest
@@ -12,4 +13,6 @@ public class MateriaRequest
 
     [Display(Name = "tipo")]
     public MateriaTipo Tipo { get; set; }
+
+    public ICollection<PreguntaRequest> Preguntas { get; set; }
 }

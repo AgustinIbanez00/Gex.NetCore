@@ -239,188 +239,6 @@ namespace Gex.Migrations
                         .HasDatabaseName("ix_materias_nombre");
 
                     b.ToTable("materias", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 535118122L,
-                            CreatedAt = new DateTime(2021, 12, 8, 20, 40, 43, 350, DateTimeKind.Local).AddTicks(4099),
-                            Estado = 1,
-                            Nombre = "laurine_brekke",
-                            Tipo = 0,
-                            UpdatedAt = new DateTime(2021, 12, 8, 20, 40, 43, 350, DateTimeKind.Local).AddTicks(4086)
-                        },
-                        new
-                        {
-                            Id = 998819174L,
-                            CreatedAt = new DateTime(2021, 12, 8, 20, 40, 43, 350, DateTimeKind.Local).AddTicks(6547),
-                            Estado = 1,
-                            Nombre = "amelia",
-                            Tipo = 2,
-                            UpdatedAt = new DateTime(2021, 12, 8, 20, 40, 43, 350, DateTimeKind.Local).AddTicks(6545)
-                        },
-                        new
-                        {
-                            Id = 1271665876L,
-                            CreatedAt = new DateTime(2021, 12, 8, 20, 40, 43, 350, DateTimeKind.Local).AddTicks(8226),
-                            Estado = 1,
-                            Nombre = "ramiro",
-                            Tipo = 2,
-                            UpdatedAt = new DateTime(2021, 12, 8, 20, 40, 43, 350, DateTimeKind.Local).AddTicks(8224)
-                        },
-                        new
-                        {
-                            Id = 1160699221L,
-                            CreatedAt = new DateTime(2021, 12, 8, 20, 40, 43, 351, DateTimeKind.Local).AddTicks(12),
-                            Estado = 1,
-                            Nombre = "colton.kling",
-                            Tipo = 2,
-                            UpdatedAt = new DateTime(2021, 12, 8, 20, 40, 43, 351, DateTimeKind.Local).AddTicks(9)
-                        },
-                        new
-                        {
-                            Id = 1636131673L,
-                            CreatedAt = new DateTime(2021, 12, 8, 20, 40, 43, 351, DateTimeKind.Local).AddTicks(2031),
-                            Estado = 1,
-                            Nombre = "hester",
-                            Tipo = 0,
-                            UpdatedAt = new DateTime(2021, 12, 8, 20, 40, 43, 351, DateTimeKind.Local).AddTicks(2026)
-                        },
-                        new
-                        {
-                            Id = 1054938514L,
-                            CreatedAt = new DateTime(2021, 12, 8, 20, 40, 43, 351, DateTimeKind.Local).AddTicks(3810),
-                            Estado = 1,
-                            Nombre = "lydia_hamill",
-                            Tipo = 0,
-                            UpdatedAt = new DateTime(2021, 12, 8, 20, 40, 43, 351, DateTimeKind.Local).AddTicks(3809)
-                        },
-                        new
-                        {
-                            Id = 1332610653L,
-                            CreatedAt = new DateTime(2021, 12, 8, 20, 40, 43, 351, DateTimeKind.Local).AddTicks(5777),
-                            Estado = 1,
-                            Nombre = "lynn",
-                            Tipo = 1,
-                            UpdatedAt = new DateTime(2021, 12, 8, 20, 40, 43, 351, DateTimeKind.Local).AddTicks(5776)
-                        },
-                        new
-                        {
-                            Id = 1548696203L,
-                            CreatedAt = new DateTime(2021, 12, 8, 20, 40, 43, 351, DateTimeKind.Local).AddTicks(7553),
-                            Estado = 1,
-                            Nombre = "katrina_swift",
-                            Tipo = 0,
-                            UpdatedAt = new DateTime(2021, 12, 8, 20, 40, 43, 351, DateTimeKind.Local).AddTicks(7551)
-                        },
-                        new
-                        {
-                            Id = 1372973313L,
-                            CreatedAt = new DateTime(2021, 12, 8, 20, 40, 43, 351, DateTimeKind.Local).AddTicks(9468),
-                            Estado = 1,
-                            Nombre = "dave.lindgren",
-                            Tipo = 0,
-                            UpdatedAt = new DateTime(2021, 12, 8, 20, 40, 43, 351, DateTimeKind.Local).AddTicks(9468)
-                        },
-                        new
-                        {
-                            Id = 301407982L,
-                            CreatedAt = new DateTime(2021, 12, 8, 20, 40, 43, 352, DateTimeKind.Local).AddTicks(3900),
-                            Estado = 1,
-                            Nombre = "henri",
-                            Tipo = 2,
-                            UpdatedAt = new DateTime(2021, 12, 8, 20, 40, 43, 352, DateTimeKind.Local).AddTicks(3891)
-                        },
-                        new
-                        {
-                            Id = 972487296L,
-                            CreatedAt = new DateTime(2021, 12, 8, 20, 40, 43, 352, DateTimeKind.Local).AddTicks(6989),
-                            Estado = 1,
-                            Nombre = "bethel",
-                            Tipo = 2,
-                            UpdatedAt = new DateTime(2021, 12, 8, 20, 40, 43, 352, DateTimeKind.Local).AddTicks(6982)
-                        },
-                        new
-                        {
-                            Id = 85214850L,
-                            CreatedAt = new DateTime(2021, 12, 8, 20, 40, 43, 352, DateTimeKind.Local).AddTicks(9456),
-                            Estado = 1,
-                            Nombre = "deangelo.kirlin",
-                            Tipo = 2,
-                            UpdatedAt = new DateTime(2021, 12, 8, 20, 40, 43, 352, DateTimeKind.Local).AddTicks(9450)
-                        },
-                        new
-                        {
-                            Id = 1310171986L,
-                            CreatedAt = new DateTime(2021, 12, 8, 20, 40, 43, 354, DateTimeKind.Local).AddTicks(581),
-                            Estado = 1,
-                            Nombre = "arch.gusikowski",
-                            Tipo = 2,
-                            UpdatedAt = new DateTime(2021, 12, 8, 20, 40, 43, 354, DateTimeKind.Local).AddTicks(570)
-                        },
-                        new
-                        {
-                            Id = 2114238936L,
-                            CreatedAt = new DateTime(2021, 12, 8, 20, 40, 43, 354, DateTimeKind.Local).AddTicks(3265),
-                            Estado = 1,
-                            Nombre = "shanna",
-                            Tipo = 0,
-                            UpdatedAt = new DateTime(2021, 12, 8, 20, 40, 43, 354, DateTimeKind.Local).AddTicks(3263)
-                        },
-                        new
-                        {
-                            Id = 1086299584L,
-                            CreatedAt = new DateTime(2021, 12, 8, 20, 40, 43, 354, DateTimeKind.Local).AddTicks(5621),
-                            Estado = 1,
-                            Nombre = "jean",
-                            Tipo = 0,
-                            UpdatedAt = new DateTime(2021, 12, 8, 20, 40, 43, 354, DateTimeKind.Local).AddTicks(5617)
-                        },
-                        new
-                        {
-                            Id = 239772803L,
-                            CreatedAt = new DateTime(2021, 12, 8, 20, 40, 43, 354, DateTimeKind.Local).AddTicks(8064),
-                            Estado = 1,
-                            Nombre = "della",
-                            Tipo = 0,
-                            UpdatedAt = new DateTime(2021, 12, 8, 20, 40, 43, 354, DateTimeKind.Local).AddTicks(8060)
-                        },
-                        new
-                        {
-                            Id = 27571943L,
-                            CreatedAt = new DateTime(2021, 12, 8, 20, 40, 43, 355, DateTimeKind.Local).AddTicks(705),
-                            Estado = 1,
-                            Nombre = "claudia_strosin",
-                            Tipo = 2,
-                            UpdatedAt = new DateTime(2021, 12, 8, 20, 40, 43, 355, DateTimeKind.Local).AddTicks(703)
-                        },
-                        new
-                        {
-                            Id = 1956020206L,
-                            CreatedAt = new DateTime(2021, 12, 8, 20, 40, 43, 355, DateTimeKind.Local).AddTicks(3639),
-                            Estado = 1,
-                            Nombre = "magali",
-                            Tipo = 1,
-                            UpdatedAt = new DateTime(2021, 12, 8, 20, 40, 43, 355, DateTimeKind.Local).AddTicks(3634)
-                        },
-                        new
-                        {
-                            Id = 1584935721L,
-                            CreatedAt = new DateTime(2021, 12, 8, 20, 40, 43, 355, DateTimeKind.Local).AddTicks(6121),
-                            Estado = 1,
-                            Nombre = "brad",
-                            Tipo = 0,
-                            UpdatedAt = new DateTime(2021, 12, 8, 20, 40, 43, 355, DateTimeKind.Local).AddTicks(6117)
-                        },
-                        new
-                        {
-                            Id = 213094214L,
-                            CreatedAt = new DateTime(2021, 12, 8, 20, 40, 43, 355, DateTimeKind.Local).AddTicks(8518),
-                            Estado = 1,
-                            Nombre = "sadye",
-                            Tipo = 1,
-                            UpdatedAt = new DateTime(2021, 12, 8, 20, 40, 43, 355, DateTimeKind.Local).AddTicks(8515)
-                        });
                 });
 
             modelBuilder.Entity("Gex.Models.MesaExamen", b =>
@@ -512,27 +330,46 @@ namespace Gex.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("id");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("created_at");
+
                     b.Property<string>("Descripcion")
                         .HasColumnType("longtext")
                         .HasColumnName("descripcion");
+
+                    b.Property<int>("Estado")
+                        .HasColumnType("int")
+                        .HasColumnName("estado");
 
                     b.Property<long?>("ExamenId")
                         .HasColumnType("bigint")
                         .HasColumnName("examen_id");
 
-                    b.Property<string>("Periodo")
+                    b.Property<long?>("MateriaId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("materia_id");
+
+                    b.Property<string>("Tema")
                         .HasColumnType("longtext")
-                        .HasColumnName("periodo");
+                        .HasColumnName("tema");
 
                     b.Property<int>("Tipo")
                         .HasColumnType("int")
                         .HasColumnName("tipo");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("updated_at");
 
                     b.HasKey("Id")
                         .HasName("pk_preguntas");
 
                     b.HasIndex("ExamenId")
                         .HasDatabaseName("ix_preguntas_examen_id");
+
+                    b.HasIndex("MateriaId")
+                        .HasDatabaseName("ix_preguntas_materia_id");
 
                     b.ToTable("preguntas", (string)null);
                 });
@@ -548,9 +385,21 @@ namespace Gex.Migrations
                         .HasColumnType("tinyint(1)")
                         .HasColumnName("correcto");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("created_at");
+
+                    b.Property<int>("Estado")
+                        .HasColumnType("int")
+                        .HasColumnName("estado");
+
                     b.Property<long?>("PreguntaId")
                         .HasColumnType("bigint")
                         .HasColumnName("pregunta_id");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("updated_at");
 
                     b.Property<string>("Valor")
                         .HasColumnType("longtext")
@@ -809,6 +658,11 @@ namespace Gex.Migrations
                         .WithMany("Preguntas")
                         .HasForeignKey("ExamenId")
                         .HasConstraintName("fk_preguntas_examenes_examen_id");
+
+                    b.HasOne("Gex.Models.Materia", null)
+                        .WithMany("Preguntas")
+                        .HasForeignKey("MateriaId")
+                        .HasConstraintName("fk_preguntas_materias_materia_id");
                 });
 
             modelBuilder.Entity("Gex.Models.Respuesta", b =>
@@ -844,6 +698,11 @@ namespace Gex.Migrations
                 });
 
             modelBuilder.Entity("Gex.Models.Examen", b =>
+                {
+                    b.Navigation("Preguntas");
+                });
+
+            modelBuilder.Entity("Gex.Models.Materia", b =>
                 {
                     b.Navigation("Preguntas");
                 });

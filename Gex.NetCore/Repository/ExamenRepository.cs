@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Gex.Models;
+using Gex.Models.Enums;
 using Gex.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
 
@@ -42,14 +44,14 @@ public class ExamenRepository : IExamenRepository
         return await Save();
     }
 
-    public async Task<bool> ExistsExamenAsync(long id) => await _context.Examenes.FindAsync(id) != null;
+    public async Task<bool> ExistsExamenAsync(long id) => await GetExamenAsync(id) != null;
 
     public async Task<Examen> GetExamenAsync(long id)
     {
-        return await _context.Examenes.Include(e => e.Materia).FirstOrDefaultAsync(e => e.Id == id);
+        return await _context.Examenes.Include(e => e.Materia).FirstOrDefaultAsync(e => e.Id == id && e.Estado == Estado.NORMAL);
     }
 
-    public async Task<ICollection<Examen>> GetExamensAsync() => await _context.Examenes.Include(c => c.Materia).ToListAsync();
+    public async Task<ICollection<Examen>> GetExamenesAsync() => await _context.Examenes.Include(c => c.Preguntas).Include(c => c.Materia).Where(e => e.Estado == Estado.NORMAL).ToListAsync();
 
     public async Task<bool> Save() => await _context.SaveChangesAsync() >= 0;
 
