@@ -7,7 +7,6 @@ public static class ResponseHelper
     {
         return gexError switch
         {
-            GexErrorMessage.NotFound => StatusCodes.Status404NotFound,
             GexErrorMessage.Generic or GexErrorMessage.CouldNotDelete or GexErrorMessage.CouldNotDelete or GexErrorMessage.CouldNotUpdate => StatusCodes.Status500InternalServerError,
             _ => StatusCodes.Status400BadRequest
         };

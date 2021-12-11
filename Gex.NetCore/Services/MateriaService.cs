@@ -93,9 +93,6 @@ public class MateriaService : IMateriaService
         {
             var materias = await _repository.GetMateriasAsync();
 
-            if (materias.Count == 0)
-                return Error<Materia, ICollection<MateriaResponse>>(GexErrorMessage.NotFound);
-
             var materiasDto = new List<MateriaResponse>();
 
             foreach (var Materia in materias)

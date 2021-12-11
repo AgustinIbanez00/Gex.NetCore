@@ -101,9 +101,6 @@ public class MesaExamenService : IMesaExamenService
         {
             var mesaExamens = await _mesaExamenRepository.GetMesasExamenAsync();
 
-            if (mesaExamens.Count == 0)
-                return Error<MesaExamen, ICollection<MesaExamenResponse>>(GexErrorMessage.NotFound);
-
             var mesaExamensDto = new List<MesaExamenResponse>();
 
             foreach (var MesaExamen in mesaExamens)

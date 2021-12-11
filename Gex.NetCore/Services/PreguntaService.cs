@@ -107,9 +107,6 @@ public class PreguntaService : IPreguntaService
         {
             var preguntas = await _repository.GetPreguntasAsync();
 
-            if (preguntas.Count == 0)
-                return Error<Pregunta, ICollection<PreguntaResponse>>(GexErrorMessage.NotFound);
-
             var preguntasDto = new List<PreguntaResponse>();
 
             foreach (var Pregunta in preguntas)

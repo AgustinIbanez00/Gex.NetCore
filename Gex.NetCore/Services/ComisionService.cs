@@ -109,9 +109,6 @@ public class ComisionService : IComisionService
         {
             var comisions = await _repository.GetComisionsAsync();
 
-            if (comisions.Count == 0)
-                return Error<Comision, ICollection<ComisionResponse>>(GexErrorMessage.NotFound);
-
             var comisionsDto = new List<ComisionResponse>();
 
             foreach (var Comision in comisions)

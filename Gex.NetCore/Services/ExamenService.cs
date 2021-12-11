@@ -101,9 +101,6 @@ public class ExamenService : IExamenService
         {
             var examens = await _examenRepository.GetExamenesAsync();
 
-            if (examens.Count == 0)
-                return Error<Examen, ICollection<ExamenResponse>>(GexErrorMessage.NotFound);
-
             var examensDto = new List<ExamenResponse>();
 
             foreach (var Examen in examens)
