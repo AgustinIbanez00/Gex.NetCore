@@ -127,8 +127,25 @@ public class PreguntaService : IPreguntaService
         {
             var preguntas = await _repository.GetPreguntasByExamenIdAsync(examenId);
 
-            if (preguntas.Count == 0)
-                return Error<Pregunta, ICollection<PreguntaResponse>>(GexErrorMessage.NotFound);
+            var preguntasDto = new List<PreguntaResponse>();
+
+            foreach (var Pregunta in preguntas)
+            {
+                preguntasDto.Add(_mapper.Map<PreguntaResponse>(Pregunta));
+            }
+            return Ok<ICollection<PreguntaResponse>>(preguntasDto);
+        }
+        catch (Exception ex)
+        {
+            return Error<Pregunta, ICollection<PreguntaResponse>>(GexErrorMessage.Generic, ex.Message);
+        }
+    }
+
+    public async Task<GexResult<ICollection<PreguntaResponse>>> GetPreguntasByMateriaIdAsync(long materiaId)
+    {
+        try
+        {
+            var preguntas = await _repository.GetPreguntasByMateriaIdAsync(materiaId);
 
             var preguntasDto = new List<PreguntaResponse>();
 

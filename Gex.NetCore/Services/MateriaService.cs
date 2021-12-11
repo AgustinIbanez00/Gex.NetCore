@@ -19,23 +19,23 @@ using static GexResponse;
 public class MateriaService : IMateriaService
 {
     private readonly IMapper _mapper;
-    private readonly IMateriaRepository _repository;
+    private readonly IMateriaRepository _materiaRepository;
 
-    public MateriaService(IMapper mapper, IMateriaRepository repository)
+    public MateriaService(IMapper mapper, IMateriaRepository materiaRepository)
     {
         _mapper = mapper;
-        _repository = repository;
+        _materiaRepository = materiaRepository;
     }
 
     public async Task<GexResult<MateriaResponse>> CreateMateriaAsync(MateriaRequest materiaDto)
     {
         try
         {
-            if (await _repository.ExistsMateriaAsync(materiaDto.Id))
+            if (await _materiaRepository.ExistsMateriaAsync(materiaDto.Id))
                 return Error<Materia, MateriaResponse>(GexErrorMessage.AlreadyExists);
 
             var materia = _mapper.Map<Materia>(materiaDto);
-            if (!await _repository.CreateMateriaAsync(materia))
+            if (!await _materiaRepository.CreateMateriaAsync(materia))
                 return Error<Materia, MateriaResponse>(GexErrorMessage.CouldNotCreate);
 
             var dto = _mapper.Map<MateriaResponse>(materia);
@@ -50,18 +50,18 @@ public class MateriaService : IMateriaService
             return Error<Materia, MateriaResponse>(GexErrorMessage.Generic, ex.Message);
         }
     }
-    public async Task<GexResult<MateriaResponse>> DeleteMateriaAsync(int id)
+    public async Task<GexResult<MateriaResponse>> DeleteMateriaAsync(long id)
     {
         try
         {
-            var materia = await _repository.GetMateriaAsync(id);
+            var materia = await _materiaRepository.GetMateriaAsync(id);
             if (materia == null)
                 return Error<Materia, MateriaResponse>(GexErrorMessage.NotFound);
 
             if (materia.Estado == Estado.BAJA)
                 return Error<Materia, MateriaResponse>(GexErrorMessage.AlreadyDeleted);
 
-            if (!await _repository.DeleteMateriaAsync(materia))
+            if (!await _materiaRepository.DeleteMateriaAsync(materia))
                 return Error<Materia, MateriaResponse>(GexErrorMessage.CouldNotDelete);
 
             return Ok<Materia, MateriaResponse>(_mapper.Map<MateriaResponse>(materia), GexSuccessMessage.Deleted);
@@ -71,11 +71,11 @@ public class MateriaService : IMateriaService
             return Error<Materia, MateriaResponse>(GexErrorMessage.Generic, ex.Message);
         }
     }
-    public async Task<GexResult<MateriaResponse>> GetMateriaAsync(int id)
+    public async Task<GexResult<MateriaResponse>> GetMateriaAsync(long id)
     {
         try
         {
-            var materia = await _repository.GetMateriaAsync(id);
+            var materia = await _materiaRepository.GetMateriaAsync(id);
 
             if (materia == null)
                 return Error<Materia, MateriaResponse>(GexErrorMessage.NotFound);
@@ -91,7 +91,7 @@ public class MateriaService : IMateriaService
     {
         try
         {
-            var materias = await _repository.GetMateriasAsync();
+            var materias = await _materiaRepository.GetMateriasAsync();
 
             var materiasDto = new List<MateriaResponse>();
 
@@ -114,7 +114,7 @@ public class MateriaService : IMateriaService
             if (materiaDto.Id == 0)
                 return Error<Materia, MateriaResponse>(GexErrorMessage.InvalidId);
 
-            var materia = await _repository.GetMateriaAsync(materiaDto.Id);
+            var materia = await _materiaRepository.GetMateriaAsync(materiaDto.Id);
 
             if (materia == null)
                 return Error<Materia, MateriaResponse>(GexErrorMessage.NotFound);
@@ -122,7 +122,7 @@ public class MateriaService : IMateriaService
             materia.Nombre = materiaDto.Nombre;
             materia.Tipo = materiaDto.Tipo;
 
-            if (!await _repository.UpdateMateriaAsync(materia))
+            if (!await _materiaRepository.UpdateMateriaAsync(materia))
                 return Error<Materia, MateriaResponse>(GexErrorMessage.CouldNotUpdate);
 
             return Ok<Materia, MateriaResponse>(_mapper.Map<MateriaResponse>(materia), GexSuccessMessage.Modified);

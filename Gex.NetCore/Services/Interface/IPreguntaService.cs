@@ -12,4 +12,6 @@ public interface IPreguntaService
     Task<GexResult<PreguntaResponse>> CreatePreguntaAsync(PreguntaRequest preguntaDto);
     Task<GexResult<PreguntaResponse>> UpdatePreguntaAsync(PreguntaRequest preguntaDto);
     Task<GexResult<PreguntaResponse>> DeletePreguntaAsync(int id);
+    Task<GexResult<ICollection<PreguntaResponse>>> GetPreguntasByExamenIdAsync(long examenId);
+    Task<GexResult<ICollection<PreguntaResponse>>> GetPreguntasByMateriaIdAsync(long materiaId);
 }

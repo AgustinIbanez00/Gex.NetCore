@@ -43,8 +43,12 @@ public class ExamenController : ControllerBase
     [HttpGet("{id:int}/preguntas")]
     public async Task<ActionResult<GexResult<ExamenResponse>>> GetPreguntas(long id)
     {
-        //var preguntas = await _preguntaService.
-        return await Task.FromResult(new ObjectResult(""));
+        var preguntas = await _preguntaService.GetPreguntasByExamenIdAsync(id);
+
+        if (!preguntas.Success)
+            return StatusCode(ResponseHelper.GetHttpError(preguntas.ErrorCode), preguntas.Data);
+
+        return Ok(preguntas);
     }
 
     [HttpGet("{id:int}")]

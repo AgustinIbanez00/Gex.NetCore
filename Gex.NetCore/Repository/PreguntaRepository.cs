@@ -49,6 +49,8 @@ public class PreguntaRepository : IPreguntaRepository
 
     public async Task<ICollection<Pregunta>> GetPreguntasByExamenIdAsync(long examenId) => await _context.Preguntas.Where(p => p.ExamenId == examenId).ToListAsync();
 
+    public async Task<ICollection<Pregunta>> GetPreguntasByMateriaIdAsync(long materiaId) => await _context.Preguntas.Where(p => p.MateriaId == materiaId).ToListAsync();
+
     public async Task<bool> Save() => await _context.SaveChangesAsync() >= 0;
 
     public async Task<bool> UpdatePreguntaAsync(Pregunta pregunta)
