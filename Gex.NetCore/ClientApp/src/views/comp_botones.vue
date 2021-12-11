@@ -1,7 +1,7 @@
 <template>
 		<div>
 			<!-- Botones -->
-			<RouterLink :to="`/${tab_actual}/crear`" v-show="route == `listar_${tab_actual}`">
+			<RouterLink :to="`/${tab_actual}/crear`" v-show="route == `listar_${tab_actual}` || route == `eliminar_${tab_actual}`">
 				<v-btn @click="creacion" outlined color="white" dark absolute bottom style="font-size:16px;padding-right:10px;top:60px; right:60px; height:40px; z-index:2;">
 					Crear <v-icon>add</v-icon>
 				</v-btn>

@@ -80,7 +80,7 @@
 			respuestas_correctas: [],
 			respuestas: [],
 			nueva_respuesta_txt: '',
-			tipos_preguntas: ['Multiple Choice', 'Verdadero/Falso', 'Texto','Selección Múltiple'],
+			tipos_preguntas: ['Texto', 'Multiple Choice', 'Verdadero/Falso','Selección Múltiple'],
 			modo_nueva_respuesta: 0,
 		}),
 		methods: {
