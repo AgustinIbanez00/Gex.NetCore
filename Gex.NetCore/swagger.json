@@ -754,14 +754,14 @@
         }
       }
     },
-    "/api/examen/{id}/preguntas": {
+    "/api/examen/{examenId}/preguntas": {
       "get": {
         "tags": [
           "Examen"
         ],
         "parameters": [
           {
-            "name": "id",
+            "name": "examenId",
             "in": "path",
             "required": true,
             "schema": {
@@ -1096,7 +1096,7 @@
             "in": "query",
             "schema": {
               "type": "integer",
-              "format": "int32"
+              "format": "int64"
             }
           }
         ],
@@ -1136,7 +1136,7 @@
             "required": true,
             "schema": {
               "type": "integer",
-              "format": "int32"
+              "format": "int64"
             }
           }
         ],
@@ -1180,6 +1180,69 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/materia/{materiaId}/preguntas": {
+      "get": {
+        "tags": [
+          "Materia"
+        ],
+        "parameters": [
+          {
+            "name": "materiaId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreguntaResponseGexResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreguntaResponseGexResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreguntaResponseGexResult"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error"
           },
           "404": {
             "description": "Not Found",
@@ -2377,6 +2440,68 @@
         },
         "nullable": true
       },
+      "PreguntaResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "periodo": {
+            "type": "string",
+            "nullable": true
+          },
+          "descripcion": {
+            "type": "string",
+            "nullable": true
+          },
+          "tipo": {
+            "$ref": "#/components/schemas/PreguntaTipo"
+          },
+          "examen_id": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "materia_id": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          }
+        },
+        "nullable": true
+      },
+      "PreguntaResponseGexResult": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/PreguntaResponse"
+          },
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "error_messages": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "nullable": true
+              },
+              "nullable": true
+            },
+            "nullable": true
+          },
+          "error_code": {
+            "$ref": "#/components/schemas/GexErrorMessage"
+          }
+        },
+        "nullable": true
+      },
       "MesaExamenResponse": {
         "type": "object",
         "properties": {
@@ -2484,68 +2609,6 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/MesaExamenResponse"
-          },
-          "success": {
-            "type": "boolean"
-          },
-          "message": {
-            "type": "string",
-            "nullable": true
-          },
-          "error_messages": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "nullable": true
-              },
-              "nullable": true
-            },
-            "nullable": true
-          },
-          "error_code": {
-            "$ref": "#/components/schemas/GexErrorMessage"
-          }
-        },
-        "nullable": true
-      },
-      "PreguntaResponse": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "periodo": {
-            "type": "string",
-            "nullable": true
-          },
-          "descripcion": {
-            "type": "string",
-            "nullable": true
-          },
-          "tipo": {
-            "$ref": "#/components/schemas/PreguntaTipo"
-          },
-          "examen_id": {
-            "type": "integer",
-            "format": "int64",
-            "nullable": true
-          },
-          "materia_id": {
-            "type": "integer",
-            "format": "int64",
-            "nullable": true
-          }
-        },
-        "nullable": true
-      },
-      "PreguntaResponseGexResult": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "$ref": "#/components/schemas/PreguntaResponse"
           },
           "success": {
             "type": "boolean"

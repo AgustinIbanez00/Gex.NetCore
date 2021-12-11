@@ -67,6 +67,22 @@ public class PreguntaController : ControllerBase
         return Created(nameof(Get), pregunta);
     }
 
+    [HttpPost]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResult<PreguntaResponse>))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    public async Task<ActionResult<GexResult<PreguntaResponse>>> CreatePregunta([FromBody] PreguntaRequest[] preguntasDto)
+    {
+        foreach (var preguntaDto in preguntasDto)
+        {
+            var pregunta = await _service.CreatePreguntaAsync(preguntaDto);
+            if (!pregunta.Success)
+                return StatusCode(ResponseHelper.GetHttpError(pregunta.ErrorCode), pregunta);
+        }
+        return Ok();
+    }
+
     [HttpPatch]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResult<PreguntaResponse>))]
     public async Task<ActionResult<GexResult<PreguntaResponse>>> UpdatePregunta([FromBody] PreguntaRequest preguntaDto)
