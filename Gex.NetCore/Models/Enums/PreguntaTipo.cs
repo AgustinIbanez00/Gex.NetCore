@@ -12,5 +12,9 @@ public enum PreguntaTipo
     /// <summary>
     /// Se podrán responder con múltiples valores.
     /// </summary>
-    MULTIPLECHOICE
+    MULTIPLECHOICE,
+    /// <summary>
+    /// Indica que se puede responder con muchas respuestas.
+    /// </summary>
+    MULTIPLESELECTION
 }
