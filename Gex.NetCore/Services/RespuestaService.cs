@@ -191,12 +191,12 @@ public Task<GexResult<RespuestaResponse>> PrepareCreateRespuestaAsync(RespuestaC
                 {
                     if (await _respuestaRepository.ExistsRespuestaAsync(rtaDto.Id))
                     {
-                        if(rtaDto.Borrar)
+                        if (rtaDto.Borrar)
                         {
                             if (!await _respuestaRepository.DeleteRespuestaAsync(respuesta.Id))
                                 return KeyError<Respuesta, RespuestaResponse>(nameof(rtaDto.Id), GexErrorMessage.CouldNotDelete, _mapper.Map<RespuestaResponse>(rtaDto));
                         }
-                        else if(!rtaDto.Borrar)
+                        else if (!rtaDto.Borrar)
                         {
                             if (!await _respuestaRepository.UpdateRespuestaAsync(respuesta))
                                 return KeyError<Respuesta, RespuestaResponse>(nameof(rtaDto.Id), GexErrorMessage.CouldNotUpdate, _mapper.Map<RespuestaResponse>(rtaDto));
@@ -223,7 +223,6 @@ public Task<GexResult<RespuestaResponse>> PrepareCreateRespuestaAsync(RespuestaC
         {
             return Error<Respuesta, RespuestaResponse>(GexErrorMessage.Generic, ex.Message);
         }
-
     }
 
     public async Task<GexResult<RespuestaResponse>> UpdateRespuestaAsync(RespuestaRequest respuestaDto)
@@ -249,6 +248,26 @@ public Task<GexResult<RespuestaResponse>> PrepareCreateRespuestaAsync(RespuestaC
         catch (Exception ex)
         {
             return Error<Respuesta, RespuestaResponse>(GexErrorMessage.Generic, ex.Message);
+        }
+    }
+
+    public async Task<GexResult<ICollection<RespuestaResponse>>> GetRespuestasByPreguntaIdAsync(long preguntaId)
+    {
+        try
+        {
+            var respuestas = await _respuestaRepository.GetRespuestasByPreguntaIdAsync(preguntaId);
+
+            var respuestasDto = new List<RespuestaResponse>();
+
+            foreach (var Respuesta in respuestas)
+            {
+                respuestasDto.Add(_mapper.Map<RespuestaResponse>(Respuesta));
+            }
+            return Ok<ICollection<RespuestaResponse>>(respuestasDto);
+        }
+        catch (Exception ex)
+        {
+            return Error<Respuesta, ICollection<RespuestaResponse>>(GexErrorMessage.Generic, ex.Message);
         }
     }
 }

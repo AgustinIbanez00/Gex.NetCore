@@ -8,7 +8,9 @@ namespace Gex.Services.Interface;
 public interface IRespuestaService
 {
     Task<GexResult<ICollection<RespuestaResponse>>> GetRespuestasAsync();
+    Task<GexResult<ICollection<RespuestaResponse>>> GetRespuestasByPreguntaIdAsync(long preguntaId);
     Task<GexResult<RespuestaResponse>> GetRespuestaAsync(long id);
+
     //Task<GexResult<RespuestaResponse>> PrepareCreateRespuestaAsync(RespuestaCreateRequest request);
     Task<GexResult<RespuestaResponse>> CreateRespuestaAsync(RespuestaRequest respuestaDto);
     Task<GexResult<RespuestaResponse>> CreateOrUpdateRespuestaAsync(RespuestaCreateRequest respuestaDto);

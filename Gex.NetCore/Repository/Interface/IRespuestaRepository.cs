@@ -7,6 +7,7 @@ namespace Gex.Repository.Interface;
 public interface IRespuestaRepository
 {
     Task<ICollection<Respuesta>> GetRespuestasAsync();
+    Task<ICollection<Respuesta>> GetRespuestasByPreguntaIdAsync(long preguntaId);
     Task<Respuesta> GetRespuestaAsync(long id);
     Task<bool> ExistsRespuestaAsync(long id);
     Task<bool> CreateRespuestaAsync(Respuesta respuesta);

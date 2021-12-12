@@ -49,6 +49,8 @@ public class RespuestaRepository : IRespuestaRepository
 
     public async Task<ICollection<Respuesta>> GetRespuestasAsync() => await _context.Respuestas.Where(m => m.Estado == Estado.NORMAL).ToListAsync();
 
+    public async Task<ICollection<Respuesta>> GetRespuestasByPreguntaIdAsync(long preguntaId) => await _context.Respuestas.Where(m => m.Estado == Estado.NORMAL && m.PreguntaId == preguntaId).ToListAsync();
+
     public async Task<bool> Save() => await _context.SaveChangesAsync() >= 0;
 
     public async Task<bool> UpdateRespuestaAsync(Respuesta respuesta)
