@@ -61,7 +61,7 @@ public class AuthController : ControllerBase
 
             string bearer_token = tokenHandler.WriteToken(createdToken);
 
-            return Ok(bearer_token);
+            return Ok(Ok<string>(bearer_token));
         }
         return BadRequest(KeyError<Usuario, object>(nameof(credentials.Password), GexErrorMessage.InvalidPassword));
     }

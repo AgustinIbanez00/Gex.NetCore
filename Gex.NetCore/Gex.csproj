@@ -29,6 +29,7 @@
 		<PackageReference Include="EntityFrameworkCore.Exceptions.MySQL.Pomelo" Version="3.1.4" />
 		<PackageReference Include="Faker.Net" Version="1.5.150" />
 		<PackageReference Include="Humanizer" Version="2.13.14" />
+		<PackageReference Include="Humanizer.Core.es" Version="2.13.14" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.0">

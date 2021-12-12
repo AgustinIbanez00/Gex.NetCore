@@ -66,7 +66,7 @@ public class RespuestaController : ControllerBase
         return Created(nameof(Get), respuesta);
     }
 
-
+    /*
     [HttpPost("prepare")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResult<RespuestaResponse>))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -80,7 +80,7 @@ public class RespuestaController : ControllerBase
             return StatusCode(ResponseHelper.GetHttpError(respuesta.ErrorCode), respuesta);
         return Created(nameof(Get), respuesta);
     }
-
+    */
     [HttpPatch]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResult<RespuestaResponse>))]
     public async Task<ActionResult<GexResult<RespuestaResponse>>> UpdateRespuesta([FromBody] RespuestaRequest respuestaDto)

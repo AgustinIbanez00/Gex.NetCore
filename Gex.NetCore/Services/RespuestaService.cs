@@ -116,61 +116,64 @@ public class RespuestaService : IRespuestaService
         }
     }
 
-    public async Task<GexResult<RespuestaResponse>> PrepareCreateRespuestaAsync(RespuestaCreateRequest request)
+    /*
+public Task<GexResult<RespuestaResponse>> PrepareCreateRespuestaAsync(RespuestaCreateRequest request)
+{
+    return Ok<RespuestaResponse>();
+    if (!await _preguntaRepository.ExistsPreguntaAsync(request.PreguntaId))
+        return KeyError<Pregunta, RespuestaResponse>(nameof(request.PreguntaId), GexErrorMessage.NotFound);
+
+    switch (request.Tipo)
     {
-        if (!await _preguntaRepository.ExistsPreguntaAsync(request.PreguntaId))
-            return KeyError<Pregunta, RespuestaResponse>(nameof(request.PreguntaId), GexErrorMessage.NotFound);
+        case PreguntaTipo.TEXTO:
+            return Ok<RespuestaResponse>();
+        case PreguntaTipo.CERRADA:
+            if(request.RespuestaCorrecta != 0 && request.RespuestaCorrecta != 1)
+                return KeyError<RespuestaResponse>(nameof(request.RespuestaCorrecta), "El valor debe estar entre 0 y 1.");
+            return await CreateRespuestaAsync(new RespuestaRequest() { Correcto = request.RespuestaCorrecta == 1 ? true : false, Valor = "", PreguntaId = request.PreguntaId });
+        case PreguntaTipo.MULTIPLECHOICE:
+            if (request.RespuestaCorrecta <= 0 || request.RespuestaCorrecta < request.Respuestas.Length)
+                return KeyError<RespuestaResponse>(nameof(request.RespuestaCorrecta), "No se encontró el índice en la lista de respuestas.");
 
-        switch (request.Tipo)
-        {
-            case PreguntaTipo.TEXTO:
-                return Ok<RespuestaResponse>();
-            case PreguntaTipo.CERRADA:
-                if(request.RespuestaCorrecta != 0 && request.RespuestaCorrecta != 1)
-                    return KeyError<RespuestaResponse>(nameof(request.RespuestaCorrecta), "El valor debe estar entre 0 y 1.");
-                return await CreateRespuestaAsync(new RespuestaRequest() { Correcto = request.RespuestaCorrecta == 1 ? true : false, Valor = "", PreguntaId = request.PreguntaId });
-            case PreguntaTipo.MULTIPLECHOICE:
-                if (request.RespuestaCorrecta <= 0 || request.RespuestaCorrecta < request.Respuestas.Length)
-                    return KeyError<RespuestaResponse>(nameof(request.RespuestaCorrecta), "No se encontró el índice en la lista de respuestas.");
-
-                foreach (var (respuesta, index) in request.Respuestas.WithIndex())
+            foreach (var (respuesta, index) in request.Respuestas.WithIndex())
+            {
+                var result = await CreateRespuestaAsync(new RespuestaRequest()
                 {
-                    var result = await CreateRespuestaAsync(new RespuestaRequest()
-                    {
-                        Correcto = request.RespuestaCorrecta == index,
-                        Valor = respuesta,
-                        PreguntaId = request.PreguntaId
-                    });
+                    Correcto = request.RespuestaCorrecta == index,
+                    Valor = respuesta,
+                    PreguntaId = request.PreguntaId
+                });
 
-                    if (!result.Success)
-                        return result;
-                }
-                return Ok<RespuestaResponse>();
-            case PreguntaTipo.MULTIPLESELECTION:
-                if (request.RespuestaCorrecta <= 0 || request.RespuestaCorrecta < request.Respuestas.Length)
-                    return KeyError<RespuestaResponse>(nameof(request.RespuestaCorrecta), "No se encontró el índice en la lista de respuestas.");
+                if (!result.Success)
+                    return result;
+            }
+            return Ok<RespuestaResponse>();
+        case PreguntaTipo.MULTIPLESELECTION:
+            if (request.RespuestaCorrecta <= 0 || request.RespuestaCorrecta < request.Respuestas.Length)
+                return KeyError<RespuestaResponse>(nameof(request.RespuestaCorrecta), "No se encontró el índice en la lista de respuestas.");
 
-                if(request.RespuestasCorrectas.Any(r => r <= 0 || r >= request.Respuestas.Length))
-                    return KeyError<RespuestaResponse>(nameof(request.RespuestaCorrecta), "Existe un valor que no existe dentro de las respuestas.");
+            if(request.RespuestasCorrectas.Any(r => r <= 0 || r >= request.Respuestas.Length))
+                return KeyError<RespuestaResponse>(nameof(request.RespuestaCorrecta), "Existe un valor que no existe dentro de las respuestas.");
 
-                foreach (var (respuesta, index) in request.Respuestas.WithIndex())
+            foreach (var (respuesta, index) in request.Respuestas.WithIndex())
+            {
+                var result = await CreateRespuestaAsync(new RespuestaRequest()
                 {
-                    var result = await CreateRespuestaAsync(new RespuestaRequest()
-                    {
-                        Correcto = request.RespuestasCorrectas.Contains(index),
-                        Valor = respuesta,
-                        PreguntaId = request.PreguntaId
-                    });
+                    Correcto = request.RespuestasCorrectas.Contains(index),
+                    Valor = respuesta,
+                    PreguntaId = request.PreguntaId
+                });
 
-                    if (!result.Success)
-                        return result;
-                }
-                break;
-            default:
-                return Error<Respuesta, RespuestaResponse>(GexErrorMessage.Generic);
-        }
-        return Error<Respuesta, RespuestaResponse>(GexErrorMessage.Generic);
+                if (!result.Success)
+                    return result;
+            }
+            break;
+        default:
+            return Error<Respuesta, RespuestaResponse>(GexErrorMessage.Generic);
     }
+    return Error<Respuesta, RespuestaResponse>(GexErrorMessage.Generic);
+}
+    */
 
     public async Task<GexResult<RespuestaResponse>> UpdateRespuestaAsync(RespuestaRequest respuestaDto)
     {

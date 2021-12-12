@@ -72,8 +72,6 @@ public static class GexResponse
         };
     }
 
-
-
     private static GexResponseOptions Options<TEntity>()
     {
         var options = new GexResponseOptions()
@@ -84,7 +82,7 @@ public static class GexResponse
 
         if(string.IsNullOrEmpty(options.Entity))
         {
-            options.Entity = typeof(TEntity).Name.Humanize();
+            options.Entity = typeof(TEntity).Name.Humanize(LetterCasing.LowerCase);
             options.Gender = GrammaticalGender.Masculine;
         }
         return options;
