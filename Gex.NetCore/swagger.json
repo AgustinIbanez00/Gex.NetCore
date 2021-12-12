@@ -1961,17 +1961,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/RespuestaRequest"
+                "$ref": "#/components/schemas/RespuestaCreateRequest"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/RespuestaRequest"
+                "$ref": "#/components/schemas/RespuestaCreateRequest"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/RespuestaRequest"
+                "$ref": "#/components/schemas/RespuestaCreateRequest"
               }
             }
           }
@@ -3009,10 +3009,10 @@
         },
         "nullable": true
       },
-      "RespuestaRequest": {
+      "RespuestaBorrableRequest": {
         "required": [
+          "borrar",
           "correcto",
-          "pregunta_id",
           "valor"
         ],
         "type": "object",
@@ -3029,9 +3029,29 @@
             "type": "boolean",
             "description": "Indica si la respuesta es verdadera."
           },
+          "borrar": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "nullable": true
+      },
+      "RespuestaCreateRequest": {
+        "required": [
+          "pregunta_id"
+        ],
+        "type": "object",
+        "properties": {
           "pregunta_id": {
             "type": "integer",
             "format": "int64"
+          },
+          "respuestas": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RespuestaBorrableRequest"
+            },
+            "nullable": true
           }
         },
         "nullable": true
@@ -3063,6 +3083,33 @@
           },
           "error_code": {
             "$ref": "#/components/schemas/GexErrorMessage"
+          }
+        },
+        "nullable": true
+      },
+      "RespuestaRequest": {
+        "required": [
+          "correcto",
+          "pregunta_id",
+          "valor"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "valor": {
+            "type": "string",
+            "description": "Valor de la respuesta."
+          },
+          "correcto": {
+            "type": "boolean",
+            "description": "Indica si la respuesta es verdadera."
+          },
+          "pregunta_id": {
+            "type": "integer",
+            "format": "int64"
           }
         },
         "nullable": true

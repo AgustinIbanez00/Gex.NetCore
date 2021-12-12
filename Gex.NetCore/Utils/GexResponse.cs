@@ -52,6 +52,18 @@ public static class GexResponse
         };
     }
 
+    public static GexResult<TResult> KeyError<TEntity, TResult>(string key, GexErrorMessage error, TResult result) where TResult : class
+    {
+        return new GexResult<TResult>
+        {
+            ErrorCode = error,
+            Data = result,
+            Success = false,
+            Message = "Se encontraron uno o más errores.",
+            ErrorMessages = new Dictionary<string, string[]>() { { new string(key.ToSnakeCase().ToArray()), new string[] { Smart.Format(EnumExtensions.GetDescription(error), Options<TEntity>()) } } }
+        };
+    }
+
     /// <summary>
     /// Devuelve un objeto personalizado del sistema del tipo TResult con el mensaje de error computado de TEntity.
     /// </summary>
@@ -137,6 +149,17 @@ public static class GexResponse
         return new GexResult<TResult>
         {
             Data = data,
+            Success = true,
+            Message = Smart.Format(message.GetDescription(), Options<TEntity>()),
+            ErrorMessages = new Dictionary<string, string[]>()
+        };
+    }
+
+    public static GexResult<TResult> Ok<TEntity, TResult>(GexSuccessMessage message) where TResult : class
+    {
+        return new GexResult<TResult>
+        {
+            Data = default(TResult),
             Success = true,
             Message = Smart.Format(message.GetDescription(), Options<TEntity>()),
             ErrorMessages = new Dictionary<string, string[]>()

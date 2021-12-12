@@ -57,9 +57,9 @@ public class RespuestaController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    public async Task<ActionResult<GexResult<RespuestaResponse>>> CreateRespuesta([FromBody] RespuestaRequest respuestaDto)
+    public async Task<ActionResult<GexResult<RespuestaResponse>>> CreateOrUpdateRespuesta([FromBody] RespuestaCreateRequest respuestaDto)
     {
-        var respuesta = await _respuestaService.CreateRespuestaAsync(respuestaDto);
+        var respuesta = await _respuestaService.CreateOrUpdateRespuestaAsync(respuestaDto);
 
         if (!respuesta.Success)
             return StatusCode(ResponseHelper.GetHttpError(respuesta.ErrorCode), respuesta);

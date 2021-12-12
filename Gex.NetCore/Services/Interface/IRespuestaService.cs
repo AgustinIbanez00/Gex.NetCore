@@ -11,6 +11,7 @@ public interface IRespuestaService
     Task<GexResult<RespuestaResponse>> GetRespuestaAsync(long id);
     //Task<GexResult<RespuestaResponse>> PrepareCreateRespuestaAsync(RespuestaCreateRequest request);
     Task<GexResult<RespuestaResponse>> CreateRespuestaAsync(RespuestaRequest respuestaDto);
+    Task<GexResult<RespuestaResponse>> CreateOrUpdateRespuestaAsync(RespuestaCreateRequest respuestaDto);
     Task<GexResult<RespuestaResponse>> UpdateRespuestaAsync(RespuestaRequest respuestaDto);
     Task<GexResult<RespuestaResponse>> DeleteRespuestaAsync(long id);
 }

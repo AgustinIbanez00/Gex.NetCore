@@ -5,6 +5,17 @@ using Gex.Validation.Attributes;
 namespace Gex.ViewModels.Request;
 public class RespuestaCreateRequest
 {
+    /// <summary>
+    /// Pregunta a la que estará relacionada la respuesta.
+    /// </summary>
+    [Required, Display(Name = "pregunta")]
+    public long PreguntaId { get; set; }
+
+    public RespuestaBorrableRequest[] Respuestas { get; set; }
+}
+
+public class RespuestaBorrableRequest
+{
     public long Id { get; set; }
     /// <summary>
     /// Valor de la respuesta.
@@ -17,11 +28,6 @@ public class RespuestaCreateRequest
     /// </summary>
     [Required, Display(Name = "correcto")]
     public bool? Correcto { get; set; }
-    /// <summary>
-    /// Pregunta a la que estará relacionada la respuesta.
-    /// </summary>
-    [Required, Display(Name = "pregunta")]
-    public long PreguntaId { get; set; }
 
     [Required, Display(Name = "estado")]
     public int Borrar { get; set; }

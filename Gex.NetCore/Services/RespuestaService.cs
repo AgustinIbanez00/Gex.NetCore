@@ -175,6 +175,57 @@ public Task<GexResult<RespuestaResponse>> PrepareCreateRespuestaAsync(RespuestaC
 }
     */
 
+    public async Task<GexResult<RespuestaResponse>> CreateOrUpdateRespuestaAsync(RespuestaCreateRequest respuestaDto)
+    {
+        try
+        {
+            if (!await _preguntaRepository.ExistsPreguntaAsync(respuestaDto.PreguntaId))
+                return KeyError<Pregunta, RespuestaResponse>(nameof(respuestaDto.PreguntaId), GexErrorMessage.NotFound);
+
+            foreach (var rtaDto in respuestaDto.Respuestas)
+            {
+                var respuesta = _mapper.Map<Respuesta>(rtaDto);
+                respuesta.PreguntaId = respuestaDto.PreguntaId;
+
+                if (rtaDto.Id > 0)
+                {
+                    if (await _respuestaRepository.ExistsRespuestaAsync(rtaDto.Id))
+                    {
+                        if(rtaDto.Borrar == 1)
+                        {
+                            if (!await _respuestaRepository.DeleteRespuestaAsync(respuesta.Id))
+                                return KeyError<Respuesta, RespuestaResponse>(nameof(rtaDto.Id), GexErrorMessage.CouldNotDelete, _mapper.Map<RespuestaResponse>(rtaDto));
+                        }
+                        else if(rtaDto.Borrar == 0)
+                        {
+                            if (!await _respuestaRepository.UpdateRespuestaAsync(respuesta))
+                                return KeyError<Respuesta, RespuestaResponse>(nameof(rtaDto.Id), GexErrorMessage.CouldNotUpdate, _mapper.Map<RespuestaResponse>(rtaDto));
+                        }
+                        else
+                            return KeyError<RespuestaResponse>(nameof(rtaDto.Id), "El campo borrar tiene un valor inválido.");
+                    }
+                    else
+                        return KeyError<Respuesta, RespuestaResponse>(nameof(rtaDto.Id), GexErrorMessage.NotFound, _mapper.Map<RespuestaResponse>(rtaDto));
+                }
+                else
+                {
+                    if (!await _respuestaRepository.CreateRespuestaAsync(respuesta))
+                        return KeyError<Respuesta, RespuestaResponse>(nameof(rtaDto.Id), GexErrorMessage.CouldNotCreate, _mapper.Map<RespuestaResponse>(rtaDto));
+                }
+            }
+            return Ok<Respuesta, RespuestaResponse>(GexSuccessMessage.Created);
+        }
+        catch (UniqueConstraintException)
+        {
+            return Error<Respuesta, RespuestaResponse>(GexErrorMessage.AlreadyExists);
+        }
+        catch (Exception ex)
+        {
+            return Error<Respuesta, RespuestaResponse>(GexErrorMessage.Generic, ex.Message);
+        }
+
+    }
+
     public async Task<GexResult<RespuestaResponse>> UpdateRespuestaAsync(RespuestaRequest respuestaDto)
     {
         try

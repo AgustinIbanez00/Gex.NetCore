@@ -19,7 +19,9 @@ public class AutoMapperProfiles : Profile
         CreateMap<Pregunta, PreguntaRequest>().ReverseMap();
         CreateMap<Pregunta, PreguntaResponse>().ReverseMap();
         CreateMap<Respuesta, RespuestaCreateRequest>().ReverseMap();
+        CreateMap<Respuesta, RespuestaBorrableRequest>().ReverseMap();
         CreateMap<Respuesta, RespuestaRequest>().ReverseMap();
         CreateMap<Respuesta, RespuestaResponse>().ReverseMap();
+        CreateMap<RespuestaBorrableRequest, RespuestaResponse>().ReverseMap();
     }
 }

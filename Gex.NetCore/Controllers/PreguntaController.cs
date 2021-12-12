@@ -107,5 +107,4 @@ public class PreguntaController : ControllerBase
         return Ok(pregunta);
     }
 
-
 }

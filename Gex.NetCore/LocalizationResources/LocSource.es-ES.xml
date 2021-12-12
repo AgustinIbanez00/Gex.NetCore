@@ -212,4 +212,19 @@
     <value>tema</value>
     <comment>Created by XLocalizer</comment>
   </data>
+  <data isActive="false">
+    <key>pregunta</key>
+    <value>pregunta</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
+  <data isActive="false">
+    <key>valor</key>
+    <value>valor</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
+  <data isActive="false">
+    <key>correcto</key>
+    <value>correcto</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
 </root>
