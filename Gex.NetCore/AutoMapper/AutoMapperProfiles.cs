@@ -18,5 +18,8 @@ public class AutoMapperProfiles : Profile
         CreateMap<MesaExamen, MesaExamenResponse>().ReverseMap();
         CreateMap<Pregunta, PreguntaRequest>().ReverseMap();
         CreateMap<Pregunta, PreguntaResponse>().ReverseMap();
+        CreateMap<Respuesta, RespuestaCreateRequest>().ReverseMap();
+        CreateMap<Respuesta, RespuestaRequest>().ReverseMap();
+        CreateMap<Respuesta, RespuestaResponse>().ReverseMap();
     }
 }

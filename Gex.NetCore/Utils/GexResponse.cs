@@ -100,6 +100,18 @@ public static class GexResponse
             ErrorMessages = new Dictionary<string, string[]>()
         };
     }
+
+    public static GexResult<TResult> Ok<TResult>() where TResult : class
+    {
+        return new GexResult<TResult>
+        {
+            Data = default(TResult),
+            Success = true,
+            Message = "Correcto.",
+            ErrorMessages = new Dictionary<string, string[]>()
+        };
+    }
+
     /*
     public static GexResult Ok(GexSuccessMessage message, GexResponseOptions options)
     {

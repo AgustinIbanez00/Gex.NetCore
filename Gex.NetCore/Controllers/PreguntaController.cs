@@ -70,22 +70,19 @@ public class PreguntaController : ControllerBase
     /// <summary>
     /// Permite crear múltiples preguntas en un solo llamado.
     /// </summary>
-    /// <param name="preguntasDto"></param>
+    /// <param name="preguntaDto"></param>
     /// <returns></returns>
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResult<PreguntaResponse>))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    public async Task<ActionResult<GexResult<PreguntaResponse>>> CreatePregunta([FromBody] PreguntaRequest[] preguntasDto)
+    public async Task<ActionResult<GexResult<PreguntaResponse>>> CreatePregunta([FromBody] PreguntaRequest preguntaDto)
     {
-        foreach (var preguntaDto in preguntasDto)
-        {
-            var pregunta = await _service.CreatePreguntaAsync(preguntaDto);
-            if (!pregunta.Success)
-                return StatusCode(ResponseHelper.GetHttpError(pregunta.ErrorCode), pregunta);
-        }
-        return Ok();
+        var pregunta = await _service.CreatePreguntaAsync(preguntaDto);
+        if (!pregunta.Success)
+            return StatusCode(ResponseHelper.GetHttpError(pregunta.ErrorCode), pregunta);
+        return Ok(pregunta);
     }
 
     [HttpPatch]
@@ -109,4 +106,6 @@ public class PreguntaController : ControllerBase
             return StatusCode(ResponseHelper.GetHttpError(pregunta.ErrorCode), pregunta);
         return Ok(pregunta);
     }
+
+
 }

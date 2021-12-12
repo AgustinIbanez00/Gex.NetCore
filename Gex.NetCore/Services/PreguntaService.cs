@@ -40,7 +40,7 @@ public class PreguntaService : IPreguntaService
 
             var pregunta = _mapper.Map<Pregunta>(preguntaDto);
 
-            if(preguntaDto.MateriaId.HasValue && await _materiaRepository.ExistsMateriaAsync(preguntaDto.MateriaId.Value))
+            if (preguntaDto.MateriaId.HasValue && await _materiaRepository.ExistsMateriaAsync(preguntaDto.MateriaId.Value))
                 pregunta.MateriaId = preguntaDto.MateriaId;
 
             if (preguntaDto.ExamenId.HasValue && await _examenRepository.ExistsExamenAsync(preguntaDto.ExamenId.Value))

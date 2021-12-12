@@ -1,22 +1,24 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Gex.Attributes;
 
-namespace Gex.Models;
-[GexDescription("respuesta", Humanizer.GrammaticalGender.Feminine)]
-public partial class Respuesta : Auditory
+namespace Gex.ViewModels.Request;
+public class RespuestaRequest
 {
-    [Key]
     public long Id { get; set; }
-    //public virtual Pregunta Pregunta { get; set; }
     /// <summary>
     /// Valor de la respuesta.
     /// </summary>
+    [Required, Display(Name = "valor")]
     public string Valor { get; set; }
 
     /// <summary>
     /// Indica si la respuesta es verdadera.
     /// </summary>
+    [Required, Display(Name = "correcto")]
     public bool? Correcto { get; set; }
-
+    /// <summary>
+    /// Pregunta a la que estará relacionada la respuesta.
+    /// </summary>
+    [Required, Display(Name = "pregunta")]
     public long PreguntaId { get; set; }
+
 }

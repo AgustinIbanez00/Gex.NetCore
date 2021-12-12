@@ -30,12 +30,11 @@ public class MesaExamenController : ControllerBase
     [Authorize(Roles = nameof(UsuarioTipo.Alumno))]
     public async Task<ActionResult<GexResult<ICollection<MesaExamenResponse>>>> GetAll()
     {
-        var mesaExamens = await _service.GetMesasExamenesAsync();
+        var mesasDeExamenes = await _service.GetMesasExamenesAsync();
 
-        if (!mesaExamens.Success)
-            return StatusCode(ResponseHelper.GetHttpError(mesaExamens.ErrorCode), mesaExamens);
-
-        return Ok(mesaExamens);
+        if (!mesasDeExamenes.Success)
+            return StatusCode(ResponseHelper.GetHttpError(mesasDeExamenes.ErrorCode), mesasDeExamenes);
+        return Ok(mesasDeExamenes);
     }
 
     [HttpGet("{id:int}")]
@@ -48,7 +47,6 @@ public class MesaExamenController : ControllerBase
 
         if (!mesaExamen.Success)
             return StatusCode(ResponseHelper.GetHttpError(mesaExamen.ErrorCode), mesaExamen);
-
         return Ok(mesaExamen);
     }
 
@@ -57,9 +55,9 @@ public class MesaExamenController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    public async Task<ActionResult<GexResult<MesaExamenResponse>>> CreateMesaExamen([FromBody] MesaExamenRequest MesaExamenDTO)
+    public async Task<ActionResult<GexResult<MesaExamenResponse>>> CreateMesaExamen([FromBody] MesaExamenRequest mesaExamenDto)
     {
-        var mesaExamen = await _service.CreateMesaExamenAsync(MesaExamenDTO);
+        var mesaExamen = await _service.CreateMesaExamenAsync(mesaExamenDto);
 
         if (!mesaExamen.Success)
             return StatusCode(ResponseHelper.GetHttpError(mesaExamen.ErrorCode), mesaExamen);
@@ -68,9 +66,9 @@ public class MesaExamenController : ControllerBase
 
     [HttpPatch]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResult<MesaExamenResponse>))]
-    public async Task<ActionResult<GexResult<MesaExamenResponse>>> UpdateMesaExamen([FromBody] MesaExamenRequest MesaExamenDTO)
+    public async Task<ActionResult<GexResult<MesaExamenResponse>>> UpdateMesaExamen([FromBody] MesaExamenRequest mesaExamenDto)
     {
-        var mesaExamen = await _service.UpdateMesaExamenAsync(MesaExamenDTO);
+        var mesaExamen = await _service.UpdateMesaExamenAsync(mesaExamenDto);
 
         if (!mesaExamen.Success)
             return StatusCode(ResponseHelper.GetHttpError(mesaExamen.ErrorCode), mesaExamen);

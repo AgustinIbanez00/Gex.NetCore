@@ -25,6 +25,8 @@ using Gex.Middlewares;
 using Microsoft.OpenApi.Models;
 using Gex.Utils;
 using Gex.Models.Enums;
+using System.Reflection;
+using System.IO;
 
 namespace Gex;
 
@@ -54,12 +56,14 @@ public class Startup
         services.AddScoped<IMateriaRepository, MateriaRepository>();
         services.AddScoped<IMesaExamenRepository, MesaExamenRepository>();
         services.AddScoped<IPreguntaRepository, PreguntaRepository>();
+        services.AddScoped<IRespuestaRepository, RespuestaRepository>();
         /* INYECCION DE SERVICIOS */
         services.AddScoped<IComisionService, ComisionService>();
         services.AddScoped<IExamenService, ExamenService>();
         services.AddScoped<IMateriaService, MateriaService>();
         services.AddScoped<IMesaExamenService, MesaExamenService>();
         services.AddScoped<IPreguntaService, PreguntaService>();
+        services.AddScoped<IRespuestaService, RespuestaService>();
 
         services.AddCors();
 
@@ -138,7 +142,10 @@ public class Startup
                 Version = "v1",
                 Description = "Colleción de API's correspondientes al sistema de exámenes Gex.",
                 Contact = new OpenApiContact() { Email = "admin@gexsystem.com", Name = "Agustin Ibañez" }
+
             });
+            var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+            c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
         });
     }
 

@@ -8,6 +8,9 @@ public class ComisionRequest
     public int Id { get; set; }
     [Required, Display(Name = "comisión"), StringLength(50, MinimumLength = 5)]
     public string Nombre { get; set; }
+    /// <summary>
+    /// Se informa el ciclo lectivo.
+    /// </summary>
     [Required, Display(Name = "ciclo lectivo"), Date]
     public int CicloLectivo { get; set; }
 }
