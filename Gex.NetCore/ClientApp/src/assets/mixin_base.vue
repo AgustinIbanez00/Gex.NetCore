@@ -5,9 +5,14 @@
 	const store = new Vuex.Store({
 		state: {
 			estado_actual: 1,
-			id: 0,
 			titulo_txt: '',
 			eliminar_txt: '',
+			eliminar_id: 0,
+			modal_eliminar: false,
+			tema_pregunta: '',
+			alerta_txt: '',
+			lista: [],
+			cargando_lista: false,
 		},
 		mutations: {
 			estado(state, estado) {
@@ -25,9 +30,17 @@
 				edicion: 3,
 				preguntas: 4,
 			},
-			modal_eliminar: false,
 			url_api: 'http://localhost:5000/api',
 		}),
+		watch: {
+			async $route(to, from) {
+				var vm = this;
+				if(to.name == `listar_${vm.tab_actual}`) vm.cargar_tabla();//LISTA
+				if (to && to.params.id && to.params != 'crear') {//EDICIÓN
+					vm.edicion(to.params.id);
+				}
+			}
+		},
 		methods: {
 			...Vuex.mapMutations(['estado']),
 			top(){
@@ -37,14 +50,26 @@
 					behavior: 'smooth'
 				});
 			},
-			lista: function(recargar){
+			listar: function(recargar){
 				var vm = this;
 				vm.top();
-				let tabla = vm.$refs.table && vm.$refs.table[`tabla_${vm.tab_actual}`];
-				if(tabla) vm.cargar_tabla();
-				else vm.$router.push(`/${vm.tab_actual}`);
+				if(vm.route == `/${vm.tab_actual}`){
+					vm.cargar_tabla(vm.tab_actual);
+				}else{
+					vm.$router.push(`/${vm.tab_actual}`);
+				} 
 			},
-				
+			cargar_tabla(){
+				var vm = this;
+				vm.cargando_lista = true;
+				axios.get(`${vm.url_api}/${vm.tab_actual}`, vm.axios_headers).then(res => {
+					switch(vm.tab_actual){
+						case 'materia': vm.lista = res.data.data; break;
+					}
+					//ALERTA
+				}).catch(err => console.log(err))
+				.then(() => vm.cargando_lista = false);
+			},
 			cancelar: function(){
 				var vm = this;
 				vm.estado_actual =vm.estados.lista;
@@ -55,21 +80,33 @@
 				vm.estado_actual = vm.estados.creacion;
 				vm.top();
 			},
-			edicion: function(id){
+			async edicion(id){
 				var vm = this;
-				vm.$router.push(`/${vm.tab_actual}/${id}`);
+				await axios.get(`${vm.url_api}/${vm.tab_actual}/${id}`, vm.axios_headers).then(res => {
+					switch(vm.tab_actual){
+						case 'materia': vm.materia = res.data.data; break;
+					}
+				}).catch(err => console.log(err));
 				vm.top();
 			},
-			eliminar(){
+			async eliminar(eliminar = 0){
 				var vm = this;
-				console.log(vm.$route.params.eliminar_id)
-				axios.delete(`${vm.url_api}/${vm.tab_actual}?id=${vm.$route.params.eliminar_id}`, vm.axios_headers)
-				.then(function (response) {
-					vm.lista();
-					vm.modal_eliminar = false;
-				}).catch(function (error) {
-					console.log(error);
-				});
+				if(eliminar){//ELIMINA Y CIERRA EL MODAL ELIMINAR
+					await axios.delete(`${vm.url_api}/${vm.tab_actual}?id=${vm.eliminar_id}`, vm.axios_headers)
+					.then(res => {
+						vm.lista.splice(vm.lista.findIndex(item => item.id == vm.eliminar_id), 1);
+					})
+					.catch(error => {console.log(error);})
+					.then(() => {vm.modal_eliminar = false;});
+				}else{//ABRE EL MODAL ELIMINAR
+					await axios.get(`${vm.url_api}/${vm.tab_actual}/${vm.eliminar_id}`, vm.axios_headers)
+					.then(res => {
+						switch(vm.tab_actual){
+							case 'materia': vm.eliminar_txt = `la materia: ${res.data.data.nombre}`; break;
+						}
+						vm.modal_eliminar = true;
+					}).catch(err => console.log(err));
+				}
 			},
 			//Omg
 			formatDate (date) {
@@ -83,24 +120,19 @@
 				return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
 			},
 		},
-		mounted() {
-			var vm = this;
-			switch(vm.$route.name){
-				case 'listar_examen': vm.estado_actual = vm.estados.lista; vm.lista(); break;
-				case 'editar_examen': vm.estado_actual = vm.estados.edicion; vm.edicion(vm.$route.params.id); break;
-				case 'crear_examen': vm.estado_actual = vm.estados.creacion; vm.creacion(); break;
-				case 'editar_preguntas': vm.edicion(vm.$route.params.id,true); break;
-			}
-		},
 		computed:{
-			...Vuex.mapState(['estado_actual', 'id','titulo_txt','eliminar_txt']),
+			...Vuex.mapState(['estado_actual', 'id','titulo_txt','eliminar_txt','lista','tema_pregunta']),
 			estado_actual:{
 				get: function () {return this.$store.state.estado_actual;},
 				set: function (val) {this.$store.state.estado_actual = val;}
 			},
-			id:{
-				get: function () {return this.$route.params.id;},
-				set: function (val) {this.$route.params.id = val;}
+			lista:{
+				get: function () {return this.$store.state.lista;},
+				set: function (val) {this.$store.state.lista = val;}
+			},
+			cargando_lista:{
+				get: function () {return this.$store.state.cargando_lista;},
+				set: function (val) {this.$store.state.cargando_lista = val;}
 			},
 			titulo_txt:{
 				get: function () {return this.$store.state.titulo_txt;},
@@ -109,6 +141,30 @@
 			eliminar_txt:{
 				get: function () {return this.$store.state.eliminar_txt;},
 				set: function (val) {this.$store.state.eliminar_txt = val;}
+			},
+			tema_pregunta:{
+				get: function () {return this.$store.state.tema_pregunta;},
+				set: function (val) {this.$store.state.tema_pregunta = val;}
+			},
+			eliminar_id:{
+				get: function () {return this.$store.state.eliminar_id;},
+				set: function (val) {this.$store.state.eliminar_id = val;}
+			},
+			modal_eliminar:{
+				get: function () {return this.$store.state.modal_eliminar;},
+				set: function (val) {this.$store.state.modal_eliminar = val;}
+			},
+			alerta_txt:{
+				get: function () {return this.$store.state.alerta_txt;},
+				set: function (val) {this.$store.state.alerta_txt = val;}
+			},
+			id(){
+				var vm = this;
+				return vm.$route.params.id;
+			},
+			pregunta_id(){
+				var vm = this;
+				return vm.$route.params.pregunta_id;
 			},
 			route: function(){
 				var vm = this;
@@ -171,6 +227,13 @@
 				}
 				return res;
 			},
+		},
+		mounted() {
+			var vm = this;
+			switch(vm.route){
+				case `editar_${vm.tab_actual}`: vm.edicion(vm.id); break;
+				case `listar_${vm.tab_actual}`: vm.cargar_tabla(); break;
+			}
 		},
 	}
 	export default mixin_base;

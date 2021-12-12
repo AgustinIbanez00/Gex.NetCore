@@ -30,7 +30,10 @@
 		<v-card-title style="padding-top:16px;" class="white--text indigo darken-1 w-100 justify-center mt-10" v-bind:style="{'height': route == `listar_${tab_actual}` || route == `eliminar_${tab_actual}` ? '70px': '50px','font-size': route == `${tab_actual}_preguntas` ? '30px': '50px'}">
 			<div>{{route == `listar_${tab_actual}` || route == `eliminar_${tab_actual}` || route == `${tab_actual}_preguntas` ? titulo : ''}}</div>
 		</v-card-title>
+		<!-- COMPONENTES -->
 		<comp-botones ref="botones"/>
+		<comp-alerta ref="alerta"/>
+		<comp-modal-eliminar ref="modal_eliminar"/>
 		<v-expand-transition class="justify-center">
 			<v-row justify="center">
 				<v-col>
@@ -44,14 +47,16 @@
 </template>
 <script>
 	import comp_botones from "./views/comp_botones";
-	import comp_modal_eliminar from "./views/modal/comp_modal_eliminar";
+	import comp_alerta from "./views/comp_alerta";
+	import comp__modal_eliminar from "./views/modal/comp_modal_eliminar.vue";
 	import mixin_base from './assets/mixin_base';
 	export default {
 		mixins: [mixin_base],
 		name: "App",
 		components: {
 			'comp-botones':comp_botones,
-			'comp-modal-eliminar':comp_modal_eliminar,
+			'comp-alerta':comp_alerta,
+			'comp-modal-eliminar':comp__modal_eliminar,
 		},
 		data: () => ({
 			selectedItem: 0,

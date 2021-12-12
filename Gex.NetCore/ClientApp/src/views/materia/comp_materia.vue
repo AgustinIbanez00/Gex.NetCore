@@ -2,13 +2,11 @@
 	<v-app class="light-blue">
 		<!-- TABLA MATERIAS -->
 		<v-expand-transition>
-			<v-data-table :ref="`tabla_${tab_actual}`" v-show="route == 'listar_materia' || route == 'eliminar_materia'" :headers="headers" :items="materias" :items-per-page="5" class="elevation-3 px-10 mx-15 my-3">
+			<v-data-table :ref="`tabla_${tab_actual}`" v-show="route == 'listar_materia'" :headers="headers" :items="lista" :items-per-page="5" class="elevation-3 px-10 mx-15 my-3" :loading="cargando_lista" :loading-text="`Cargando ${elementos}`">
 				<template v-slot:item.tipo="{ item }">{{tipos_materias[item.tipo].nombre}}</template>
 				<template v-slot:item.actions="{ item }"><!-- Acciones -->
-					<v-btn class="ma-2" text icon color="blue lighten-1" @click="edicion(item.id)"><v-icon>mdi-pencil</v-icon></v-btn>
-					<RouterLink :to="`/${tab_actual}/eliminar/${item.id}`" style="text-decoration: none;">
-						<v-btn class="ma-2" text icon color="blue-grey darken-1"><v-icon>mdi-delete</v-icon></v-btn>
-					</RouterLink>
+				<v-btn class="ma-2" text icon color="blue lighten-1" :to="`/${tab_actual}/${item.id}`"><v-icon>mdi-pencil</v-icon></v-btn>
+				<v-btn class="ma-2" text icon color="blue-grey darken-1" @click="eliminar_id = item.id; eliminar();"><v-icon>mdi-delete</v-icon></v-btn>
 				</template>
 			</v-data-table>
 		</v-expand-transition>
@@ -39,8 +37,6 @@
 </template>
 <script>
 	import mixin_base from '../../assets/mixin_base';
-	import VueCookies  from 'vue-cookies';
-
 	var materia_default = {
 		id: 0,
 		nombre: '',
@@ -57,22 +53,9 @@
 					return acc;
 				}, []).sort();
 			},
-			async $route(to, from) {
-				var vm = this;
-				if (to && to.params.id) {//EDICIÓN
-					await axios.get(`${vm.url_api}/Materia/${to.params.id}`, vm.axios_headers).then(res => {
-						vm.materia = res.data.data;
-					}).catch(err => console.log(err));
-					//this.materia = vm.materias.find(m => m.id == to.params.id);
-				}
-				if(to && to.params.eliminar_id) {//ELIMINAR
-					vm.eliminar_txt = vm.materias.find(m => m.id == to.params.eliminar_id).nombre;
-				}
-			}
 		},
 		data: () => ({
 			periodos: [],
-			materias: [],
 			tipos_materias: [
 				{id: 0, nombre: 'Anual'},
 				{id: 1, nombre: 'Cuatrimestral'},
@@ -92,17 +75,10 @@
 		computed: {
 		},
 		methods: {
-			cargar_tabla(){
-				var vm = this;
-				axios.get(`${vm.url_api}/Materia`, vm.axios_headers).then(res => {
-					vm.materias = res.data.data;
-					//ALERTA
-				}).catch(err => console.log(err));
-			},
 			guardar(listar){
 				var vm = this;
 				let f_guardar = res => {
-					if(listar) vm.lista();
+					if(listar) vm.listar();
 					else vm.materia = res.data.data;
 					//ALERTA
 				}
@@ -110,25 +86,13 @@
 					axios.patch(`${vm.url_api}/Materia`,vm.materia, vm.axios_headers)
 					.then(f_guardar).catch(err => console.log(err));
 				}else{
-					axios.post(`${url_api}/Materia`,vm.materia, vm.axios_headers)
+					axios.post(`${vm.url_api}/Materia`,vm.materia, vm.axios_headers)
 					.then(f_guardar).catch(err => console.log(err));
 				}
 			},
 		},
 		async mounted() {
 			var vm = this;
-			vm.cargar_tabla();
-			if(vm.$route.params.id){
-				await axios.get(`${vm.url_api}/Materia/${vm.$route.params.id}`, vm.axios_headers).then(res => {
-					vm.materia = res.data.data;
-				}).catch(err => console.log(err));
-			}else{
-				vm.cargar_tabla();
-			}
-			if(vm.$route.params.eliminar_id){
-				vm.materia = vm.materias[vm.materias.findIndex(m => m.id == vm.$route.params.eliminar_id)];
-				vm.eliminar_txt = vm.materia.nombre;
-			}
 		}
 	};
 </script>

@@ -12,7 +12,6 @@ import Inscripcion from '../views/inscripcion/comp_inscripcion.vue'
 import Usuario from '../views/usuario/comp_usuario.vue'
 import ModalRendir from '../views/modal/comp_modal_rendir.vue'
 import ModalPregunta from '../views/modal/comp_modal_pregunta.vue'
-import ModalEliminar from '../views/modal/comp_modal_eliminar.vue'
 Vue.use(VueRouter)
 const routes = [
 	{
@@ -52,10 +51,6 @@ const routes = [
 		children: [{
 			path: 'crear',
 			name: 'crear_materia',
-		},{
-			path: 'eliminar/:eliminar_id',
-			name: 'eliminar_materia',
-			component: ModalEliminar,
 		},]
 	},
 	//-- MATERIA --
@@ -65,17 +60,21 @@ const routes = [
 		component: Materia,
 		children: [
 			{
+				path: 'preguntas/crear',
+				name: 'crear_materia_pregunta',
+				component: ModalPregunta,
+			},
+			{
 				path: 'preguntas',
 				name: 'materia_preguntas',
 				component: MateriaPreguntas,
-				children: [
-					{
-						path: ':pregunta_id',
-						name: 'editar_materia_preguntas',
-						component: ModalPregunta,
-					}
-				]
 			},
+			{
+				path: 'preguntas/:pregunta_id',
+				name: 'editar_materia_pregunta',
+				component: ModalPregunta,
+				params: true
+			}
 		]
 	},
 	//-- /MATERIAS --
