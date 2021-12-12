@@ -100,27 +100,27 @@
 		methods: {
 			async guardar(){
 				var vm = this;
-				if(vm.pregunta.id){
+				if(vm.pregunta.id){/*
 					await axios.patch(`${vm.url_api}/pregunta`, vm.pregunta, vm.axios_headers)
-					.then( async res =>{
-						//RESPUESTAS
-						let respuestas_guardar = JSON.parse(JSON.stringify(vm.respuestas));
-						if(vm.pregunta.tipo == 0) respuestas_guardar = [];
-						if(vm.pregunta.tipo == 1) respuestas_guardar = [{valor: vm.respuesta_correcta, correcta: 1}];
-						if(vm.pregunta.tipo == 2 || vm.pregunta.tipo == 3){
-							for(var i = 0; i < vm.respuestas.length; i++){
-								if( vm.pregunta.tipo ==  2){
-									vm.respuestas_guardar[i].correcto = i == vm.respuesta_correcta;
-								}else vm.respuestas_guardar[i].correcto = vm.respuestas_correctas.includes(i);
-								vm.respuestas_guardar[i].pregunta_id = vm.pregunta.id;
-							}
-						} 
-						await axios.post(`${vm.url_api}/pregunta/${vm.pregunta_id}/respuestas`,[respuestas_guardar], vm.axios_headers)
-						.then( async res =>{
-							
-						}).catch(err => console.log(err));
-						
-					}).catch(err => console.log(err));
+					.then(res =>{
+						console.log(res)
+					}).catch(err => console.log(err))
+					*/
+					//RESPUESTAS
+					let respuestas_guardar = vm.respuestas;
+					if(vm.pregunta.tipo == 0) respuestas_guardar = [];
+					else if(vm.pregunta.tipo == 1) respuestas_guardar = [{valor: vm.respuesta_correct ? '1':'', correcto: true, borrar: 0}];
+					else if(vm.pregunta.tipo == 2 || vm.pregunta.tipo == 3){
+						for(var i = 0; i < vm.respuestas.length; i++){
+							if( vm.pregunta.tipo ==  2) vm.respuestas_guardar[i].correcto = i == vm.respuesta_correcta;
+							else vm.respuestas_guardar[i].correcto = vm.respuestas_correctas.includes(i);
+						}
+					}
+					let respuesta_enviar = {pregunta_id: vm.pregunta.id, respuestas: respuestas_guardar};
+					await axios.post(`${vm.url_api}/respuesta`,respuesta_enviar, vm.axios_headers)
+					.then( res =>{
+						console.log(res);
+						}).catch(err => console.log(err, respuesta_enviar));
 				}else{//CREACIÓN
 					await axios.post(`${vm.url_api}/pregunta`, vm.pregunta, vm.axios_headers)
 					.then( res => { vm.$router.push(`/${vm.tab_actual}/${vm.id}/preguntas`);}).catch(err => console.log(err));
@@ -167,6 +167,7 @@
 				await axios.get(`${vm.url_api}/pregunta/${vm.pregunta_id}`, vm.axios_headers)//PREGUNTAS
 				.then(res => {
 					vm.pregunta = res.data.data;
+					
 					//vm.respuestas = vm.pregunta.respuestas;
 					//vm.respuesta_correcta = vm.pregunta.respuesta_correcta;
 				//vm.respuestas_correctas = vm.pregunta.respuestas_correctas;

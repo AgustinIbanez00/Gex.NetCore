@@ -61,6 +61,8 @@
 			},
 			cargar_tabla(){
 				var vm = this;
+				console.log(vm.$route.name )
+				if(vm.$route.name != `listar_${vm.tab_actual}`) return;
 				vm.cargando_lista = true;
 				axios.get(`${vm.url_api}/${vm.tab_actual}`, vm.axios_headers).then(res => {
 					switch(vm.tab_actual){
