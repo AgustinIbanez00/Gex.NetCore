@@ -30,7 +30,7 @@ public class RespuestaBorrableRequest
     public bool? Correcto { get; set; }
 
     [Required, Display(Name = "estado")]
-    public int Borrar { get; set; }
+    public bool Borrar { get; set; }
 }
 
 

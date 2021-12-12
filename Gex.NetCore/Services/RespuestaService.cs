@@ -191,12 +191,12 @@ public Task<GexResult<RespuestaResponse>> PrepareCreateRespuestaAsync(RespuestaC
                 {
                     if (await _respuestaRepository.ExistsRespuestaAsync(rtaDto.Id))
                     {
-                        if(rtaDto.Borrar == 1)
+                        if(rtaDto.Borrar)
                         {
                             if (!await _respuestaRepository.DeleteRespuestaAsync(respuesta.Id))
                                 return KeyError<Respuesta, RespuestaResponse>(nameof(rtaDto.Id), GexErrorMessage.CouldNotDelete, _mapper.Map<RespuestaResponse>(rtaDto));
                         }
-                        else if(rtaDto.Borrar == 0)
+                        else if(!rtaDto.Borrar)
                         {
                             if (!await _respuestaRepository.UpdateRespuestaAsync(respuesta))
                                 return KeyError<Respuesta, RespuestaResponse>(nameof(rtaDto.Id), GexErrorMessage.CouldNotUpdate, _mapper.Map<RespuestaResponse>(rtaDto));
