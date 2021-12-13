@@ -2,9 +2,10 @@
 	<v-app class="light-blue">
 		<!-- TABLA EXÁMENES -->
 		<v-expand-transition>
-			<v-data-table v-show="route == 'listar_examen'" :headers="headers" :items="examenes" :items-per-page="5" class="elevation-3 px-10 mx-15 my-3">
-				<template v-slot:item.actions="{ item }"><!-- Acciones -->
-					<v-btn class="ma-2" @click="rendir(item.id)" outlined dark color="green darken-1">Rendir <v-icon>mdi-book-play-outline</v-icon></v-btn>					
+			<v-data-table :ref="`tabla_${tab_actual}`" v-show="route == 'listar_examen'" :headers="headers" :items="lista" :items-per-page="5" class="elevation-3 px-10 mx-15 my-3" :loading="cargando_lista" :loading-text="`Cargando ${elementos}`">
+				<template v-slot:item.actions="{ item }">
+					<!-- Acciones -->
+					<v-btn class="ma-2" @click="rendir(item.id)" outlined dark color="green darken-1">Rendir <v-icon>mdi-book-play-outline</v-icon></v-btn>
 					<v-btn class="ma-2" text icon color="blue lighten-1" @click="edicion(item.id)"><v-icon>mdi-pencil</v-icon></v-btn>
 					<v-btn class="ma-2" text icon color="blue-grey darken-1"><v-icon>mdi-delete</v-icon></v-btn>
 				</template>
@@ -16,8 +17,8 @@
 				<v-card-title v-if="route == 'editar_examen'">EDITAR EXÁMEN</v-card-title>
 				<v-card-title v-else>NUEVO EXÁMEN</v-card-title>
 				<v-row>
-					<v-col cols="6"><v-select :items="materias" label="Materia" v-model="examen.materia" @change="materia_cambiada"></v-select></v-col>
-					<v-col cols="4"><v-select :items="tipos" label="Tipo" v-model="examen.tipo"></v-select></v-col>
+					<v-col cols="6"><v-select :items="materias"  :item-text="'nombre'"  :item-value="'id'" label="Materia" v-model="examen.materia_id" @change="materia_cambiada"></v-select></v-col>
+					<v-col cols="4"><v-select :items="tipos" :item-text="'nombre'" label="Tipo" :item-value="'id'" v-model="examen.tipo"></v-select></v-col>
 					<v-col cols="2" v-show="examen.fecha"><v-select :items="modalidades" label="Modalidad"></v-select></v-col>
 				</v-row>
 				<v-row>
@@ -28,7 +29,7 @@
 						</v-text-field>
 					</v-col>
 					<v-col cols="3">
-						<v-text-field v-model="examen.nota_promocional" label="Promocional">
+						<v-text-field v-model="examen.nota_promo" label="Promocional">
 						</v-text-field>
 					</v-col>
 				</v-row>
@@ -36,8 +37,8 @@
 				<v-card-actions>
 					<v-col class="text-right">
 						<v-btn text @click="cancelar">Cancelar</v-btn>
-						<v-btn text color="primary">Guardar y cerrar</v-btn>
-						<v-btn button class="white--text indigo darken-1">Guardar</v-btn>
+						<v-btn text color="primary" @click="guardar(1)">Guardar y cerrar</v-btn>
+						<v-btn button class="white--text indigo darken-1" @click="guardar">Guardar</v-btn>
 					</v-col>
 				</v-card-actions>
 			</v-card>
@@ -49,24 +50,26 @@
 	import mixin_base from '../../assets/mixin_base';
   import VueCookies  from 'vue-cookies';
 	//VARIABLES
-	var examen_default = {
-		id: 1,
-		tipo: 'Final',
-		materia: 'Laboratorio de programación',
-		fecha: null,
-		preguntas: [],
-		nota_regular: 0,
-		nota_promocional: 0,
-		recuperatorio: false,
-	}
+    var examen_default = {
+        id: 0,
+        tipo: 0,
+        nota_regular: 0,
+        nota_promo: 0,
+        recuperatorio: true,
+        materia_id: 0
+    }
 	export default {
 		name: "comp_examen",
 		mixins: [mixin_base],
 		data: () => ({
 			isLoading: false,
 			examen: JSON.parse(JSON.stringify(examen_default)),
-			materias: ['Laboratorio de programación','Android','Redes','Web II'],
-			tipos: ['Final','Recuperatorio','Parcial','Global','Test'],
+			materias: ['Laboratorio de programación', 'Android', 'Redes', 'Web II'],
+            tipos: [
+                { id: 0, nombre: 'Final' },
+                { id: 1, nombre: 'Parcial' },
+                { id: 2, nombre: 'Global' },
+            ],
 			modalidades: ['Multipleflai','Normal'],
 			headers: [
 				{ text: 'Materia', align: 'start', sortable: true, value: 'materia', width: '80	%' },
@@ -85,19 +88,6 @@
 		computed: {
 		},
 		methods: {
-			cargar_tabla(){
-				var vm = this;
-				/*
-					axios.get('http://127.0.0.1:5000/api/Examen', {
-						headers: {
-							'Content-Type': 'application/json',
-							'Authorization': `Bearer ${window.$cookies.get("gex_session")}`
-						}
-					}).then(res => {
-					vm.examenes = res.data.data;
-					}).catch(err => console.log(err));
-				*/
-			},
 			cancelar(){
 				var vm = this;
 				vm.estado(vm.estados.lista);
@@ -109,9 +99,26 @@
 			rendir(id){
 				var vm = this;
 				vm.$router.push(`/${vm.tab_actual}/${id}/rendir`);
-			}
+			},
+            guardar(listar) {
+                var vm = this;
+                let f_guardar = res => {
+                    if (listar) vm.listar();
+					else vm.examen = res.data.data;
+					console.log("Examen ", vm.examen)
+                }
+				if (vm.examen.id) {
+                    console.table("examen body", vm.examen)
+                    axios.patch(`${vm.url_api}/examen`, vm.examen, vm.axios_headers)
+                        .then(f_guardar).catch(err => { if (err.response) console.table(err.response.data.error_messages); });
+				} else {
+                    console.table("examen body", vm.examen)
+                    axios.post(`${vm.url_api}/examen`, vm.examen, vm.axios_headers)
+                        .then(f_guardar).catch(err => { if(err.response) console.table(err.response.data.error_messages); });
+                }
+            }
 		},
-		mounted() {
+		async mounted() {
 			var vm = this;
 			vm.$nextTick(() => {
 				if(vm.examen.id){
@@ -119,44 +126,11 @@
 				}
 			})
 			vm.cargar_tabla();
-			vm.examenes = [
-				{
-					id: 1,
-					nombre: 'Matemática',
-					materia: 'Materia 1',
-					tipo: 'Final',
-					nota_regular: 2,
-					nota_promocional: 4,
-					recuperatorio: false,
-				},
-				{
-					id: 2,
-					nombre: 'Base de datos',
-					materia: 'Materia 1',
-					tipo: 'Final',
-					nota_regular: 4,
-					nota_promocional: 7,
-					recuperatorio: true,
-				},
-				{
-					id: 3,
-					nombre: 'Inglés',
-					materia: 'Materia 2',
-					tipo: 'Parcial',
-					nota_regular: 2,
-					nota_promocional: 4,
-					recuperatorio: false,
-				},
-				{
-					id: 4,
-					nombre: 'Base de datos',
-					materia: 'Materia 1',
-					tipo: 'Parcial',
-					nota_regular: 2,
-					nota_promocional: 6,
-					recuperatorio: true,
-				},
-			];
+
+            await axios.get(`${vm.url_api}/materia`, vm.axios_headers)
+				.then(res => {
+					vm.materias = res.data.data
+                }).catch(err => { if (err.response) console.table(err.response.data.error_messages); });
 		}
 	};
 </script>

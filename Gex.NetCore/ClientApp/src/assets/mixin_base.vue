@@ -67,6 +67,7 @@
 				axios.get(`${vm.url_api}/${vm.tab_actual}`, vm.axios_headers).then(res => {
 					switch(vm.tab_actual){
 						case 'materia': vm.lista = res.data.data; break;
+						case 'examen': vm.lista = res.data.data; break;
 					}
 					//ALERTA
 				}).catch(err => console.log(err))

@@ -21,12 +21,14 @@ public class MesaExamenService : IMesaExamenService
     private readonly IMapper _mapper;
     private readonly IMesaExamenRepository _mesaExamenRepository;
     private readonly IExamenRepository _examenRepository;
+    private readonly IUsuarioRepository _usuarioRepository;
 
-    public MesaExamenService(IMapper mapper, IMesaExamenRepository repository, IExamenRepository examenRepository)
+    public MesaExamenService(IMapper mapper, IMesaExamenRepository repository, IExamenRepository examenRepository, IUsuarioRepository usuarioRepository)
     {
         _mapper = mapper;
         _mesaExamenRepository = repository;
         _examenRepository = examenRepository;
+        _usuarioRepository = usuarioRepository;
     }
 
     public async Task<GexResult<MesaExamenResponse>> CreateMesaExamenAsync(MesaExamenRequest mesaExamenDto)
@@ -36,12 +38,13 @@ public class MesaExamenService : IMesaExamenService
             if (await _mesaExamenRepository.ExistsMesaExamenAsync(mesaExamenDto.Id))
                 return KeyError<MesaExamen, MesaExamenResponse>(nameof(mesaExamenDto.Id), GexErrorMessage.AlreadyExists);
 
-            var mesaExamen = _mapper.Map<MesaExamen>(mesaExamenDto);
-
-            mesaExamen.Examen = await _examenRepository.GetExamenAsync(mesaExamenDto.ExamenId);
-
-            if (mesaExamen.Examen == null)
+            if(!await _examenRepository.ExistsExamenAsync(mesaExamenDto.ExamenId))
                 return KeyError<Examen, MesaExamenResponse>(nameof(mesaExamenDto.ExamenId), GexErrorMessage.NotFound);
+
+            if (!await _usuarioRepository.ExistsUsuarioAsync(mesaExamenDto.ProfesorId))
+                return KeyError<Usuario, MesaExamenResponse>(nameof(mesaExamenDto.ProfesorId), GexErrorMessage.NotFound);
+
+            var mesaExamen = _mapper.Map<MesaExamen>(mesaExamenDto);
 
             if (!await _mesaExamenRepository.CreateMesaExamenAsync(mesaExamen))
                 return Error<MesaExamen, MesaExamenResponse>(GexErrorMessage.CouldNotCreate);
@@ -120,13 +123,22 @@ public class MesaExamenService : IMesaExamenService
         try
         {
             if (mesaExamenDto.Id == 0)
-                return Error<MesaExamen, MesaExamenResponse>(GexErrorMessage.InvalidId);
+                return KeyError<MesaExamen, MesaExamenResponse>(nameof(mesaExamenDto.Id), GexErrorMessage.NotFound);
 
             var mesaExamen = await _mesaExamenRepository.GetMesaExamenAsync(mesaExamenDto.Id);
 
             if (mesaExamen == null)
-                return Error<MesaExamen, MesaExamenResponse>(GexErrorMessage.NotFound);
+                return KeyError<MesaExamen, MesaExamenResponse>(nameof(mesaExamenDto.Id), GexErrorMessage.NotFound);
 
+            if (!await _examenRepository.ExistsExamenAsync(mesaExamenDto.ExamenId))
+                return KeyError<Examen, MesaExamenResponse>(nameof(mesaExamenDto.ExamenId), GexErrorMessage.NotFound);
+
+            mesaExamen.ExamenId = mesaExamenDto.ExamenId;
+
+            if (!await _usuarioRepository.ExistsUsuarioAsync(mesaExamenDto.ProfesorId))
+                return KeyError<Usuario, MesaExamenResponse>(nameof(mesaExamenDto.ProfesorId), GexErrorMessage.NotFound);
+
+            mesaExamen.ProfesorId = mesaExamenDto.ProfesorId;
             mesaExamen.Fecha = mesaExamenDto.Fecha;
             mesaExamen.MostrarRespuestas = mesaExamenDto.MostrarRespuestas;
             mesaExamen.Duracion = mesaExamenDto.Duracion;
