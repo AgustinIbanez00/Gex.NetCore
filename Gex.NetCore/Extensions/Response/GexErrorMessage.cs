@@ -24,5 +24,7 @@ public enum GexErrorMessage
     [Description("No se pudo eliminar {Gender:ese|esa} {Entity}.")]
     CouldNotDelete,
     [Description("No se pudo modificar {Gender:ese|esa} {Entity}.")]
-    CouldNotUpdate
+    CouldNotUpdate,
+    [Description("Ocurrieron uno o más errores durante la validación.")]
+    GenericValidation,
 }

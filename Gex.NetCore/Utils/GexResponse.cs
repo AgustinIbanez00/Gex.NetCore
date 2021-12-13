@@ -31,11 +31,12 @@ public static class GexResponse
 
     public static GexResult<TResult> KeyError<TResult>(string key, string message) where TResult : class
     {
+        GexErrorMessage error = GexErrorMessage.GenericValidation;
         return new GexResult<TResult>
         {
-            ErrorCode = GexErrorMessage.Generic,
+            ErrorCode = error,
             Success = false,
-            Message = GexErrorMessage.Generic.GetDescription(),
+            Message = error.GetDescription(),
             ErrorMessages = string.IsNullOrEmpty(message) ? new Dictionary<string, string[]>() : new Dictionary<string, string[]>() { { new string(key.ToSnakeCase().ToArray()), new string[] { message } } }
         };
     }
@@ -63,6 +64,29 @@ public static class GexResponse
             ErrorMessages = new Dictionary<string, string[]>() { { new string(key.ToSnakeCase().ToArray()), new string[] { Smart.Format(EnumExtensions.GetDescription(error), Options<TEntity>()) } } }
         };
     }
+
+    public static GexResult<TResult> KeyOk<TEntity, TResult>(string key, GexSuccessMessage message) where TResult : class
+    {
+        return new GexResult<TResult>
+        {
+            Data = default(TResult),
+            Success = true,
+            Message = "Correcto.",
+            ErrorMessages = new Dictionary<string, string[]>() { { new string(key.ToSnakeCase().ToArray()), new string[] { Smart.Format(EnumExtensions.GetDescription(message), Options<TEntity>()) } } }
+        };
+    }
+
+    public static GexResult<TResult> KeyOk<TEntity, TResult>(string key, GexSuccessMessage message, TResult result) where TResult : class
+    {
+        return new GexResult<TResult>
+        {
+            Data = result,
+            Success = true,
+            Message = "Correcto.",
+            ErrorMessages = new Dictionary<string, string[]>() { { new string(key.ToSnakeCase().ToArray()), new string[] { Smart.Format(EnumExtensions.GetDescription(message), Options<TEntity>()) } } }
+        };
+    }
+
 
     /// <summary>
     /// Devuelve un objeto personalizado del sistema del tipo TResult con el mensaje de error computado de TEntity.

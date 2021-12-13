@@ -26,10 +26,10 @@ public class RespuestaBorrableRequest
     /// <summary>
     /// Indica si la respuesta es verdadera.
     /// </summary>
-    [Required, Display(Name = "correcto")]
-    public bool? Correcto { get; set; }
+    [Display(Name = "correcto")]
+    public bool Correcto { get; set; }
 
-    [Required, Display(Name = "estado")]
+    [Display(Name = "estado")]
     public bool Borrar { get; set; }
 }
 

@@ -9,6 +9,7 @@ public interface IRespuestaService
 {
     Task<GexResult<ICollection<RespuestaResponse>>> GetRespuestasAsync();
     Task<GexResult<ICollection<RespuestaResponse>>> GetRespuestasByPreguntaIdAsync(long preguntaId);
+    Task<GexResult<RespuestaResponse>> DeleteRespuestasByPreguntaIdAsync(long preguntaId);
     Task<GexResult<RespuestaResponse>> GetRespuestaAsync(long id);
 
     //Task<GexResult<RespuestaResponse>> PrepareCreateRespuestaAsync(RespuestaCreateRequest request);

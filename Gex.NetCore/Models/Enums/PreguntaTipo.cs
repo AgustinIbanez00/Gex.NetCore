@@ -1,20 +1,26 @@
-﻿namespace Gex.Models.Enums;
+﻿using System.ComponentModel;
+
+namespace Gex.Models.Enums;
 public enum PreguntaTipo
 {
     /// <summary>
     /// Debe realizar una justificación de la respuesta.
     /// </summary>
-    TEXTO = 0,
+    [Description("Texto")]
+    Texto = 0,
     /// <summary>
     /// Sólo se puede contestar con sí o no.
     /// </summary>
-    CERRADA = 1,
+    [Description("Verdadero o Falso")]
+    VerdaderoOFalso = 1,
     /// <summary>
-    /// Se podrán responder con múltiples valores.
+    /// Existirán varias respuestas con una correcta.
     /// </summary>
-    MULTIPLECHOICE = 2,
+    [Description("Multiple Choise")]
+    MultipleChoise = 2,
     /// <summary>
-    /// Indica que se puede responder con muchas respuestas.
+    /// Indica que pueden existir muchas respuestas correctas.
     /// </summary>
-    MULTIPLESELECTION = 3,
+    [Description("Selección Múltiple")]
+    SeleccionMultiple = 3,
 }

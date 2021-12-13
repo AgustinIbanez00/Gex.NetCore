@@ -9,5 +9,7 @@ public enum GexSuccessMessage
     [Description("{Entity} {Gender:eliminado|eliminada} correctamente.")]
     Deleted,
     [Description("{Entity} {Gender:actualizado|actualizada} correctamente.")]
-    Modified
+    Modified,
+    [Description("No se encontraron datos.")]
+    NoDataFound
 }

@@ -69,6 +69,20 @@ public class PreguntaController : ControllerBase
         return Ok(respuestas);
     }
 
+    [HttpDelete("{preguntaId:int}/respuestas")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResult<ICollection<RespuestaResponse>>))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<GexResult<ICollection<RespuestaResponse>>>> DeleteRespuestas(int preguntaId)
+    {
+        var respuestas = await _respuestaService.DeleteRespuestasByPreguntaIdAsync(preguntaId);
+
+        if (!respuestas.Success)
+            return StatusCode(ResponseHelper.GetHttpError(respuestas.ErrorCode), respuestas);
+
+        return Ok(respuestas);
+    }
+
     /*
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResult<PreguntaResponse>))]

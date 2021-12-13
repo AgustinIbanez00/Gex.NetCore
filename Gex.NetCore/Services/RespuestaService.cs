@@ -13,6 +13,7 @@ using Gex.Services.Interface;
 using Gex.Utils;
 using Gex.ViewModels.Request;
 using Gex.ViewModels.Response;
+using Humanizer;
 
 namespace Gex.Services;
 using static GexResponse;
@@ -66,9 +67,6 @@ public class RespuestaService : IRespuestaService
             var respuesta = await _respuestaRepository.GetRespuestaAsync(id);
             if (respuesta == null)
                 return Error<Respuesta, RespuestaResponse>(GexErrorMessage.NotFound);
-
-            if (respuesta.Estado == Estado.BAJA)
-                return Error<Respuesta, RespuestaResponse>(GexErrorMessage.AlreadyDeleted);
 
             if (!await _respuestaRepository.DeleteRespuestaAsync(respuesta))
                 return Error<Respuesta, RespuestaResponse>(GexErrorMessage.CouldNotDelete);
@@ -179,8 +177,44 @@ public Task<GexResult<RespuestaResponse>> PrepareCreateRespuestaAsync(RespuestaC
     {
         try
         {
-            if (!await _preguntaRepository.ExistsPreguntaAsync(respuestaDto.PreguntaId))
+            if (respuestaDto.Respuestas.Length == 0)
+                return KeyOk<Pregunta, RespuestaResponse>(nameof(respuestaDto.Respuestas), GexSuccessMessage.NoDataFound);
+
+            var pregunta = await _preguntaRepository.GetPreguntaAsync(respuestaDto.PreguntaId);
+
+            if (pregunta == null)
                 return KeyError<Pregunta, RespuestaResponse>(nameof(respuestaDto.PreguntaId), GexErrorMessage.NotFound);
+
+            if(pregunta.Tipo == PreguntaTipo.Texto)
+                return Ok<RespuestaResponse>();
+
+            if (pregunta.Tipo == PreguntaTipo.VerdaderoOFalso)
+            {
+                if (respuestaDto.Respuestas.Count(r => r.Correcto == true && !r.Borrar) > 2)
+                    return KeyError<RespuestaResponse>(nameof(respuestaDto.Respuestas), $"No se acepta más de dos respuestas cuando la pregunta es de tipo {pregunta.Tipo.GetDescription()}");
+
+                if(respuestaDto.Respuestas.Count(r => r.Id <= 0 && !r.Borrar) >= 2)
+                {
+                    var preguntas = await _respuestaRepository.GetRespuestasByPreguntaIdAsync(respuestaDto.PreguntaId);
+                    if(preguntas.Count >= 2)
+                    {
+                        return KeyError<RespuestaResponse>(nameof(respuestaDto.Respuestas), $"No se pueden crear más de dos respuestas cuando la pregunta es de tipo {pregunta.Tipo.GetDescription()}");
+                    }
+                }
+            }
+
+            if (pregunta.Tipo == PreguntaTipo.VerdaderoOFalso || pregunta.Tipo == PreguntaTipo.MultipleChoise)
+            {
+                if (respuestaDto.Respuestas.Count(r => r.Correcto == true && !r.Borrar) > 1)
+                    return KeyError<RespuestaResponse>(nameof(respuestaDto.Respuestas), $"No se acepta más de una respuesta correcta cuando la pregunta es de tipo {pregunta.Tipo.GetDescription()}");
+            }
+            if(pregunta.Tipo == PreguntaTipo.VerdaderoOFalso || pregunta.Tipo == PreguntaTipo.MultipleChoise || pregunta.Tipo == PreguntaTipo.SeleccionMultiple)
+            {
+                if (respuestaDto.Respuestas.Count(r => r.Correcto == true && !r.Borrar) == 0)
+                    return KeyError<RespuestaResponse>(nameof(respuestaDto.Respuestas), $"No se encontró ninguna respuesta correcta.");
+                if (respuestaDto.Respuestas.Count(r => r.Correcto == false && !r.Borrar) == 0)
+                    return KeyError<RespuestaResponse>(nameof(respuestaDto.Respuestas), $"Al menos una respuesta debe ser incorrecta.");
+            }
 
             foreach (var rtaDto in respuestaDto.Respuestas)
             {
@@ -191,29 +225,22 @@ public Task<GexResult<RespuestaResponse>> PrepareCreateRespuestaAsync(RespuestaC
                 {
                     if (await _respuestaRepository.ExistsRespuestaAsync(rtaDto.Id))
                     {
-                        if (rtaDto.Borrar)
-                        {
-                            if (!await _respuestaRepository.DeleteRespuestaAsync(respuesta.Id))
-                                return KeyError<Respuesta, RespuestaResponse>(nameof(rtaDto.Id), GexErrorMessage.CouldNotDelete, _mapper.Map<RespuestaResponse>(rtaDto));
-                        }
-                        else if (!rtaDto.Borrar)
-                        {
-                            if (!await _respuestaRepository.UpdateRespuestaAsync(respuesta))
-                                return KeyError<Respuesta, RespuestaResponse>(nameof(rtaDto.Id), GexErrorMessage.CouldNotUpdate, _mapper.Map<RespuestaResponse>(rtaDto));
-                        }
-                        else
-                            return KeyError<RespuestaResponse>(nameof(rtaDto.Id), "El campo borrar tiene un valor inválido.");
+                        if (rtaDto.Borrar && !await _respuestaRepository.DeleteRespuestaAsync(rtaDto.Id, autosave: false))
+                            return KeyError<Respuesta, RespuestaResponse>(nameof(rtaDto.Id), GexErrorMessage.CouldNotDelete, _mapper.Map<RespuestaResponse>(rtaDto));
+                        else if (!rtaDto.Borrar && !await _respuestaRepository.UpdateRespuestaAsync(respuesta, autosave: false))
+                            return KeyError<Respuesta, RespuestaResponse>(nameof(rtaDto.Id), GexErrorMessage.CouldNotUpdate, _mapper.Map<RespuestaResponse>(rtaDto));
                     }
                     else
                         return KeyError<Respuesta, RespuestaResponse>(nameof(rtaDto.Id), GexErrorMessage.NotFound, _mapper.Map<RespuestaResponse>(rtaDto));
                 }
                 else
                 {
-                    if (!await _respuestaRepository.CreateRespuestaAsync(respuesta))
+                    if (!await _respuestaRepository.CreateRespuestaAsync(respuesta, autosave: false))
                         return KeyError<Respuesta, RespuestaResponse>(nameof(rtaDto.Id), GexErrorMessage.CouldNotCreate, _mapper.Map<RespuestaResponse>(rtaDto));
                 }
             }
-            return Ok<Respuesta, RespuestaResponse>(GexSuccessMessage.Created);
+            return await _respuestaRepository.Save() ? Ok<Respuesta, RespuestaResponse>(GexSuccessMessage.Created) : Error<Respuesta, RespuestaResponse>(GexErrorMessage.Generic);
+            //return Ok<Respuesta, RespuestaResponse>(GexSuccessMessage.Created);
         }
         catch (UniqueConstraintException)
         {
@@ -268,6 +295,20 @@ public Task<GexResult<RespuestaResponse>> PrepareCreateRespuestaAsync(RespuestaC
         catch (Exception ex)
         {
             return Error<Respuesta, ICollection<RespuestaResponse>>(GexErrorMessage.Generic, ex.Message);
+        }
+    }
+
+    public async Task<GexResult<RespuestaResponse>> DeleteRespuestasByPreguntaIdAsync(long preguntaId)
+    {
+        try
+        {
+            if(!await _respuestaRepository.DeleteRespuestasByPreguntaIdAsync(preguntaId))
+                return Error<Respuesta, RespuestaResponse>(GexErrorMessage.CouldNotDelete);
+            return Ok<Respuesta, RespuestaResponse>(GexSuccessMessage.Deleted);
+        }
+        catch (Exception ex)
+        {
+            return Error<Respuesta, RespuestaResponse>(GexErrorMessage.Generic, ex.Message);
         }
     }
 }

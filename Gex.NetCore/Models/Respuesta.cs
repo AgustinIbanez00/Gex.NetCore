@@ -3,7 +3,7 @@ using Gex.Attributes;
 
 namespace Gex.Models;
 [GexDescription("respuesta", Humanizer.GrammaticalGender.Feminine)]
-public partial class Respuesta : Auditory
+public partial class Respuesta
 {
     [Key]
     public long Id { get; set; }

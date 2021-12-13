@@ -20,12 +20,12 @@
           </v-list-item>
           <v-list-item>
 						<v-col cols="12">
-							<v-textarea v-model="pregunta.descripcion" color="teal" class="title" rows="1"auto-grow>
+							<v-textarea v-model="pregunta.descripcion" color="teal" class="title" rows="1" auto-grow>
 								<template v-slot:label>
 									<div>Pregunta</div>
 								</template>
 							</v-textarea>
-						</v-col>          
+						</v-col>
 					</v-list-item>
           <v-list-item>
 						<v-select :items="tipos_preguntas" :item-text="'nombre'" :item-value="'id'" label="Tipo" v-model="pregunta.tipo" @change="respuestas_cambiadas"></v-select>
@@ -37,25 +37,24 @@
 					<h3>{{pregunta.tipo == 0 ? 'Respuesta a desarrollar (Se corrige manualmente al finalizar el exámen)' : 'Respuestas'}}</h3>
 					<hr>
 					<!-- Verdadero o false -->
-					<v-radio-group v-model="respuesta_correcta" row v-show="pregunta.tipo == 1">
-						<v-radio label="Verdadero" :value="1"></v-radio>
-						<v-radio label="Falso" :value="0"></v-radio>
+					<v-radio-group row v-show="pregunta.tipo == 1" v-model="active">
+						<v-radio v-for="(respuesta, i) in respuestas" :key="i" :value="i" :label="`${String.fromCharCode(65+i)}) ${respuesta.valor}`" ></v-radio>
 					</v-radio-group>
 					<!-- Multiple Choice -->
 					<div v-show="pregunta.tipo == 2 || pregunta.tipo == 3">
 						<v-btn v-if="!modo_nueva_respuesta" @click="input_respuesta" class="mt-3 mx-5" outlined rounded color="green">Agregar respuesta <v-icon>mdi-plus</v-icon></v-btn>
-						<v-text-field v-else id="input_respuesta" v-model="nueva_respuesta_txt" v-on:keyup.enter="agregar_pregunta" label="Respuesta nueva" append-icon="mdi-close" @click:append="modo_nueva_respuesta = 0">
+						<v-text-field v-else id="input_respuesta"  v-model="nueva_respuesta_txt" :rules="['Required']" v-on:keyup.enter="agregar_pregunta" label="Respuesta nueva" append-icon="mdi-close" @click:append="modo_nueva_respuesta = 0">
 						</v-text-field>
 						<div style="position:absolute;margin-top:12px">
 							<v-btn v-show="!respuesta.borrar" v-for="(respuesta, i) in respuestas" :key="i" @click="eliminar_respuesta(i)" style="left:0px; display:block;" text icon color="light-red darken-1">
 								<v-icon >mdi-trash-can-outline</v-icon>
 							</v-btn>
 						</div>
-						<v-radio-group v-model="respuesta_correcta" class="ml-10" v-show="pregunta.tipo == 2">
+						<v-radio-group class="ml-10" v-show="pregunta.tipo == 2" v-model="active">
 							<v-radio v-show="!respuesta.borrar" v-for="(respuesta, i) in respuestas" :key="i" class="mb-3" :label="`${String.fromCharCode(65+i)}) ${respuesta.valor}`" :value="i"></v-radio>
 						</v-radio-group>
 						<v-container v-show="pregunta.tipo == 3">
-							<v-checkbox v-model="respuestas_correctas" style="margin-bottom:-17px; margin-top:3px;margin-left: 33px" v-for="(respuesta, i) in respuestas" :key="i" :label="`${String.fromCharCode(65+i)}) ${respuesta.valor}`" :value="i"></v-checkbox>
+							<v-checkbox v-show="!respuesta.borrar" v-model="respuesta.correcto" style="margin-bottom:-17px; margin-top:3px;margin-left: 33px" v-for="(respuesta, i) in respuestas" :key="i" :label="`${String.fromCharCode(65+i)}) ${respuesta.valor}`" :value="respuesta.correcto"></v-checkbox>
 						</v-container>
 						<h4 v-show="respuestas && !respuestas.length">Sin respuestas agregadas</h4>
 					</div>
@@ -71,7 +70,7 @@
 		descripcion: '',
 		materia_id: 0,
 		tipo: 0,
-		estado: 1,
+		estado: 1
 	}
 	export default {
 		mixins: [mixin_base],
@@ -85,9 +84,20 @@
 		data: () => ({
 			modal: false,
 			pregunta: JSON.parse(JSON.stringify(pregunta_default)),
-			respuesta_correcta: null,
-			respuestas_correctas: [],
 			respuestas: [],
+			active: 1,
+			respuestas_trueFalse: [
+				{
+					borrar : false,
+					valor: 'Verdadero',
+					correcto: true
+				},
+				{
+					borrar : false,
+					valor: 'Falso',
+					correcto: false
+				}
+			],
 			nueva_respuesta_txt: '',
 			tipos_preguntas: [
 				{id: 0, nombre: 'Texto'},
@@ -100,31 +110,36 @@
 		methods: {
 			async guardar(){
 				var vm = this;
-				if(vm.pregunta.id){/*
+				if(vm.pregunta.id){
 					await axios.patch(`${vm.url_api}/pregunta`, vm.pregunta, vm.axios_headers)
-					.then(res =>{
-						console.log(res)
-					}).catch(err => console.log(err))
-					*/
-					//RESPUESTAS
-					let respuestas_guardar = vm.respuestas;
-					if(vm.pregunta.tipo == 0) respuestas_guardar = [];
-					else if(vm.pregunta.tipo == 1) respuestas_guardar = [{valor: vm.respuesta_correct ? '1':'', correcto: true, borrar: 0}];
-					else if(vm.pregunta.tipo == 2 || vm.pregunta.tipo == 3){
-						for(var i = 0; i < vm.respuestas.length; i++){
-							if( vm.pregunta.tipo ==  2) vm.respuestas_guardar[i].correcto = i == vm.respuesta_correcta;
-							else vm.respuestas_guardar[i].correcto = vm.respuestas_correctas.includes(i);
-						}
-					}
-					let respuesta_enviar = {pregunta_id: vm.pregunta.id, respuestas: respuestas_guardar};
-					await axios.post(`${vm.url_api}/respuesta`,respuesta_enviar, vm.axios_headers)
-					.then( res =>{
-						console.log(res);
-						}).catch(err => console.log(err, respuesta_enviar));
+					.then(async res =>{
+						console.log("Pregunta guardada.")
+						console.log("Guardando respuestas...")
+						console.table(vm.respuestas);
+						if(vm.pregunta.tipo > 0){
+							for(var i = 0; i < vm.respuestas.length; i++)
+							{
+								if(vm.pregunta.tipo == 1 || vm.pregunta.tipo == 2)
+								{
+									if(i == vm.active) vm.respuestas[i].correcto = true;
+									else vm.respuestas[i].correcto = false;
+								}
+								if(vm.respuestas[i].correcto == null) vm.respuestas[i].correcto = false;
+							}
+							await axios.post(`${vm.url_api}/respuesta`,{pregunta_id: vm.pregunta.id, respuestas: vm.respuestas}, vm.axios_headers)
+							.then( res =>{ console.log("respuestas guardadas"); console.table(vm.respuestas)})
+							.catch(error => { if(error.response) console.table(error.response.data.error_messages); });
+						}						
+
+					}).catch(err => {
+						console.log("Error al guardar la pregunta.")
+						if(error.response) console.log(error.response.data);
+					})
 				}else{//CREACIÓN
 					await axios.post(`${vm.url_api}/pregunta`, vm.pregunta, vm.axios_headers)
-					.then( res => { vm.$router.push(`/${vm.tab_actual}/${vm.id}/preguntas`);}).catch(err => console.log(err));
+					.then( res => { vm.$router.push(`/${vm.tab_actual}/${vm.id}/preguntas`);}).catch(error => {if(error.response) console.log(error.response.data);});
 				}
+				vm.modal = false;
 			},
 			input_respuesta(){
 				var vm = this;
@@ -134,21 +149,31 @@
 			},
 			agregar_pregunta(){
 				var vm = this;
-				this.respuestas.push({valor: vm.nueva_respuesta_txt,borrar: 0});
-				vm.nueva_respuesta_txt = '';
-				vm.respuesta_correcta = 0;
+				if(vm.nueva_respuesta_txt && !/^\s*$/.test(vm.nueva_respuesta_txt))
+				{
+					this.respuestas.push({id : -1, correcto: false, valor: vm.nueva_respuesta_txt,borrar: false});
+					vm.nueva_respuesta_txt = '';
+				}
 			},
 			eliminar_respuesta(i){
 				var vm = this;
-				if(!vm.respuestas[i].id) vm.respuestas.splice(i, 1);
-				else vm.respuestas[i].borrar = 1;
-				if(vm.respuestas.find(r => !r.borrar).length > 0) vm.respuesta_correcta = 0;
+				if(vm.respuestas[i].id > 0) vm.respuestas[i].borrar = true;
+				else vm.respuestas.splice(i, 1);
 			},
-			respuestas_cambiadas(){
+			async respuestas_cambiadas(){
 				var vm = this;
-				vm.respuestas = [];
-				vm.respuestas_correctas = [];
-				vm.respuesta_correcta = null;
+				if(vm.respuestas.length)
+				{
+					await axios.delete(`${vm.url_api}/pregunta/${vm.pregunta_id}/respuestas`, vm.axios_headers)
+					.then( res =>{ console.log("respuestas eliminadas")})
+					.catch(error => { if(error.response) console.log(error.response.data); });
+					vm.respuestas = [];
+				}
+
+				if(vm.pregunta.tipo == 1){
+					vm.respuestas = JSON.parse(JSON.stringify(vm.respuestas_trueFalse));
+				}
+				vm.active = 0;
 			}
 		},
 		computed: {
@@ -161,21 +186,17 @@
 				vm.pregunta.tema = vm.tema_pregunta;
 				vm.pregunta.materia_id = vm.id;
 				vm.respuestas = [];
-				vm.respuesta_correcta = null;
-				vm.respuestas_correctas = [];
 			}else{
 				await axios.get(`${vm.url_api}/pregunta/${vm.pregunta_id}`, vm.axios_headers)//PREGUNTAS
 				.then(res => {
 					vm.pregunta = res.data.data;
-					
-					//vm.respuestas = vm.pregunta.respuestas;
-					//vm.respuesta_correcta = vm.pregunta.respuesta_correcta;
-				//vm.respuestas_correctas = vm.pregunta.respuestas_correctas;
-				}).catch(err => console.log(err));
-			/*	if(vm.pregunta.tipo > 0){
-					await axios.get(`${vm.url_api}/respuestas/${vm.pregunta_id}`, vm.axios_headers)//RESPUESTAS
-					.then(res => {}).catch(err => console.log(err));
-				}*/
+				}).catch(error => { if(error.response) console.log(error.response.data); });
+				if(vm.pregunta.tipo > 0){
+					await axios.get(`${vm.url_api}/pregunta/${vm.pregunta_id}/respuestas`, vm.axios_headers)//RESPUESTAS
+					.then(res =>{
+						vm.respuestas = res.data.data.map(obj=> ({ ...obj, borrar: false }))
+					}).catch(error => { if(error.response) console.log(error.response.data); });
+				}
 			}
 		},
 	}
