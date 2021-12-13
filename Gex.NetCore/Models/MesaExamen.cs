@@ -25,7 +25,14 @@ public partial class MesaExamen : Auditory
     /// Cantidad de tiempo que durará el exámen.
     /// </summary>
     public int Duracion { get; set; }
-    public virtual Examen Examen { get; set; }
-    public virtual Usuario Profesor { get; set; }
 
+    /// <summary>
+    /// Navégación de exámen.
+    /// </summary>
+    public long ExamenId { get; set; }
+
+    /// <summary>
+    /// Navegación de profesor.
+    /// </summary>
+    public long ProfesorId { get; set; }
 }

@@ -4,11 +4,11 @@ namespace Gex.Extensions.Response;
 
 public enum GexSuccessMessage
 {
-    [Description("{Entity} {Gender:creado|creada} correctamente.")]
+    [Description("{Gender:El|La} {Entity} se creó correctamente.")]
     Created,
-    [Description("{Entity} {Gender:eliminado|eliminada} correctamente.")]
+    [Description("{Gender:El|La} {Entity} se eliminó correctamente.")]
     Deleted,
-    [Description("{Entity} {Gender:actualizado|actualizada} correctamente.")]
+    [Description("{Gender:El|La} {Entity} se actualizó correctamente.")]
     Modified,
     [Description("No se encontraron datos.")]
     NoDataFound

@@ -7,19 +7,19 @@ public enum ExamenTipo
     /// Indica que un exámen es final.
     /// </summary>
     [Description("Final")]
-    FINAL,
+    FINAL = 0,
     /// <summary>
     /// Indica que un exámen es parcial.
     /// </summary>
     [Description("Parcial")]
-    PARCIAL,
+    PARCIAL = 1,
     /// <summary>
     /// Indica que un exámen es global.
     /// </summary>
     [Description("Global")]
-    GLOBAL,
+    GLOBAL = 2,
     /// <summary>
     /// Este tipo de exámen solo es úsado para un ambiente de prueba.
     /// </summary>
-    TEST
+    TEST = 3
 }
