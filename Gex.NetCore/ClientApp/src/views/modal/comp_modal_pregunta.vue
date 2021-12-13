@@ -77,7 +77,7 @@
 		watch: {
 			modal: function(val) {
 				 var vm = this;
-				if(!val) setTimeout(() => vm.$router.push(`/${vm.tab_actual}/1/preguntas`),300);
+				if(!val) setTimeout(() => vm.$router.push(`/${vm.tab_actual}/${vm.id}/preguntas`),300);
 			}
 		},
 		name: "comp_modal_pregunta",
@@ -182,13 +182,13 @@
 		async mounted() {
 			var vm = this;
 			vm.modal = vm.route == 'editar_materia_pregunta' || vm.route == 'crear_materia_pregunta';
-			if(vm.route == 'crear_materia_pregunta'){
+			if(vm.route == 'crear_materia_pregunta'){//CREACIÓN
 				vm.pregunta = JSON.parse(JSON.stringify(pregunta_default));
 				vm.pregunta.tema = vm.tema_pregunta;
 				vm.pregunta.materia_id = vm.id;
 				vm.respuestas = [];
 			}else{
-				await axios.get(`${vm.url_api}/pregunta/${vm.pregunta_id}`, vm.axios_headers)//PREGUNTAS
+				await axios.get(`${vm.url_api}/pregunta/${vm.pregunta_id}`, vm.axios_headers)//CARGAR PREGUNTA
 				.then(res => {
 					vm.pregunta = res.data.data;
 				}).catch(error => { if(error.response) console.log(error.response.data); });
