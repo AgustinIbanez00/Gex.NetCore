@@ -1,6 +1,6 @@
 <template>
   <v-row justify="center">
-    <v-dialog :value="modal" fullscreen hide-overlay transition="dialog-bottom-transition">
+    <v-dialog :value="modal" fullscreen transition="dialog-bottom-transition">
       <v-card>
         <v-toolbar dark color="primary">
 					<v-btn icon dark @click="modal = false;">
@@ -43,7 +43,7 @@
 					<!-- Multiple Choice -->
 					<div v-show="pregunta.tipo == 2 || pregunta.tipo == 3">
 						<v-btn v-if="!modo_nueva_respuesta" @click="input_respuesta" class="mt-3 mx-5" outlined rounded color="green">Agregar respuesta <v-icon>mdi-plus</v-icon></v-btn>
-						<v-text-field v-else id="input_respuesta"  v-model="nueva_respuesta_txt" :rules="['Required']" v-on:keyup.enter="agregar_pregunta" label="Respuesta nueva" append-icon="mdi-close" @click:append="modo_nueva_respuesta = 0">
+						<v-text-field v-else id="input_respuesta"  v-model="nueva_respuesta_txt" v-on:keyup.enter="agregar_pregunta" label="Respuesta nueva" append-icon="mdi-close" @click:append="modo_nueva_respuesta = 0">
 						</v-text-field>
 						<div style="position:absolute;margin-top:12px">
 							<v-btn v-show="!respuesta.borrar" v-for="(respuesta, i) in respuestas" :key="i" @click="eliminar_respuesta(i)" style="left:0px; display:block;" text icon color="light-red darken-1">
@@ -98,6 +98,7 @@
 					correcto: false
 				}
 			],
+			cargando_card : 0,
 			nueva_respuesta_txt: '',
 			tipos_preguntas: [
 				{id: 0, nombre: 'Texto'},
@@ -195,6 +196,7 @@
 					await axios.get(`${vm.url_api}/pregunta/${vm.pregunta_id}/respuestas`, vm.axios_headers)//RESPUESTAS
 					.then(res =>{
 						vm.respuestas = res.data.data.map(obj=> ({ ...obj, borrar: false }))
+						if(vm.pregunta.tipo == 2 || vm.pregunta.tipo == 3) vm.active = vm.respuestas.findIndex(r => r.correcto);
 					}).catch(error => { if(error.response) console.log(error.response.data); });
 				}
 			}
