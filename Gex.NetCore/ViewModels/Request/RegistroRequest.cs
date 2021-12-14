@@ -4,8 +4,6 @@ using Gex.Models.Enums;
 namespace Gex.ViewModels.Request;
 public class RegistroRequest
 {
-    [Required, Display(Name = "nombre de usuario"), StringLength(100, MinimumLength = 3), RegularExpression("^[A-Za-z][A-Za-z0-9_]{7,29}$")]
-    public string UserName { get; set; }
 
     [Required, Display(Name = "correo electrónico"), EmailAddress]    
     public string Email { get; set; }
