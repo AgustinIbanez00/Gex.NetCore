@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Gex.Models.Enums;
 
 namespace Gex.ViewModels.Response;
 
@@ -10,4 +11,5 @@ public class UsuarioResponse
     [DataType(DataType.EmailAddress)]
     public string Email { get; set; }
 
+    public UsuarioTipo Tipo { get; set; }
 }

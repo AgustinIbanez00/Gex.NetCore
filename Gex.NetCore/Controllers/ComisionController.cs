@@ -29,7 +29,7 @@ public class ComisionController : ControllerBase
     [Authorize(Roles = nameof(UsuarioTipo.Alumno))]
     public async Task<ActionResult<GexResult<ComisionResponse>>> GetAll()
     {
-        var comisiones = await _service.GetComisionsAsync();
+        var comisiones = await _service.GetComisionesAsync();
 
         if (!comisiones.Success)
             return StatusCode(ResponseHelper.GetHttpError(comisiones.ErrorCode), comisiones);

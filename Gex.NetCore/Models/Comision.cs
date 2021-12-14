@@ -3,7 +3,7 @@ using Gex.Attributes;
 using Humanizer;
 
 namespace Gex.Models;
-[GexDescription("comisión", GrammaticalGender.Masculine)]
+[GexDescription("comisión", GrammaticalGender.Feminine)]
 public class Comision : Auditory
 {
     [Key]

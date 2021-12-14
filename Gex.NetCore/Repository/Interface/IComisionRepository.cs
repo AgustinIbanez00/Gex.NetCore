@@ -6,7 +6,7 @@ namespace Gex.Repository.Interface;
 
 public interface IComisionRepository
 {
-    Task<ICollection<Comision>> GetComisionsAsync();
+    Task<ICollection<Comision>> GetComisionesAsync();
     Task<Comision> GetComisionAsync(long id);
     Task<Comision> GetComisionAsync(string nombre);
     Task<bool> ExistsComisionAsync(long id);

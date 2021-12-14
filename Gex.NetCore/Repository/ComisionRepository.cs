@@ -51,7 +51,7 @@ public class ComisionRepository : IComisionRepository
 
     public async Task<Comision> GetComisionAsync(string nombre) => await _context.Comisiones.FirstOrDefaultAsync(a => a.Estado == Estado.NORMAL && a.Nombre == nombre);
     
-    public async Task<ICollection<Comision>> GetComisionsAsync() => await _context.Comisiones.ToListAsync();
+    public async Task<ICollection<Comision>> GetComisionesAsync() => await _context.Comisiones.Where(m => m.Estado == Estado.NORMAL).ToListAsync();
 
     public async Task<bool> Save() => await _context.SaveChangesAsync() >= 0;
 

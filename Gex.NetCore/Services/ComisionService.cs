@@ -103,11 +103,11 @@ public class ComisionService : IComisionService
         }
     }
 
-    public async Task<GexResult<ICollection<ComisionResponse>>> GetComisionsAsync()
+    public async Task<GexResult<ICollection<ComisionResponse>>> GetComisionesAsync()
     {
         try
         {
-            var comisions = await _repository.GetComisionsAsync();
+            var comisions = await _repository.GetComisionesAsync();
 
             var comisionsDto = new List<ComisionResponse>();
 

@@ -7,7 +7,7 @@ using Gex.ViewModels.Response;
 namespace Gex.Services.Interface;
 public interface IComisionService
 {
-    Task<GexResult<ICollection<ComisionResponse>>> GetComisionsAsync();
+    Task<GexResult<ICollection<ComisionResponse>>> GetComisionesAsync();
     Task<GexResult<ComisionResponse>> GetComisionAsync(long id);
     Task<GexResult<ComisionResponse>> GetComisionAsync(string nombre);
     Task<GexResult<ComisionResponse>> CreateComisionAsync(ComisionRequest comisionDto);

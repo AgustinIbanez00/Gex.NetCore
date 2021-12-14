@@ -13,6 +13,5 @@ public interface IExamenRepository
     Task<bool> DeleteExamenAsync(Examen Examen);
     Task<bool> DeleteExamenAsync(long id);
     Task<bool> UpdateExamenAsync(Examen Examen);
-
     Task<bool> Save();
 }
