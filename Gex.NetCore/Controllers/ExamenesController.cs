@@ -9,6 +9,7 @@ using Gex.Extensions.Response;
 using Gex.ViewModels.Response;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Claims;
 
 namespace Gex.Controllers;
 
@@ -108,7 +109,11 @@ public class ExamenController : ControllerBase
     [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<ActionResult<GexResult<ExamenResponse>>> RendirExamen([FromBody] RendirExamenRequest request)
     {
-        var examen = await _examenService.RendirExamenAsync(request);
+        var currentClaim = ((ClaimsIdentity)User.Identity).FindFirst(ClaimTypes.NameIdentifier);
+        if (currentClaim == null)
+            return BadRequest(GexResponse.Error<UsuarioResponse>("El token actual es inválido o contiene información errónea."));
+
+        var examen = await _examenService.RendirExamenAsync(request, currentClaim.Value);
 
         if (!examen.Success)
             return StatusCode(ResponseHelper.GetHttpError(examen.ErrorCode), examen);

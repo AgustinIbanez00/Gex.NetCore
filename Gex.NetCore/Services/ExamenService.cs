@@ -24,6 +24,8 @@ public class ExamenService : IExamenService
     private readonly IMesaExamenRepository _mesaExamenRepository;
     private readonly IPreguntaRepository _preguntaRepository;
     private readonly IRespuestaRepository _respuestaRepository;
+    private readonly IInscripcionMesaRepository _inscripcionMesaRepository;
+    private readonly IUsuarioRepository _usuarioRepository;
 
     public ExamenService
     (
@@ -32,7 +34,9 @@ public class ExamenService : IExamenService
         IMateriaRepository materiaRepository,
         IMesaExamenRepository mesaExamenRepository,
         IPreguntaRepository preguntaRepository,
-        IRespuestaRepository respuestaRepository
+        IRespuestaRepository respuestaRepository,
+        IInscripcionMesaRepository inscripcionMesaRepository,
+        IUsuarioRepository usuarioRepository
     )
     {
         _mapper = mapper;
@@ -41,6 +45,8 @@ public class ExamenService : IExamenService
         _mesaExamenRepository = mesaExamenRepository;
         _preguntaRepository = preguntaRepository;
         _respuestaRepository = respuestaRepository;
+        _inscripcionMesaRepository = inscripcionMesaRepository;
+        _usuarioRepository = usuarioRepository;
     }
 
     public async Task<GexResult<ExamenResponse>> CreateExamenAsync(ExamenRequest examenDto)
@@ -129,12 +135,11 @@ public class ExamenService : IExamenService
         }
     }
 
-    public async Task<GexResult<ExamenResponse>> RendirExamenAsync(RendirExamenRequest request)
+    public async Task<GexResult<ExamenResponse>> RendirExamenAsync(RendirExamenRequest request, string email)
     {
-        
         try
         {
-            /*
+            
             var mesaExamen = await _mesaExamenRepository.GetMesaExamenAsync(request.MesaExamenId);
             if (mesaExamen == null)
                 return Error<MesaExamen, ExamenResponse>(GexErrorMessage.NotFound);
@@ -142,46 +147,71 @@ public class ExamenService : IExamenService
             bool esperaProfesor = false;
             int preguntasCorrectas = 0;
 
-            foreach (var preguntaRequest in request.Preguntas)
+            var preguntasExamen = await _preguntaRepository.GetPreguntasByExamenIdAsync(mesaExamen.Examen.Id);
+
+            if(preguntasExamen.Count != request.Preguntas.Length)
+                return Error<ExamenResponse>("No coinciden la cantidad de preguntas con la del exámen.");
+
+            foreach (var pregunta in preguntasExamen)
             {
-                var pregunta = await _preguntaRepository.GetPreguntaAsync(preguntaRequest.PreguntaId);
-                if (pregunta == null)
-                    return Error<Pregunta, ExamenResponse>(GexErrorMessage.NotFound);
-
-                if(pregunta.Tipo == PreguntaTipo.Texto)
+                foreach (var preguntaRequest in request.Preguntas)
                 {
-                    esperaProfesor = true;
-                    continue;
-                }
+                    if(pregunta.Id != preguntaRequest.PreguntaId)
+                        return Error<ExamenResponse>("Una pregunta no está vinculada en este exámen.");
 
-                foreach (var respuesta in pregunta.Respuestas)
-                {
-                    foreach (var respuestaRequest in preguntaRequest.Respuestas)
+                    if (pregunta.Tipo == PreguntaTipo.Texto)
                     {
-                        if (respuesta.PreguntaId != pregunta.Id)
-                            return Error<ExamenResponse>("Una respuesta no está vinculada con la pregunta.");
+                        esperaProfesor = true;
+                        continue;
+                    }
 
-                        if (respuesta.Id != respuestaRequest.Id)
-                            return Error<ExamenResponse>("Las respuestas no coinciden con su id.");
-
-                        if(pregunta.Tipo == PreguntaTipo.VerdaderoOFalso)
+                    foreach (var respuesta in pregunta.Respuestas)
+                    {
+                        int respuestasCorrectas = 0;
+                        foreach (var respuestaRequest in preguntaRequest.Respuestas)
                         {
-                            if(respuesta.Correcto = respuestaRequest.Correcto)
-                            {
+                            if (respuesta.PreguntaId != pregunta.Id)
+                                return Error<ExamenResponse>("Una respuesta no está vinculada con la pregunta.");
 
+                            if (respuesta.Id != respuestaRequest.Id)
+                                return Error<ExamenResponse>("Las respuestas no coinciden con su id.");
+
+                            switch (pregunta.Tipo)
+                            {
+                                case PreguntaTipo.VerdaderoOFalso:
+                                    if (respuesta.Correcto = respuestaRequest.Correcto)
+                                        respuestasCorrectas++;
+                                    break;
+                                case PreguntaTipo.MultipleChoise:
+                                    if (respuesta.Correcto = respuestaRequest.Correcto)
+                                        respuestasCorrectas++;
+                                    break;
+                                case PreguntaTipo.SeleccionMultiple:
+                                    if (respuesta.Correcto = respuestaRequest.Correcto)
+                                        respuestasCorrectas++;
+                                    break;
+                                default:
+                                    break;
                             }
+                        }
+                        if (respuestasCorrectas >= pregunta.Respuestas.Count)
+                        {
+                            preguntasCorrectas++;
                         }
                     }
                 }
-
-
-
-
-
             }
 
-            */
-            return Error<Examen, ExamenResponse>(GexErrorMessage.Generic, "");
+            if (preguntasCorrectas >= preguntasExamen.Count)
+            {
+                var usuario = await _usuarioRepository.GetUsuarioByEmailAsync(email);
+
+                //var inscripcionExamen = await _inscripcionMesaRepository.GetInscripcionMesaAsync();
+            }
+            if(esperaProfesor)
+                Ok<ExamenResponse>(null, "El exámen se envió correctamente. Tendrá los resultados en breve.");
+
+            return Ok<ExamenResponse>();
         }
         catch (Exception ex)
         {
