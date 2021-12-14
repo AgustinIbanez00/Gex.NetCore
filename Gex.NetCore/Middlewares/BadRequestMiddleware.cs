@@ -15,7 +15,7 @@ public static class BadRequestMiddleware
             {
                 var modelState = actionContext.ModelState;
 
-                return new BadRequestObjectResult(new GexResult<object>
+                return new OkObjectResult(new GexResult<object>
                 {
                     Data = null,
                     ErrorMessages = actionContext.ModelState
@@ -25,7 +25,7 @@ public static class BadRequestMiddleware
                     kvp => kvp.Value.Errors.Select(e => e.ErrorMessage).ToArray()
                 ),
                     Success = false,
-                    Message = "Se encontraron uno o más errores."
+                    Message = "No se pudo realizar la operación."
                 }); ;
             };
         });

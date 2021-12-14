@@ -8,7 +8,7 @@ public static class ResponseHelper
         return gexError switch
         {
             GexErrorMessage.Generic or GexErrorMessage.CouldNotDelete or GexErrorMessage.CouldNotDelete or GexErrorMessage.CouldNotUpdate => StatusCodes.Status500InternalServerError,
-            _ => StatusCodes.Status400BadRequest
+            _ => StatusCodes.Status200OK
         };
     }
 }
