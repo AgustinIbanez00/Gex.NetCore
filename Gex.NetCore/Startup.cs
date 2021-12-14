@@ -65,7 +65,7 @@ public class Startup
         services.AddScoped<IMesaExamenService, MesaExamenService>();
         services.AddScoped<IPreguntaService, PreguntaService>();
         services.AddScoped<IRespuestaService, RespuestaService>();
-        services.AddScoped<IUsuariosService, UsuarioService>();
+        services.AddScoped<IUsuarioService, UsuarioService>();
 
         services.AddCors();
 

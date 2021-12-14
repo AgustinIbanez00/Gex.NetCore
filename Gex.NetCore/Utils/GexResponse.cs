@@ -108,6 +108,18 @@ public static class GexResponse
         };
     }
 
+    public static GexResult<TResult> Error<TResult>(string message) where TResult : class
+    {
+        return new GexResult<TResult>
+        {
+            ErrorCode = GexErrorMessage.GenericValidation,
+            Data = default(TResult),
+            Success = false,
+            Message = message,
+            ErrorMessages = new Dictionary<string, string[]>()
+        };
+    }
+
     private static GexResponseOptions Options<TEntity>()
     {
         var options = new GexResponseOptions()

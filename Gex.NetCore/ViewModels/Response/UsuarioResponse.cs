@@ -12,4 +12,5 @@ public class UsuarioResponse
     public string Email { get; set; }
 
     public UsuarioTipo Tipo { get; set; }
+
 }

@@ -1,8 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Gex.Models.Enums;
 
 namespace Gex.ViewModels.Request;
 public class RegistroRequest
 {
+    [Required, Display(Name = "nombre de usuario"), StringLength(100, MinimumLength = 3)]
+    public string UserName { get; set; }
+
     [Required, Display(Name = "correo electrónico"), EmailAddress]    
     public string Email { get; set; }
 
@@ -18,6 +22,11 @@ public class RegistroRequest
     [Required, Display(Name = "apellido"), StringLength(100)]
     public string LastName { get; set; }
 
-    [Required, Display(Name = "ubicación"), StringLength(150)]
+    [Display(Name = "ubicación"), StringLength(150)]
     public string Location { get; set; }
+    [Required, Display(Name = "dni"), StringLength(150)]
+    public string Dni { get; set; }
+
+    [Display(Name = "rol")]
+    public UsuarioTipo Tipo { get; set; } = UsuarioTipo.Alumno;
 }

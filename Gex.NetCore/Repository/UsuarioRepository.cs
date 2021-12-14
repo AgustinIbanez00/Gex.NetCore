@@ -1,5 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Gex.Models;
+using Gex.Models.Enums;
 using Gex.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,7 +27,20 @@ public class UsuarioRepository : IUsuarioRepository
     public async Task<bool> ExistsUsuarioByEmailAsync(string email) => await _context.Usuarios.AnyAsync(u => u.Email == email);
     public async Task<bool> ExistsUsuarioByUserNameAsync(string userName) => await _context.Usuarios.AnyAsync(u => u.UserName == userName);
     public async Task<Usuario> GetUsuarioAsync(int id) => await _context.Usuarios.FindAsync(id);
+    public async Task<ICollection<Usuario>> GetUsuariosAsync() => await _context.Usuarios.ToListAsync();
     public async Task<Usuario> GetUsuarioByEmailAsync(string email) => await _context.Usuarios.FirstOrDefaultAsync(u => u.Email == email);
     public async Task<Usuario> GetUsuarioByUserNameAsync(string userName) => await _context.Usuarios.FirstOrDefaultAsync(u => u.UserName == userName);
+    public async Task<ICollection<Usuario>> GetUsuariosByTipoAsync(UsuarioTipo tipo) => await _context.Usuarios.Where(u => u.Tipo == tipo).ToListAsync();
     public async Task<bool> Save() => await _context.SaveChangesAsync() >= 0;
+
+    public async Task<bool> LockUsuarioAsync(int id)
+    {
+        Usuario usuario = await GetUsuarioAsync(id);
+        if (usuario == null)
+            return false;
+
+        usuario.LockoutEnabled = true;
+
+        return await Save();
+    }
 }
