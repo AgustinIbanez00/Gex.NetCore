@@ -15,11 +15,11 @@ namespace Gex.Controllers;
 [Route("api/[controller]")]
 [Authorize]
 [ApiController]
-public class InscripcionMesaController : ControllerBase
+public class InscripcionController : ControllerBase
 {
     private readonly IInscripcionMesaService _inscripcionMesaService;
 
-    public InscripcionMesaController(IInscripcionMesaService service)
+    public InscripcionController(IInscripcionMesaService service)
     {
         _inscripcionMesaService = service;
     }
