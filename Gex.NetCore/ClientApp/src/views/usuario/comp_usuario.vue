@@ -1,5 +1,5 @@
 <template>
-	<v-app class="light-blue">
+	<v-app id="fondo">
 		<!-- TABLA MESAS -->
 		<v-expand-transition>
 			<v-data-table v-show="route == 'listar_usuario'" :headers="headers" :items="usuarios" :items-per-page="5" class="elevation-3 px-10 mx-15 my-3">
@@ -85,20 +85,6 @@
 		computed: {
 		},
 		methods: {
-			cargar_tabla: function(){
-				var vm = this;
-				axios.get('http://127.0.0.1:5000/api/Usuario', {
-					headers: {
-						'Content-Type': 'application/json',
-						'Authorization': `Bearer ${window.$cookies.get("gex_session")}`
-					}
-				}).then(res => {
-					vm.usuarios = res.data.data;
-				}).catch(err => console.log(err));
-			},
-			guardar(){
-				//
-			},
 		},
 		mounted() {
 		}

@@ -17,11 +17,5 @@
 	export default {
 		mixins: [mixin_base],
 		name: "comp_alerta",
-		data: () => ({
-		}),
-		methods: {
-		},
-		computed: {
-		},
 	}
 </script>

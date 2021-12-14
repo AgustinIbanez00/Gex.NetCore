@@ -16,7 +16,7 @@ Vue.use(VueRouter)
 const routes = [
 	{
 		path: '/login',
-		name: 'Iniciar sesión',
+		name: 'login',
 		component: Login
 	},
 

@@ -1,7 +1,9 @@
 <script>
 	import Vue from 'vue';
 	import Vuex from 'vuex';
+	import VueCookies from "vue-cookies";
 	Vue.use(Vuex);
+	Vue.use(VueCookies);
 	const store = new Vuex.Store({
 		state: {
 			estado_actual: 1,
@@ -17,6 +19,8 @@
 			alerta_ok_txt: '',
 			alerta_error: false,
 			alerta_error_txt: '',
+			usuario_actual: null,
+			url_api: 'http://localhost:5000/api',
 		},
 		mutations: {
 			estado(state, estado) {
@@ -34,22 +38,35 @@
 				edicion: 3,
 				preguntas: 4,
 			},
-			url_api: 'http://localhost:5000/api',
 		}),
 		watch:{
 			async $route(to, from) {
 				var vm = this;
-				if(to.name == `listar_${vm.tab_actual}`) vm.cargar_tabla();//LISTA
-				if (to && to.params.id && to.params != 'crear') {//EDICIÓN
-					vm.edicion(to.params.id);
+				if(to.name != 'login'){
+					if(!vm.$cookies.get('gex_session')){
+						vm.$router.push({ path: 'login' });
+						return;
+					}else{
+						await axios.get(`${vm.url_api}/usuario/me`, vm.axios_headers)
+						.then( res => {
+							vm.usuario = res.data.data;
+							if(to.name == `listar_${vm.tab_actual}`) vm.cargar_tabla();//LISTA
+							if (to && to.params.id && to.params != 'crear') {//EDICIÓN
+								vm.edicion(to.params.id);
+							}
+						}).catch( err => {
+							vm.usuario = null;
+							if(vm.route != 'login') vm.$router.push({ path: 'login' });
+						});
+					}
 				}
-			}
+			},
 		},
 		methods:{
 			...Vuex.mapMutations(['estado']),
 			guardar(listar = false){
 				var vm = this;
-				let f_guardar = res => {
+				var f_guardar = res => {
 					if(res.data.success){
 						vm.alerta_ok_txt = res.data.message;
 						vm.alerta_ok = true
@@ -60,8 +77,7 @@
 						if(vm.id != vm[vm.tab_actual].id) vm.$router.push(`/${vm.tab_actual}/${vm[vm.tab_actual].id}`);
 					}
 				}
-				let f_error = err =>{
-					console.log(err);
+				var f_error = err =>{
 					vm.alerta_error_txt = err.response.data.message;
 					vm.alerta_error = true;
 				}
@@ -97,7 +113,6 @@
 			},
 			cargar_tabla(){
 				var vm = this;
-				console.log(vm.$route.name )
 				if(vm.$route.name != `listar_${vm.tab_actual}`) return;
 				vm.cargando_lista = true;
 				axios.get(`${vm.url_api}/${vm.tab_actual}`, vm.axios_headers).then(res => {
@@ -159,7 +174,15 @@
 			},
 		},
 		computed:{
-			...Vuex.mapState(['estado_actual', 'id','titulo_txt','eliminar_txt','lista','tema_pregunta','alerta_error','alerta_error_txt','alerta_ok','alerta_ok_txt']),
+			...Vuex.mapState(['estado_actual', 'id','titulo_txt','eliminar_txt','lista','tema_pregunta','alerta_error','alerta_error_txt','alerta_ok','alerta_ok_txt','usuario_actual','url_api']),
+			url_api:{
+				get: function () {return this.$store.state.url_api;},
+				set: function (val) {this.$store.state.url_api = val;}
+			},
+			usuario_actual:{
+				get: function () {return this.$store.state.usuario_actual;},
+				set: function (val) {this.$store.state.usuario_actual = val;}
+			},
 			estado_actual:{
 				get: function () {return this.$store.state.estado_actual;},
 				set: function (val) {this.$store.state.estado_actual = val;}
@@ -206,7 +229,13 @@
 			},
 			alerta_error:{
 					get: function () {return this.$store.state.alerta_error;},
-					set: function (val) {this.$store.state.alerta_error = val;}
+					set: function (val) {
+						var vm = this;
+						var x = 0;
+						if(!vm.alerta_error) x = val === 1 ? true : 1;
+						else x = val === 0 ? false : 0;
+						vm.$store.state.alerta_error = x;
+					}
 				},
 			alerta_error_txt:{
 				get: function () {return this.$store.state.alerta_error_txt;},
@@ -215,6 +244,10 @@
 			id(){
 				var vm = this;
 				return vm.$route.params.id;
+			},
+			token(){
+				var vm = this;
+				return vm.$cookies.get('gex_session');
 			},
 			pregunta_id(){
 				var vm = this;
@@ -229,10 +262,11 @@
 				return vm.$route.path.split('/')[1];
 			},
 			axios_headers(){
+				var vm = this;
 				return {
 					headers: {
 						'Content-Type': 'application/json',
-						'Authorization': `Bearer ${window.$cookies.get("gex_session")}`
+						'Authorization': `Bearer ${vm.token}`
 					}
 				}
 			},
@@ -282,12 +316,38 @@
 				return res;
 			},
 		},
-		mounted(){
+		async mounted(){
 			var vm = this;
-			switch(vm.route){
-				case `editar_${vm.tab_actual}`: vm.edicion(vm.id); break;
-				case `listar_${vm.tab_actual}`: vm.cargar_tabla(); break;
+			if(vm.route != 'login'){
+				if(!vm.$cookies.get('gex_session')){
+					vm.$router.push({ path: 'login' });
+					return;
+				}else{
+					await axios.get(`${vm.url_api}/usuario/me`, vm.axios_headers)
+					.then( res => {
+							vm.usuario = res.data.data;
+							switch(vm.route){
+								case `editar_${vm.tab_actual}`: vm.edicion(vm.id); break;
+								case `listar_${vm.tab_actual}`: vm.cargar_tabla(); break;
+							}
+						}
+					).catch( err => {
+							vm.usuario = null;
+							if(vm.route != 'login') vm.$router.push({ path: 'login' });
+						}
+					);
+				}
 			}
+			/*else{
+				await axios.get(`${vm.url_api}/usuario/me`, vm.axios_headers)
+				.then(res =>{
+					vm.usuario = res.data.data;
+				})
+				.catch(err => {
+					if(vm.route != 'login') vm.$router.push({ path: 'login' });
+				});
+			} */
+
 		},
 	}
 	export default mixin_base;

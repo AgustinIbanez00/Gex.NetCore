@@ -1,5 +1,5 @@
 <template>
-	<v-app class="light-blue">
+	<v-app id="fondo">
 		<!-- TABLA MATERIAS -->
 		<v-expand-transition>
 			<v-data-table :ref="`tabla_${tab_actual}`" v-show="route == 'listar_materia'" :headers="headers" :items="lista" :items-per-page="5" class="elevation-3 px-10 mx-15 my-3" :loading="cargando_lista" :loading-text="`Cargando ${elementos}`">
@@ -72,12 +72,5 @@
 			],
 
 		}),
-		computed: {
-		},
-		methods: {
-		},
-		async mounted() {
-			var vm = this;
-		}
 	};
 </script>

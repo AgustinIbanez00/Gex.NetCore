@@ -1,5 +1,5 @@
 <template>
-	<v-app class="light-blue">
+	<v-app id="fondo">
 		<!-- TABLA MESAS -->
 		<v-expand-transition>
 			<v-data-table v-show="route == 'listar_mesa'" :headers="headers" :items="mesas" :items-per-page="5" class="elevation-3 px-10 mx-15 my-3">
