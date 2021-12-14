@@ -24,6 +24,11 @@ public class AutoMapperProfiles : Profile
         CreateMap<Respuesta, RespuestaResponse>().ReverseMap();
         CreateMap<RespuestaBorrableRequest, RespuestaResponse>().ReverseMap();
         CreateMap<Usuario, RegistroRequest>().ReverseMap();
-        CreateMap<Usuario, UsuarioResponse>().ReverseMap();
+        CreateMap<Usuario, UsuarioResponse>()
+            .ForMember(o => o.Nombre, b => b.MapFrom(z => z.FirstName))
+            .ForMember(o => o.Apellido, b => b.MapFrom(z => z.LastName))
+            .ReverseMap();
+        CreateMap<InscripcionMesa, InscripcionMesaRequest>().ReverseMap();
+        CreateMap<InscripcionMesa, InscripcionMesaResponse>().ReverseMap();
     }
 }

@@ -29,10 +29,10 @@ public partial class MesaExamen : Auditory
     /// <summary>
     /// Navégación de exámen.
     /// </summary>
-    public long ExamenId { get; set; }
+    public Examen Examen { get; set; }
 
     /// <summary>
     /// Navegación de profesor.
     /// </summary>
-    public long ProfesorId { get; set; }
+    public Usuario Profesor { get; set; }
 }

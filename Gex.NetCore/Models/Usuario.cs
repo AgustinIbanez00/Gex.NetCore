@@ -11,6 +11,8 @@ public partial class Usuario : IdentityUser<int>
     public string Salt { get; set; }
     public string RememberToken { get; set; }
     public string ProfilePhotoPath { get; set; }
+    public string FirstName { get; set; }
     public string LastName { get; set; }
     public UsuarioTipo Tipo { get; set; }
+    public DateTime BirthDate { get; set; }
 }

@@ -58,6 +58,7 @@ public class Startup
         services.AddScoped<IPreguntaRepository, PreguntaRepository>();
         services.AddScoped<IRespuestaRepository, RespuestaRepository>();
         services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+        services.AddScoped<IInscripcionMesaRepository, InscripcionMesaRepository>();
         /* INYECCION DE SERVICIOS */
         services.AddScoped<IComisionService, ComisionService>();
         services.AddScoped<IExamenService, ExamenService>();
@@ -66,6 +67,7 @@ public class Startup
         services.AddScoped<IPreguntaService, PreguntaService>();
         services.AddScoped<IRespuestaService, RespuestaService>();
         services.AddScoped<IUsuarioService, UsuarioService>();
+        services.AddScoped<IInscripcionMesaService, InscripcionMesaService>();
 
         services.AddCors();
 

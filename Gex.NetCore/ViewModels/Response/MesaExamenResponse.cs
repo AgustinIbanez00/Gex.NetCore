@@ -5,6 +5,6 @@ public class MesaExamenResponse
     public DateTime? Fecha { get; set; }
     public bool MostrarRespuestas { get; set; }
     public int Duracion { get; set; }
-    public long ExamenId { get; set; }
-    public int ProfesorId { get; set; }
+    public ExamenResponse Examen { get; set; }
+    public UsuarioResponse Profesor { get; set; }
 }

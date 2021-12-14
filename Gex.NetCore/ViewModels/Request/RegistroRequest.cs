@@ -4,7 +4,7 @@ using Gex.Models.Enums;
 namespace Gex.ViewModels.Request;
 public class RegistroRequest
 {
-    [Required, Display(Name = "nombre de usuario"), StringLength(100, MinimumLength = 3)]
+    [Required, Display(Name = "nombre de usuario"), StringLength(100, MinimumLength = 3), RegularExpression("^[A-Za-z][A-Za-z0-9_]{7,29}$")]
     public string UserName { get; set; }
 
     [Required, Display(Name = "correo electrónico"), EmailAddress]    
@@ -29,4 +29,7 @@ public class RegistroRequest
 
     [Display(Name = "rol")]
     public UsuarioTipo Tipo { get; set; } = UsuarioTipo.Alumno;
+
+    [Required, Display(Name = "fecha de nacimiento"), DataType(DataType.Date)]
+    public DateTime FechaNacimiento { get; set; }
 }

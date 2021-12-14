@@ -13,7 +13,7 @@ public partial class GexContext : DbContext
     public virtual DbSet<Comision> Comisiones { get; set; }
     public virtual DbSet<Cursada> Cursadas { get; set; }
     public virtual DbSet<Examen> Examenes { get; set; }
-    public virtual DbSet<InscripcionMesas> InscripcionesMesas { get; set; }
+    public virtual DbSet<InscripcionMesa> InscripcionesMesas { get; set; }
     public virtual DbSet<InscripcionComision> InscripcionesComisiones { get; set; }
     public virtual DbSet<Materia> Materias { get; set; }
     public virtual DbSet<MesaExamen> MesasExamen { get; set; }

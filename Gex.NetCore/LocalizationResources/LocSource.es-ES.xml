@@ -227,4 +227,29 @@
     <value>correcto</value>
     <comment>Created by XLocalizer</comment>
   </data>
+  <data isActive="false">
+    <key>nombre de usuario</key>
+    <value>nombre de usuario</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
+  <data isActive="false">
+    <key>dni</key>
+    <value>dni</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
+  <data isActive="false">
+    <key>fecha de nacimiento</key>
+    <value>fecha de nacimiento</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
+  <data isActive="false">
+    <key>condición</key>
+    <value>condición</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
+  <data isActive="false">
+    <key>alumno</key>
+    <value>alumno</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
 </root>

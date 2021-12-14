@@ -41,8 +41,13 @@ public class MesaExamenService : IMesaExamenService
             if(!await _examenRepository.ExistsExamenAsync(mesaExamenDto.ExamenId))
                 return KeyError<Examen, MesaExamenResponse>(nameof(mesaExamenDto.ExamenId), GexErrorMessage.NotFound);
 
-            if (!await _usuarioRepository.ExistsUsuarioAsync(mesaExamenDto.ProfesorId))
+            var profesor = await _usuarioRepository.GetUsuarioAsync(mesaExamenDto.ProfesorId);
+
+            if (profesor == null)
                 return KeyError<Usuario, MesaExamenResponse>(nameof(mesaExamenDto.ProfesorId), GexErrorMessage.NotFound);
+
+            if (profesor.Tipo != UsuarioTipo.Profesor)
+                return KeyError<MesaExamenResponse>(nameof(mesaExamenDto.ProfesorId), "Sólo se pueden asignar profesores a una mesa de exámen.");
 
             var mesaExamen = _mapper.Map<MesaExamen>(mesaExamenDto);
 
@@ -102,15 +107,15 @@ public class MesaExamenService : IMesaExamenService
     {
         try
         {
-            var mesaExamens = await _mesaExamenRepository.GetMesasExamenAsync();
+            var mesasExamen = await _mesaExamenRepository.GetMesasExamenAsync();
 
-            var mesaExamensDto = new List<MesaExamenResponse>();
+            var mesasExamenDto = new List<MesaExamenResponse>();
 
-            foreach (var MesaExamen in mesaExamens)
+            foreach (var MesaExamen in mesasExamen)
             {
-                mesaExamensDto.Add(_mapper.Map<MesaExamenResponse>(MesaExamen));
+                mesasExamenDto.Add(_mapper.Map<MesaExamenResponse>(MesaExamen));
             }
-            return Ok<ICollection<MesaExamenResponse>>(mesaExamensDto);
+            return Ok<ICollection<MesaExamenResponse>>(mesasExamenDto);
         }
         catch (Exception ex)
         {
@@ -130,15 +135,22 @@ public class MesaExamenService : IMesaExamenService
             if (mesaExamen == null)
                 return KeyError<MesaExamen, MesaExamenResponse>(nameof(mesaExamenDto.Id), GexErrorMessage.NotFound);
 
-            if (!await _examenRepository.ExistsExamenAsync(mesaExamenDto.ExamenId))
+            var examen = await _examenRepository.GetExamenAsync(mesaExamenDto.ExamenId);
+
+            if (examen == null)
                 return KeyError<Examen, MesaExamenResponse>(nameof(mesaExamenDto.ExamenId), GexErrorMessage.NotFound);
 
-            mesaExamen.ExamenId = mesaExamenDto.ExamenId;
+            mesaExamen.Examen = examen;
 
-            if (!await _usuarioRepository.ExistsUsuarioAsync(mesaExamenDto.ProfesorId))
+            var profesor = await _usuarioRepository.GetUsuarioAsync(mesaExamenDto.ProfesorId);
+            
+            if(profesor == null)
                 return KeyError<Usuario, MesaExamenResponse>(nameof(mesaExamenDto.ProfesorId), GexErrorMessage.NotFound);
 
-            mesaExamen.ProfesorId = mesaExamenDto.ProfesorId;
+            if (profesor.Tipo != UsuarioTipo.Profesor)
+                return KeyError<MesaExamenResponse>(nameof(mesaExamenDto.ProfesorId), "Sólo se pueden asignar profesores a una mesa de exámen.");
+
+            mesaExamen.Profesor = profesor;
             mesaExamen.Fecha = mesaExamenDto.Fecha;
             mesaExamen.MostrarRespuestas = mesaExamenDto.MostrarRespuestas;
             mesaExamen.Duracion = mesaExamenDto.Duracion;

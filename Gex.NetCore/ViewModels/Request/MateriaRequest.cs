@@ -13,6 +13,4 @@ public class MateriaRequest
 
     [Display(Name = "tipo")]
     public MateriaTipo Tipo { get; set; }
-
-    public ICollection<PreguntaRequest> Preguntas { get; set; }
 }

@@ -42,7 +42,6 @@ public class UsuarioService : IUsuarioService
                 return KeyError<UsuarioResponse>(nameof(request.Email), $"Esa dirección de correo electrónico {request.Email} ya existe.");
 
             var usuario = _mapper.Map<Usuario>(request);
-
             HashedPassword hashedPassword = request.Password.Hash();
             usuario.Password = hashedPassword.Password;
             usuario.Salt = hashedPassword.Salt;

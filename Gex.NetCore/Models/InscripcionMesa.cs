@@ -1,8 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Gex.Attributes;
 using Gex.Models.Enums;
 
 namespace Gex.Models;
-public partial class InscripcionMesas
+
+[GexDescription("inscripción", Humanizer.GrammaticalGender.Feminine)]
+public partial class InscripcionMesa : Auditory
 {
     [Key]
     public long Id { get; set; }
