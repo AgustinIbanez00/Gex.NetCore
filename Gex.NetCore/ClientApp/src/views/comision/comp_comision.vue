@@ -2,7 +2,7 @@
 	<v-app id="fondo">
 		<!-- TABLA MESAS -->
 		<v-expand-transition>
-			<v-data-table dark v-show="route == `listar_${tab_actual}`" :headers="headers" :items="lista" :items-per-page="5" class="elevation-3 px-10 mx-15 my-3">
+			<v-data-table dark v-show="route == `listar_${tab_actual}`" :headers="headers" :items="lista" :items-per-page="5" class="elevation-3 mx-15 my-3" :loading="enviando_ajax" :loading-text="`Cargando ${elementos}`">
 				<template v-slot:item.actions="{ item }"><!-- Acciones -->
 					<v-btn class="ma-2" text icon color="light-blue darken-1" :to="`/${tab_actual}/${item.id}`"><v-icon>mdi-pencil</v-icon></v-btn>
 					<v-btn class="ma-2" text icon color="red darken-1" @click="eliminar_id = item.id; eliminar();"><v-icon>mdi-delete</v-icon></v-btn>
@@ -39,11 +39,6 @@
 </template>
 <script>
 	import mixin_base from '../../assets/mixin_base';
-	var comision_default = {
-		id: 0,
-		nombre: '',
-		ciclo_lectivo: new Date().getFullYear(),
-	}
 	export default {
 		name: "comp_comisiones",
 		mixins: [mixin_base],

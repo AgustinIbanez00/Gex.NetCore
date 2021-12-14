@@ -2,7 +2,14 @@
 	<v-app id="fondo">
 		<!-- TABLA EXÁMENES -->
 		<v-expand-transition>
-			<v-data-table :ref="`tabla_${tab_actual}`" v-show="route == 'listar_examen'" :headers="headers" :items="lista" :items-per-page="5" class="elevation-3 px-10 mx-15 my-3" :loading="cargando_lista" :loading-text="`Cargando ${elementos}`">
+			<v-data-table dark :ref="`tabla_${tab_actual}`" v-show="route == 'listar_examen'" :headers="headers" :items="lista" :items-per-page="5" class="elevation-3 mx-15 my-3" :loading="enviando_ajax" :loading-text="`Cargando ${elementos}`">
+				<template v-slot:item.tipo="{ item }">
+					{{tipos_examen[tipos_examen.findIndex(t => t.id == item.tipo)].nombre}}
+				</template>
+				<template v-slot:item.recuperatorio="{ item }">
+					{{item.recuperatorio ? 'Si' : 'No'}}
+				</template>
+
 				<template v-slot:item.actions="{ item }">
 					<!-- Acciones -->
 					<v-btn class="ma-2" @click="rendir(item.id)" outlined dark color="green darken-1">Rendir <v-icon>mdi-book-play-outline</v-icon></v-btn>
@@ -18,7 +25,7 @@
 				<v-card-title v-else>NUEVO EXÁMEN</v-card-title>
 				<v-row>
 					<v-col cols="6"><v-select :items="materias"  :item-text="'nombre'"  :item-value="'id'" label="Materia" v-model="examen.materia_id" @change="materia_cambiada"></v-select></v-col>
-					<v-col cols="4"><v-select :items="tipos" :item-text="'nombre'" label="Tipo" :item-value="'id'" v-model="examen.tipo"></v-select></v-col>
+					<v-col cols="4"><v-select :items="tipos_examen" :item-text="'nombre'" label="Tipo" :item-value="'id'" v-model="examen.tipo"></v-select></v-col>
 					<v-col cols="2" v-show="examen.fecha"><v-select :items="modalidades" label="Modalidad"></v-select></v-col>
 				</v-row>
 				<v-row>
@@ -49,14 +56,6 @@
 <script>
 	import mixin_base from '../../assets/mixin_base';
 	//VARIABLES
-    var examen_default = {
-        id: 0,
-        tipo: 0,
-        nota_regular: 0,
-        nota_promo: 0,
-        recuperatorio: true,
-        materia_id: 0
-    }
 	export default {
 		name: "comp_examen",
 		mixins: [mixin_base],
@@ -64,14 +63,9 @@
 			isLoading: false,
 			examen: JSON.parse(JSON.stringify(examen_default)),
 			materias: ['Laboratorio de programación', 'Android', 'Redes', 'Web II'],
-            tipos: [
-                { id: 0, nombre: 'Final' },
-                { id: 1, nombre: 'Parcial' },
-                { id: 2, nombre: 'Global' },
-            ],
 			modalidades: ['Multipleflai','Normal'],
 			headers: [
-				{ text: 'Materia', align: 'start', sortable: true, value: 'materia', width: '80	%' },
+				{ text: 'Materia', align: 'start', sortable: true, value: 'materia.nombre', width: '80	%' },
 				{ text: 'Tipo', value: 'tipo', sortable: true},
 				{ text: 'Regular', value: 'nota_regular' },
 				{ text: 'Promocional', value: 'nota_promocional' },
@@ -99,23 +93,21 @@
 				var vm = this;
 				vm.$router.push(`/${vm.tab_actual}/${id}/rendir`);
 			},
-            guardar(listar) {
-                var vm = this;
-                let f_guardar = res => {
-                    if (listar) vm.listar();
+			guardar(listar) {
+				var vm = this;
+				let f_guardar = res => {
+					if (listar) vm.listar();
 					else vm.examen = res.data.data;
-					console.log("Examen ", vm.examen)
-                }
+				}
 				if (vm.examen.id) {
-                    console.table("examen body", vm.examen)
-                    axios.patch(`${vm.url_api}/examen`, vm.examen, vm.axios_headers)
-                        .then(f_guardar).catch(err => { if (err.response) console.table(err.response.data.error_messages); });
+					axios.patch(`${vm.url_api}/examen`, vm.examen, vm.axios_headers)
+					.then(f_guardar).catch(err => console.log(err));
 				} else {
-                    console.table("examen body", vm.examen)
-                    axios.post(`${vm.url_api}/examen`, vm.examen, vm.axios_headers)
-                        .then(f_guardar).catch(err => { if(err.response) console.table(err.response.data.error_messages); });
-                }
-            }
+					console.table("examen body", vm.examen)
+					axios.post(`${vm.url_api}/examen`, vm.examen, vm.axios_headers)
+					.then(f_guardar).catch(err => console.log(err));
+				}
+			}
 		},
 		async mounted() {
 			var vm = this;

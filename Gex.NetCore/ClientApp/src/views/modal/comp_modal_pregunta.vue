@@ -123,10 +123,9 @@
 				var f_guardar_respuestas = () =>{
 					if(vm.respuestas_bak.filter(r => r.id > 0).length){
 						axios.delete(`${vm.url_api}/pregunta/${vm.pregunta.id}/respuestas`, vm.axios_headers)
-						.then(res =>{ console.log("respuestas eliminadas")})
-						.catch(error => {
-							if(error.response) console.log(error.response.data);
-							return;
+						.catch(err => {
+							vm.alerta_error_txt = err.response.data.message;
+							vm.alerta_error = true;
 						});
 						vm.respuestas = [];
 					}
@@ -135,24 +134,35 @@
 							if (vm.pregunta.tipo == 1 || vm.pregunta.tipo == 2) vm.respuestas[i].correcto = i == vm.active;
 						}
 						axios.post(`${vm.url_api}/respuesta`,{pregunta_id: vm.pregunta.id, respuestas: vm.respuestas}, vm.axios_headers)
-						.then( res =>{ console.log("respuestas guardadas"); console.table(vm.respuestas)})
-						.catch(error => { if(error.response) console.table(error.response.data.error_messages); });
-					}		
+						.then( res =>{ 
+							if(res.data.success){
+								vm.alerta_ok_txt = res.data.message;
+								vm.alerta_ok = true;
+							}
+						})
+						.catch(err => {
+							vm.alerta_error_txt = err.response.data.message;
+							vm.alerta_error = true;
+						});
+					}
 				}
 				if(vm.pregunta.id){
 					axios.patch(`${vm.url_api}/pregunta`, vm.pregunta, vm.axios_headers)
 					.then(async res =>{
 						f_guardar_respuestas();
 					}).catch(err => {
-						console.log("Error al guardar la pregunta.")
-						if(error.response) console.log(error.response.data);
-					})
+						vm.alerta_error_txt = err.response.data.message;
+						vm.alerta_error = true;
+					});
 				}else{//CREACIÓN
 					axios.post(`${vm.url_api}/pregunta`, vm.pregunta, vm.axios_headers)
 					.then( res => {
 						vm.pregunta = res.data.data;
 						f_guardar_respuestas();
-					}).catch(error => {if(error.response) console.log(error.response.data);});
+					}).catch(err => {
+						vm.alerta_error_txt = err.response.data.message;
+						vm.alerta_error = true;
+					});
 				}
 				vm.modal = false;
 			},
@@ -197,14 +207,20 @@
 				await axios.get(`${vm.url_api}/pregunta/${vm.pregunta_id}`, vm.axios_headers)//CARGAR PREGUNTA
 				.then(res => {
 					vm.pregunta = res.data.data;
-				}).catch(error => { if(error.response) console.log(error.response.data); });
+				}).catch(err => {
+					vm.alerta_error_txt = err.response.data.message;
+					vm.alerta_error = true;
+				});
 				if(vm.pregunta.tipo > 0){
 					await axios.get(`${vm.url_api}/pregunta/${vm.pregunta_id}/respuestas`, vm.axios_headers)//RESPUESTAS
 					.then(res =>{
 						vm.respuestas = res.data.data.map(obj=> ({ ...obj, borrar: false }))
 						vm.respuestas_bak = JSON.parse(JSON.stringify(vm.respuestas));
 						if(vm.pregunta.tipo > 0 && vm.pregunta.tipo < 4) vm.active = vm.respuestas.findIndex(r => r.correcto);
-					}).catch(error => { if(error.response) console.log(error.response.data); });
+					}).catch(err => {
+						vm.alerta_error_txt = err.response.data.message;
+						vm.alerta_error = true;
+					});
 				}
 			}
 		},

@@ -2,7 +2,7 @@
 	<v-app id="fondo">
 		<!-- TABLA MESAS -->
 		<v-expand-transition>
-			<v-data-table v-show="route == 'listar_alumno'" :headers="headers" :items="lista" :items-per-page="5" class="elevation-3 px-10 mx-15 my-3">
+			<v-data-table  dark v-show="route == 'listar_alumno'" :headers="headers" :items="lista" :items-per-page="5" class="elevation-3 mx-15 my-3" :loading="enviando_ajax" :loading-text="`Cargando ${elementos}`">
 				<template v-slot:item.actions="{ item }"><!-- Acciones -->
 					<v-btn class="ma-2" text icon color="blue lighten-1" :to="`/${tab_actual}/${item.id}`"><v-icon>mdi-pencil</v-icon></v-btn>
 					<v-btn class="ma-2" text icon color="blue-grey darken-1" @click="eliminar_id = item.id; eliminar();"><v-icon>mdi-delete</v-icon></v-btn>

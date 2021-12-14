@@ -1,18 +1,18 @@
 <template>
 	<v-app>
+		<v-overlay :value="enviando_ajax"><v-progress-circular indeterminate size="64"></v-progress-circular></v-overlay>
 		<v-app-bar src="/vue1.jpg" dark dense fixed style="background: rgb(17,19,41); background: linear-gradient(151deg, rgba(17,19,41,1) 34%, rgba(0,0,0,1) 59%, rgba(0,0,0,1) 76%, rgba(19,24,69,1) 93%);"><!-- Menú -->
 			<template v-slot:img="{ props }">
 				<v-img v-bind="props" gradient="to top right, rgba(0,0,0,1), rgba(19,24,69,0.8)"></v-img>
 			</template>
 			<template v-if="token">
 				<v-tabs align-with-title>
-					<v-tab color="black" large to="/materia" exact>Materias</v-tab>
-					<v-tab color="black" large to="/examen" exact active-class>Exámenes</v-tab>
-					<v-tab color="black" large to="/mesa" exact>Mesas</v-tab>
-					<v-tab color="black" large to="/comision" exact>Comisiones</v-tab>
-					<v-tab color="black" large to="/alumno" exact>Alumnos</v-tab>
-					<v-tab color="black" large to="/inscripcion" exact>Inscripciones</v-tab>
-					<v-tab color="black" large to="/usuario" exact>Contactos</v-tab>
+					<v-tab v-show="usuario_actual.tipo" color="black" large to="/materia" exact>Materias</v-tab>
+					<v-tab v-show="usuario_actual.tipo" color="black" large to="/examen" exact active-class>Exámenes</v-tab>
+					<v-tab color="black" large to="/mesaExamen" exact>Mesas de exámen</v-tab>
+					<v-tab v-show="false" color="black" large to="/comision" exact>Comisiones</v-tab>
+					<v-tab color="black" large to="/inscripcionMesa" exact>Inscripciones</v-tab>
+					<v-tab color="black" large to="/usuario" exact>Usuarios</v-tab>
 				</v-tabs>
 				<v-spacer></v-spacer>
 				<v-menu left bottom>
@@ -24,10 +24,20 @@
 					</template>
 					<v-list>
 						<v-list-item-group>
-							<v-list-item v-for="(item, i) in opciones" :key="i" link :to="item.link">
+							<v-list-item>
 								<v-list-item-content>
-									<v-list-item-title v-text="item.text"></v-list-item-title>
+									<RouterLink  :to="'usuario/mi_usuario'" style="text-decoration:none">
+										<v-list-item-title v-text="'Perfil'"></v-list-item-title>
+									</RouterLink>
 								</v-list-item-content>
+							</v-list-item>
+							<v-list-item>
+								<v-list-item-content>
+									<v-list-item-title v-text="'Cerrar sesion'" @click="cerrar_sesion"></v-list-item-title>
+								</v-list-item-content>
+								<!-- <v-list-item-content>
+									<v-list-item-title v-text="Reportes"></v-list-item-title>
+								</v-list-item-content> -->
 							</v-list-item>
 						</v-list-item-group>
 					</v-list>
@@ -67,9 +77,14 @@
 		},
 		data: () => ({
 			selectedItem: 0,
-			opciones:[{text: 'Perfil',link: 'configuracion de la persona'},{text: 'Reportes',link: 'informes'},{text:'Cerrar sesión',link:'salir'}],
+			opciones:[{text: 'Perfil',link: 'usuario/me'},{text: 'Reportes',link: 'informes'},{text:'Cerrar sesión',link:'salir'}],
 		}),
 		methods: {
+			cerrar_sesion(){
+				var vm = this;
+				vm.$cookies.set("gex_session", '');
+				vm.$router.push({name:'login'});
+			}
 		},
 		computed:{
 		},

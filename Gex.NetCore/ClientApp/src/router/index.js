@@ -5,10 +5,10 @@ import Examen from '../views/examen/comp_examen.vue'
 import ExamenPreguntas from '../views/examen/comp_examen_preguntas.vue'
 import Materia from '../views/materia/comp_materia.vue'
 import MateriaPreguntas from '../views/materia/comp_materia_preguntas.vue'
-import Mesa from '../views/mesa/comp_mesa.vue'
+import MesaExamen from '../views/mesa/comp_mesa_examen.vue'
 import Comision from '../views/comision/comp_comision.vue'
 import Alumno from '../views/alumno/comp_alumno.vue'
-import Inscripcion from '../views/inscripcion/comp_inscripcion.vue'
+import InscripcionMesa from '../views/inscripcion/comp_inscripcionMesa.vue'
 import Usuario from '../views/usuario/comp_usuario.vue'
 import ModalRendir from '../views/modal/comp_modal_rendir.vue'
 import ModalPregunta from '../views/modal/comp_modal_pregunta.vue'
@@ -19,7 +19,6 @@ const routes = [
 		name: 'login',
 		component: Login
 	},
-
 	//-- USUARIOS --
 	{
 		path: '/usuario',
@@ -32,6 +31,10 @@ const routes = [
 			{
 				path: 'crear',
 				name: 'crear_usuario',
+			},
+			{
+				path: 'me',
+				name: 'mi_usuario',
 			},
 		]
 	},
@@ -115,13 +118,13 @@ const routes = [
 
 	// -- INSCRIPCIONES --
 	{
-		path: '/inscripcion',
-		name: 'listar_inscripcion',
-		component: Inscripcion,
+		path: '/inscripcionMesa',
+		name: 'listar_inscripcionMesa',
+		component: InscripcionMesa,
 		children: [
 			{
 				path: 'crear',
-				name: 'crear_inscripcion',
+				name: 'crear_inscripcionMesa',
 			},
 		]
 	},
@@ -129,13 +132,13 @@ const routes = [
 
 	//-- MESAS --
 	{
-		path: '/mesa/',
-		name: 'listar_mesa',
-		component: Mesa,
+		path: '/mesaExamen/',
+		name: 'listar_mesaExamen',
+		component: MesaExamen,
 		children: [
 			{
 				path: 'crear',
-				name: 'crear_mesa',
+				name: 'crear_mesaExamen',
 			},
 		]
 	},
@@ -143,7 +146,7 @@ const routes = [
 	{
 		path: '/mesa/:id',
 		name: 'editar_mesa',
-		component: Mesa,
+		component: MesaExamen,
 	},
 	//-- /MESAS --
 

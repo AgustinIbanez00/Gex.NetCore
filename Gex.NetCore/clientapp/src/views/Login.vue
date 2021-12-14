@@ -2,7 +2,7 @@
 	<v-app id="fondo">
 		<v-expand-transition>
 			<v-card dark class="mx-15 mt-8 text-center pa-5">
-				<v-card-title>Ingreso de usuarios</v-card-title>
+				<v-card-title>Login</v-card-title>
 				<v-text-field v-model="email" :error-messages="errors.email" name="username" label="Correo electrónico" required
 				></v-text-field>
 				<v-text-field v-model="password" type="password" name="password" :error-messages="errors.password" label="Contraseña" required v-on:keyup.enter="login"
@@ -38,8 +38,7 @@ export default {
 				.then((res) => {
 					if (res.status == 200) {
 						vm.$cookies.set("gex_session", res.data.data.token);
-						vm.$router.push({name:`listar_materia`});
-						//vm.$router.push(`usuario/me`);
+						vm.$router.push({name:`mi_usuario`});
 					}
 				})
 				.catch((error) => {

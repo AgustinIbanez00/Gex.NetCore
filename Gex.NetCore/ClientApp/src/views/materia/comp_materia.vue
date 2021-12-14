@@ -2,7 +2,7 @@
 	<v-app id="fondo">
 		<!-- TABLA MATERIAS -->
 		<v-expand-transition>
-			<v-data-table :ref="`tabla_${tab_actual}`" v-show="route == 'listar_materia'" :headers="headers" :items="lista" :items-per-page="5" class="elevation-3 px-10 mx-15 my-3" :loading="cargando_lista" :loading-text="`Cargando ${elementos}`">
+			<v-data-table  dark :ref="`tabla_${tab_actual}`" v-show="route == 'listar_materia'" :headers="headers" :items="lista" :items-per-page="5" class="elevation-3 mx-15 my-3" :loading="enviando_ajax" :loading-text="`Cargando ${elementos}`">
 				<template v-slot:item.tipo="{ item }">{{tipos_materias[item.tipo].nombre}}</template>
 				<template v-slot:item.actions="{ item }"><!-- Acciones -->
 					<v-btn class="ma-2" text icon color="blue lighten-1" :to="`/${tab_actual}/${item.id}`"><v-icon>mdi-pencil</v-icon></v-btn>
@@ -37,11 +37,7 @@
 </template>
 <script>
 	import mixin_base from '../../assets/mixin_base';
-	var materia_default = {
-		id: 0,
-		nombre: '',
-		tipo: '',
-	};
+
 	export default {
 		name: "comp_materias",
 		mixins: [mixin_base],

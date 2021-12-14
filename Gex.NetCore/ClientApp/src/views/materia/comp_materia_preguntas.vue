@@ -123,12 +123,12 @@ import axios from 'axios';
 				.then(res => {
 					vm.cargar_preguntas();
 				})
-				.catch(error => {console.log(error);});
+				.catch(error => console.log(error));
 			},
 			crear_pregunta(tema){
 				var vm = this;
 				vm.tema_pregunta = tema;
-				vm.$router.push({path: `preguntas/crear`});
+				vm.$router.push({name: `preguntas/crear`});
 			},
 			agregar_tema(){
 				var vm = this;
