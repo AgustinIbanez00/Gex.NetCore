@@ -1,5 +1,5 @@
 <template>
-	<v-app class="light-blue">
+	<v-app id="fondo">
 		<!-- ABM EXÁMENES -->
 		<v-expand-transition  class="justify-center">
 			<v-card v-show="route == 'materia_preguntas' || route == 'editar_materia_pregunta'" class="mx-15 mt-8 text-center">

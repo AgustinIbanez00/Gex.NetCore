@@ -1,5 +1,5 @@
 <template>
-	<v-app class="light-blue">
+	<v-app id="fondo">
 		<!-- TABLA EXÁMENES -->
 		<v-expand-transition>
 			<v-data-table :ref="`tabla_${tab_actual}`" v-show="route == 'listar_examen'" :headers="headers" :items="lista" :items-per-page="5" class="elevation-3 px-10 mx-15 my-3" :loading="cargando_lista" :loading-text="`Cargando ${elementos}`">
@@ -48,7 +48,6 @@
 </template>
 <script>
 	import mixin_base from '../../assets/mixin_base';
-  import VueCookies  from 'vue-cookies';
 	//VARIABLES
     var examen_default = {
         id: 0,
