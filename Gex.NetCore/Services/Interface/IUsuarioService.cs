@@ -9,6 +9,7 @@ namespace Gex.Services.Interface;
 public interface IUsuarioService
 {
     Task<GexResult<ICollection<UsuarioResponse>>> GetUsuariosAsync();
+    Task<GexResult<ICollection<UsuarioResponse>>> GetUsuariosAsync(string email);
     Task<GexResult<ICollection<UsuarioResponse>>> GetUsuariosByTipoAsync(UsuarioTipo tipo);
     Task<GexResult<UsuarioResponse>> GetUsuarioAsync(int id);
     Task<GexResult<UsuarioResponse>> GetUsuarioByEmailAsync(string email);

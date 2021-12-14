@@ -44,7 +44,7 @@ public class ExamenRepository : IExamenRepository
         return await Save();
     }
 
-    public async Task<bool> ExistsExamenAsync(long id) => await GetExamenAsync(id) != null;
+    public async Task<bool> ExistsExamenAsync(long id) => await _context.Examenes.AnyAsync(u => u.Estado == Estado.NORMAL && u.Id == id);
 
     public async Task<Examen> GetExamenAsync(long id)
     {

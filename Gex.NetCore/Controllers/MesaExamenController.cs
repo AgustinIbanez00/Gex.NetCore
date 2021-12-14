@@ -27,9 +27,9 @@ public class MesaExamenController : ControllerBase
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResult<ICollection<MesaExamenResponse>>))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [Authorize(Roles = nameof(UsuarioTipo.Alumno))]
     public async Task<ActionResult<GexResult<ICollection<MesaExamenResponse>>>> GetAll()
     {
+
         var mesasDeExamenes = await _service.GetMesasExamenesAsync();
 
         if (!mesasDeExamenes.Success)

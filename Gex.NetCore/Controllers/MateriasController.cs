@@ -13,7 +13,7 @@ using System.Collections.Generic;
 namespace Gex.Controllers;
 
 [Route("api/[controller]")]
-[Authorize]
+[Authorize("ProfesoresOnly")]
 [ApiController]
 public class MateriaController : ControllerBase
 {
@@ -29,7 +29,6 @@ public class MateriaController : ControllerBase
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResult<ICollection<MateriaResponse>>))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [Authorize(Roles = nameof(UsuarioTipo.Alumno))]
     public async Task<ActionResult<GexResult<ICollection<MateriaResponse>>>> GetAll()
     {
         var materias = await _materiaService.GetMateriasAsync();

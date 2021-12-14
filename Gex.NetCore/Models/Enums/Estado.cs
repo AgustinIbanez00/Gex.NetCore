@@ -12,5 +12,10 @@ public enum Estado
     /// <summary>
     /// Características similares al estado de BAJA.
     /// </summary>
-    SUSPENDIDO = -1
+    SUSPENDIDO = -1,
+
+    /// <summary>
+    /// Rendido
+    /// </summary>
+    RENDIDO = 2
 }

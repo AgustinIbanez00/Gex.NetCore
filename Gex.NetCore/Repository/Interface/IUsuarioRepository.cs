@@ -8,6 +8,7 @@ public interface IUsuarioRepository
 {
     Task<ICollection<Usuario>> GetUsuariosAsync();
     Task<Usuario> GetUsuarioAsync(int id);
+    Task<ICollection<Usuario>> GetUsuariosByEmailAsync(string userName);
     Task<Usuario> GetUsuarioByEmailAsync(string email);
     Task<Usuario> GetUsuarioByUserNameAsync(string userName);
     Task<ICollection<Usuario>> GetUsuariosByTipoAsync(UsuarioTipo tipo);

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using Gex.Attributes;
 using Humanizer;
 
@@ -15,5 +16,7 @@ public class Comision : Auditory
     [MaxLength(100)]
     public string Nombre { get; set; }
     public int CicloLectivo { get; set; }
+
+    public virtual ICollection<Usuario> Alumnos { get; set; }
 }
 

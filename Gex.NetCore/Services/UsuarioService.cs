@@ -213,4 +213,24 @@ public class UsuarioService : IUsuarioService
             return Error<Usuario, LoginResponse>(GexErrorMessage.Generic, ex.Message);
         }
     }
+
+    public async Task<GexResult<ICollection<UsuarioResponse>>> GetUsuariosAsync(string email)
+    {
+        try
+        {
+            var usuarios = await _usuarioRepository.GetUsuariosByEmailAsync(email);
+
+            var usuariosDto = new List<UsuarioResponse>();
+
+            foreach (var usuario in usuarios)
+            {
+                usuariosDto.Add(_mapper.Map<UsuarioResponse>(usuario));
+            }
+            return Ok<ICollection<UsuarioResponse>>(usuariosDto);
+        }
+        catch (Exception ex)
+        {
+            return Error<Usuario, UsuarioResponse>(GexErrorMessage.Generic, ex.Message);
+        }
+    }
 }

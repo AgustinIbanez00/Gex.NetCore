@@ -8,6 +8,7 @@ namespace Gex.Services.Interface;
 public interface IMesaExamenService
 {
     Task<GexResult<ICollection<MesaExamenResponse>>> GetMesasExamenesAsync();
+    Task<GexResult<ICollection<MesaExamenResponse>>> GetMesasExamenesByEmailAsync(string email);
     Task<GexResult<MesaExamenResponse>> GetMesaExamenAsync(long id);
     Task<GexResult<MesaExamenResponse>> CreateMesaExamenAsync(MesaExamenRequest mesaExamenDto);
     Task<GexResult<MesaExamenResponse>> UpdateMesaExamenAsync(MesaExamenRequest mesaExamenDto);

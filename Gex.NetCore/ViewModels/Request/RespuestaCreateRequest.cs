@@ -32,16 +32,3 @@ public class RespuestaBorrableRequest
     [Display(Name = "estado")]
     public bool Borrar { get; set; }
 }
-
-
-/*
-    public PreguntaTipo Tipo { get; set; }
-    public string[] Respuestas { get; set; }
-    public int[] RespuestasCorrectas { get; set; }
-
-    [GreaterThanZero]
-    public int RespuestaCorrecta { get; set; }
-
-    
-    public long PreguntaId { get; set; }
-    */

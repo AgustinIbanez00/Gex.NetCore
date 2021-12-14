@@ -13,7 +13,7 @@ using System.Collections.Generic;
 namespace Gex.Controllers;
 
 [Route("api/[controller]")]
-[Authorize]
+[Authorize("ProfesoresOnly")]
 [ApiController]
 public class ExamenController : ControllerBase
 {
@@ -99,6 +99,20 @@ public class ExamenController : ControllerBase
         if (!examen.Success)
             return StatusCode(ResponseHelper.GetHttpError(examen.ErrorCode), examen);
         return Ok(examen);
+    }
+
+    [HttpPost("rendir")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResult<ExamenResponse>))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    public async Task<ActionResult<GexResult<ExamenResponse>>> RendirExamen([FromBody] RendirExamenRequest request)
+    {
+        var examen = await _examenService.RendirExamenAsync(request);
+
+        if (!examen.Success)
+            return StatusCode(ResponseHelper.GetHttpError(examen.ErrorCode), examen);
+        return Created(nameof(Get), examen);
     }
 
 

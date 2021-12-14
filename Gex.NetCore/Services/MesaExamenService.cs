@@ -123,6 +123,20 @@ public class MesaExamenService : IMesaExamenService
         }
     }
 
+    public async Task<GexResult<ICollection<MesaExamenResponse>>> GetMesasExamenesByEmailAsync(string email)
+    {
+        try
+        {
+            var usuario = await _usuarioRepository.GetUsuarioByEmailAsync(email);
+
+            return Ok<ICollection<MesaExamenResponse>>(null);
+        }
+        catch (Exception ex)
+        {
+            return Error<MesaExamen, ICollection<MesaExamenResponse>>(GexErrorMessage.Generic, ex.Message);
+        }
+    }
+
     public async Task<GexResult<MesaExamenResponse>> UpdateMesaExamenAsync(MesaExamenRequest mesaExamenDto)
     {
         try

@@ -33,7 +33,12 @@ public class UsuarioController : ControllerBase
     [Authorize(Roles = nameof(UsuarioTipo.Administrador))]
     public async Task<ActionResult<GexResult<ICollection<UsuarioResponse>>>> GetAll()
     {
-        var usuarios = await _usuarioService.GetUsuariosAsync();
+        var currentClaim = ((ClaimsIdentity)User.Identity).FindFirst(ClaimTypes.NameIdentifier);
+
+        if (currentClaim == null)
+            return GexResponse.Error<ICollection<UsuarioResponse>>("usuario no válido.");
+
+            var usuarios = await _usuarioService.GetUsuariosAsync(currentClaim.Value);
 
         if (!usuarios.Success)
             return StatusCode(ResponseHelper.GetHttpError(usuarios.ErrorCode), usuarios);
@@ -61,7 +66,7 @@ public class UsuarioController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    [Authorize(Roles = nameof(UsuarioTipo.Administrador))]
+    [AllowAnonymous]
     public async Task<ActionResult<GexResult<UsuarioResponse>>> RegisterUsuario([FromBody] RegistroRequest usuarioDto)
     {
         var usuario = await _usuarioService.CreateUsuarioAsync(usuarioDto);

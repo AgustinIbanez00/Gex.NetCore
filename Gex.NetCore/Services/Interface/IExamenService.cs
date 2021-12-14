@@ -9,7 +9,8 @@ public interface IExamenService
 {
     Task<GexResult<ICollection<ExamenResponse>>> GetExamenesAsync();
     Task<GexResult<ExamenResponse>> GetExamenAsync(long id);
-    Task<GexResult<ExamenResponse>> CreateExamenAsync(ExamenRequest ExamenDTO);
-    Task<GexResult<ExamenResponse>> UpdateExamenAsync(ExamenRequest ExamenDTO);
+    Task<GexResult<ExamenResponse>> CreateExamenAsync(ExamenRequest request);
+    Task<GexResult<ExamenResponse>> UpdateExamenAsync(ExamenRequest request);
     Task<GexResult<ExamenResponse>> DeleteExamenAsync(long id);
+    Task<GexResult<ExamenResponse>> RendirExamenAsync(RendirExamenRequest request);
 }

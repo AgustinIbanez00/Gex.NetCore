@@ -43,4 +43,14 @@ public class UsuarioRepository : IUsuarioRepository
 
         return await Save();
     }
+
+    public async Task<ICollection<Usuario>> GetUsuariosByEmailAsync(string email)
+    {
+        var usuario = await GetUsuarioByEmailAsync(email);
+
+        if (usuario == null)
+            return null;
+
+        return await _context.Usuarios.Where(u => u.Tipo <= usuario.Tipo && u.LockoutEnabled == false).ToListAsync();
+    }
 }

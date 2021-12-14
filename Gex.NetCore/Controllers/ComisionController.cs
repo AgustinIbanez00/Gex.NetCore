@@ -10,7 +10,7 @@ using Gex.Services.Interface;
 using Gex.ViewModels.Response;
 
 namespace Gex.Controllers;
-
+/*
 [Route("api/[controller]")]
 [Authorize]
 [ApiController]
@@ -102,3 +102,4 @@ public class ComisionController : ControllerBase
 
 
 }
+*/

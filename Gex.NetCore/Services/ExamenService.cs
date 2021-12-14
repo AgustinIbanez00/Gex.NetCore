@@ -21,12 +21,26 @@ public class ExamenService : IExamenService
     private readonly IMapper _mapper;
     private readonly IExamenRepository _examenRepository;
     private readonly IMateriaRepository _materiaRepository;
+    private readonly IMesaExamenRepository _mesaExamenRepository;
+    private readonly IPreguntaRepository _preguntaRepository;
+    private readonly IRespuestaRepository _respuestaRepository;
 
-    public ExamenService(IMapper mapper, IExamenRepository examenRepository, IMateriaRepository materiaRepository)
+    public ExamenService
+    (
+        IMapper mapper,
+        IExamenRepository examenRepository,
+        IMateriaRepository materiaRepository,
+        IMesaExamenRepository mesaExamenRepository,
+        IPreguntaRepository preguntaRepository,
+        IRespuestaRepository respuestaRepository
+    )
     {
         _mapper = mapper;
         _examenRepository = examenRepository;
         _materiaRepository = materiaRepository;
+        _mesaExamenRepository = mesaExamenRepository;
+        _preguntaRepository = preguntaRepository;
+        _respuestaRepository = respuestaRepository;
     }
 
     public async Task<GexResult<ExamenResponse>> CreateExamenAsync(ExamenRequest examenDto)
@@ -112,6 +126,66 @@ public class ExamenService : IExamenService
         catch (Exception ex)
         {
             return Error<Examen, ICollection<ExamenResponse>>(GexErrorMessage.Generic, ex.Message);
+        }
+    }
+
+    public async Task<GexResult<ExamenResponse>> RendirExamenAsync(RendirExamenRequest request)
+    {
+        
+        try
+        {
+            /*
+            var mesaExamen = await _mesaExamenRepository.GetMesaExamenAsync(request.MesaExamenId);
+            if (mesaExamen == null)
+                return Error<MesaExamen, ExamenResponse>(GexErrorMessage.NotFound);
+
+            bool esperaProfesor = false;
+            int preguntasCorrectas = 0;
+
+            foreach (var preguntaRequest in request.Preguntas)
+            {
+                var pregunta = await _preguntaRepository.GetPreguntaAsync(preguntaRequest.PreguntaId);
+                if (pregunta == null)
+                    return Error<Pregunta, ExamenResponse>(GexErrorMessage.NotFound);
+
+                if(pregunta.Tipo == PreguntaTipo.Texto)
+                {
+                    esperaProfesor = true;
+                    continue;
+                }
+
+                foreach (var respuesta in pregunta.Respuestas)
+                {
+                    foreach (var respuestaRequest in preguntaRequest.Respuestas)
+                    {
+                        if (respuesta.PreguntaId != pregunta.Id)
+                            return Error<ExamenResponse>("Una respuesta no está vinculada con la pregunta.");
+
+                        if (respuesta.Id != respuestaRequest.Id)
+                            return Error<ExamenResponse>("Las respuestas no coinciden con su id.");
+
+                        if(pregunta.Tipo == PreguntaTipo.VerdaderoOFalso)
+                        {
+                            if(respuesta.Correcto = respuestaRequest.Correcto)
+                            {
+
+                            }
+                        }
+                    }
+                }
+
+
+
+
+
+            }
+
+            */
+            return Error<Examen, ExamenResponse>(GexErrorMessage.Generic, "");
+        }
+        catch (Exception ex)
+        {
+            return Error<Examen, ExamenResponse>(GexErrorMessage.Generic, ex.Message);
         }
     }
 
