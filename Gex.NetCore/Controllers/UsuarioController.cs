@@ -30,7 +30,6 @@ public class UsuarioController : ControllerBase
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResult<ICollection<UsuarioResponse>>))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [Authorize(Roles = nameof(UsuarioTipo.Administrador))]
     public async Task<ActionResult<GexResult<ICollection<UsuarioResponse>>>> GetAll()
     {
         var currentClaim = ((ClaimsIdentity)User.Identity).FindFirst(ClaimTypes.NameIdentifier);
@@ -103,7 +102,6 @@ public class UsuarioController : ControllerBase
         return Ok(usuario);
     }
 
-    [Authorize(Roles = $"{nameof(UsuarioTipo.Administrador)},{nameof(UsuarioTipo.Profesor)},{nameof(UsuarioTipo.Alumno)}")]
     [HttpGet("me")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResult<UsuarioResponse>))]
     public async Task<ActionResult<GexResult<UsuarioResponse>>> GetMe()

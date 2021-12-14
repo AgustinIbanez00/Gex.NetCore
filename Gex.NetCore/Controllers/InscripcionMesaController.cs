@@ -27,7 +27,6 @@ public class InscripcionMesaController : ControllerBase
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResult<ICollection<InscripcionMesaResponse>>))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [Authorize(Roles = nameof(UsuarioTipo.Alumno))]
     public async Task<ActionResult<GexResult<ICollection<InscripcionMesaResponse>>>> GetAll()
     {
         var inscripcionMesas = await _inscripcionMesaService.GetInscripcionMesasAsync();
