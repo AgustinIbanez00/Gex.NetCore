@@ -98,7 +98,7 @@ public class UsuarioController : ControllerBase
         return Ok(usuario);
     }
 
-    [Authorize(Roles = $"{nameof(UsuarioTipo.Administrador)},{nameof(UsuarioTipo.Profesor)},{nameof(UsuarioTipo.Alu)}")]
+    [Authorize(Roles = $"{nameof(UsuarioTipo.Administrador)},{nameof(UsuarioTipo.Profesor)},{nameof(UsuarioTipo.Alumno)}")]
     [HttpGet("me")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResult<UsuarioResponse>))]
     public async Task<ActionResult<GexResult<UsuarioResponse>>> GetMe()
