@@ -13,6 +13,10 @@
 			alerta_txt: '',
 			lista: [],
 			cargando_lista: false,
+			alerta_ok: false,
+			alerta_ok_txt: '',
+			alerta_error: false,
+			alerta_error_txt: '',
 		},
 		mutations: {
 			estado(state, estado) {
@@ -32,7 +36,7 @@
 			},
 			url_api: 'http://localhost:5000/api',
 		}),
-		watch: {
+		watch:{
 			async $route(to, from) {
 				var vm = this;
 				if(to.name == `listar_${vm.tab_actual}`) vm.cargar_tabla();//LISTA
@@ -41,8 +45,40 @@
 				}
 			}
 		},
-		methods: {
+		methods:{
 			...Vuex.mapMutations(['estado']),
+			guardar(listar = false){
+				var vm = this;
+				let f_guardar = res => {
+					if(res.data.success){
+						vm.alerta_ok_txt = res.data.message;
+						vm.alerta_ok = true
+					}
+					if(listar) vm.listar();
+					else{
+						vm[vm.tab_actual] = res.data.data;
+						if(vm.id != vm[vm.tab_actual].id) vm.$router.push(`/${vm.tab_actual}/${vm[vm.tab_actual].id}`);
+					}
+				}
+				let f_error = err =>{
+					console.log(err);
+					vm.alerta_error_txt = err.response.data.message;
+					vm.alerta_error = true;
+				}
+				if(vm[vm.tab_actual].id){
+					axios.patch(`${vm.url_api}/${vm.tab_actual}`,vm[vm.tab_actual], vm.axios_headers)
+					.then(f_guardar).catch(f_error);
+				}else{
+					axios.post(`${vm.url_api}/${vm.tab_actual}`,vm[vm.tab_actual], vm.axios_headers)
+					.then(f_guardar).catch(f_error);
+				}
+			},
+			input_numeros(evt){
+				var vm = this;
+				var code = (evt.which) ? evt.which : evt.keyCode;
+				if(code != 8 && (code<48 || code >57)) evt.preventDefault();
+			},
+
 			top(){
 				window.scroll({
 					top: 0,
@@ -65,11 +101,7 @@
 				if(vm.$route.name != `listar_${vm.tab_actual}`) return;
 				vm.cargando_lista = true;
 				axios.get(`${vm.url_api}/${vm.tab_actual}`, vm.axios_headers).then(res => {
-					switch(vm.tab_actual){
-						case 'materia': vm.lista = res.data.data; break;
-						case 'examen': vm.lista = res.data.data; break;
-					}
-					//ALERTA
+					vm.lista = res.data.data;
 				}).catch(err => console.log(err))
 				.then(() => vm.cargando_lista = false);
 			},
@@ -86,9 +118,7 @@
 			async edicion(id){
 				var vm = this;
 				await axios.get(`${vm.url_api}/${vm.tab_actual}/${id}`, vm.axios_headers).then(res => {
-					switch(vm.tab_actual){
-						case 'materia': vm.materia = res.data.data; break;
-					}
+					vm[vm.tab_actual] = res.data.data;
 				}).catch(err => console.log(err));
 				vm.top();
 			},
@@ -98,15 +128,20 @@
 					await axios.delete(`${vm.url_api}/${vm.tab_actual}?id=${vm.eliminar_id}`, vm.axios_headers)
 					.then(res => {
 						vm.lista.splice(vm.lista.findIndex(item => item.id == vm.eliminar_id), 1);
+						if(res.data.success){
+							vm.alerta_ok_txt = res.data.message;
+							vm.alerta_ok = true
+						}
 					})
-					.catch(error => {console.log(error);})
+					.catch(error => {
+						vm.alerta_error_txt = error.response.data.message;
+						vm.alerta_error = true
+					})
 					.then(() => {vm.modal_eliminar = false;});
 				}else{//ABRE EL MODAL ELIMINAR
 					await axios.get(`${vm.url_api}/${vm.tab_actual}/${vm.eliminar_id}`, vm.axios_headers)
 					.then(res => {
-						switch(vm.tab_actual){
-							case 'materia': vm.eliminar_txt = `la materia: ${res.data.data.nombre}`; break;
-						}
+						vm.eliminar_txt = `${vm.tab_actual}: ${res.data.data.nombre}`
 						vm.modal_eliminar = true;
 					}).catch(err => console.log(err));
 				}
@@ -124,7 +159,7 @@
 			},
 		},
 		computed:{
-			...Vuex.mapState(['estado_actual', 'id','titulo_txt','eliminar_txt','lista','tema_pregunta']),
+			...Vuex.mapState(['estado_actual', 'id','titulo_txt','eliminar_txt','lista','tema_pregunta','alerta_error','alerta_error_txt','alerta_ok','alerta_ok_txt']),
 			estado_actual:{
 				get: function () {return this.$store.state.estado_actual;},
 				set: function (val) {this.$store.state.estado_actual = val;}
@@ -161,6 +196,22 @@
 				get: function () {return this.$store.state.alerta_txt;},
 				set: function (val) {this.$store.state.alerta_txt = val;}
 			},
+			alerta_ok:{
+				get: function () {return this.$store.state.alerta_ok;},
+				set: function (val) {this.$store.state.alerta_ok = val;}
+			},
+			alerta_ok_txt:{
+				get: function () {return this.$store.state.alerta_ok_txt;},
+				set: function (val) {this.$store.state.alerta_ok_txt = val;}
+			},
+			alerta_error:{
+					get: function () {return this.$store.state.alerta_error;},
+					set: function (val) {this.$store.state.alerta_error = val;}
+				},
+			alerta_error_txt:{
+				get: function () {return this.$store.state.alerta_error_txt;},
+				set: function (val) {this.$store.state.alerta_error_txt = val;}
+			},
 			id(){
 				var vm = this;
 				return vm.$route.params.id;
@@ -194,7 +245,7 @@
 						case "examen": titulo = "Exámenes"; break;
 						case "materia": titulo = "Materias"; break;
 						case "mesa": titulo = "Mesas"; break;
-						case "curso": titulo = "Cursos"; break;
+						case "comision": titulo = "Comisiones"; break;
 						case "alumno": titulo = "Alumnos"; break;
 						case "inscripcion": titulo = "Inscripciones"; break;
 						case "usuario": titulo = "Usuarios"; break;
@@ -209,7 +260,7 @@
 					case 'examen': res = 'Exámenes'; break;
 					case 'materia': res = 'Materias'; break;
 					case 'mesa': res = 'Mesas'; break;
-					case 'curso': res = 'Cursos'; break;
+					case 'comision': res = 'Comisiones'; break;
 					case 'alumno': res = 'Alumnos'; break;
 					case 'inscripcion': res = 'Inscripciones'; break;
 					case 'usuario': res = 'Usuarios'; break;
@@ -223,7 +274,7 @@
 					case 'examen': res = 'Exámen'; break;
 					case 'materia': res = 'Materia'; break;
 					case 'mesa': res = 'Mesa'; break;
-					case 'curso': res = 'Curso'; break;
+					case 'comision': res = 'Comision'; break;
 					case 'alumno': res = 'Alumno'; break;
 					case 'inscripcion': res = 'Inscripción'; break;
 					case 'usuario': res = 'Usuario'; break;
@@ -231,7 +282,7 @@
 				return res;
 			},
 		},
-		mounted() {
+		mounted(){
 			var vm = this;
 			switch(vm.route){
 				case `editar_${vm.tab_actual}`: vm.edicion(vm.id); break;

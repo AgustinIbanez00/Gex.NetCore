@@ -17,7 +17,7 @@
 					{{elemento}}
 				</v-btn>
 			</RouterLink>
-			<RouterLink :to="`/${tab_actual}/${id}/preguntas`" v-show="route == `editar_${tab_actual}`">
+			<RouterLink :to="`/${tab_actual}/${id}/preguntas`" v-show="route == `editar_materia` || route == `editar_examen`">
 				<v-btn color="white" absolute bottom style="padding-left:6px; right:210px; top:65px; z-index:2; height:45px; font-size:16px;">
 					<v-icon>mdi-playlist-check</v-icon> Preguntas
 				</v-btn>

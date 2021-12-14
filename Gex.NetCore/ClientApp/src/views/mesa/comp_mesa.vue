@@ -16,7 +16,7 @@
 				<v-card-title v-else>NUEVA MESA</v-card-title>
 				<v-row>
 					<v-col cols="6"><v-select :items="examenes" label="Exámen" v-model="mesa.examen"></v-select></v-col>
-					<v-col cols="6"><v-select :items="cursos" label="Curso" v-model="mesa.curso"></v-select></v-col>
+					<v-col cols="6"><v-select :items="comisiones" label="Comision" v-model="mesa.comision"></v-select></v-col>
 					<v-col cols="6">
 						<v-menu ref="datepicker" v-model="datepicker" :close-on-content-click="false" transition="scale-transition" offset-y max-width="290px" min-width="auto">
 							<template v-slot:activator="{ on, attrs }">
@@ -48,7 +48,7 @@
 	var mesa_default = {
 		id: 1,
 		materia: '',
-		curso: '',
+		comision: '',
 		fecha: null,
 		duracion: 0
 	}
@@ -72,7 +72,7 @@
 			mesas: [],
 			materias: ['Laboratorio de programación','Matemáticas','Ingles'],
 			examenes: ['Base de datos Final','Base de datos Parcial','Base de datos Global','Laboratorio de programación A','Laboratorio de programación B','Laboratorio de programación C'],
-			cursos: ['1A','1B','1C','2A','2B','2C','3A','3B','3C']
+			comisiones: ['1A','1B','1C','2A','2B','2C','3A','3B','3C']
 		}),
 		computed: {
 		},

@@ -1,13 +1,14 @@
 <template>
-	<v-app class="light-blue">
-		<v-app-bar dark dense fixed><!-- Menú -->
-			<v-btn :outlined="tab_actual == 'materia'" large to="/materia" exact>Materias</v-btn>
-			<v-btn :outlined="tab_actual == 'examen'" large to="/examen" exact active-class>Exámenes</v-btn>
-			<v-btn :outlined="tab_actual == 'mesa'" large to="/mesa" exact>Mesas</v-btn>
-			<v-btn :outlined="tab_actual == 'curso'" large to="/curso" exact>Cursos</v-btn>
-			<v-btn :outlined="tab_actual == 'alumno'" large to="/alumno" exact>Alumnos</v-btn>
-			<v-btn :outlined="tab_actual == 'inscripcion'" large to="/inscripcion" exact>Inscripciones</v-btn>
-			<v-btn :outlined="tab_actual == 'usuario'" large to="/usuario" exact>Contactos</v-btn>
+	<v-app>
+		<v-app-bar dark dense fixed style="background: rgb(17,19,41);
+background: linear-gradient(151deg, rgba(17,19,41,1) 34%, rgba(0,0,0,1) 59%, rgba(0,0,0,1) 76%, rgba(19,24,69,1) 93%);"><!-- Menú -->
+			<v-btn :color="tab_actual == 'materia' ? 'grey darken-4':'black'" large to="/materia" exact>Materias</v-btn>
+			<v-btn :color="tab_actual == 'examen' ? 'grey darken-4':'black'" large to="/examen" exact active-class>Exámenes</v-btn>
+			<v-btn :color="tab_actual == 'mesa' ? 'grey darken-4':'black'" large to="/mesa" exact>Mesas</v-btn>
+			<v-btn :color="tab_actual == 'comision' ? 'grey darken-4':'black'" large to="/comision" exact>Comisiones</v-btn>
+			<v-btn :color="tab_actual == 'alumno' ? 'grey darken-4':'black'" large to="/alumno" exact>Alumnos</v-btn>
+			<v-btn :color="tab_actual == 'inscripcion' ? 'grey darken-4':'black'" large to="/inscripcion" exact>Inscripciones</v-btn>
+			<v-btn :color="tab_actual == 'usuario' ? 'grey darken-4':'black'" large to="/usuario" exact>Contactos</v-btn>
 			<v-spacer></v-spacer>
 			<v-menu left bottom>
 				<!-- Opciones -->
@@ -27,7 +28,7 @@
 				</v-list>
 			</v-menu>
 		</v-app-bar>
-		<v-card-title style="padding-top:16px;" class="white--text indigo darken-1 w-100 justify-center mt-10" v-bind:style="{'height': route == `listar_${tab_actual}` || route == `eliminar_${tab_actual}` ? '70px': '50px','font-size': route == `${tab_actual}_preguntas` ? '30px': '50px'}">
+		<v-card-title style="padding-top:16px; background: rgb(18,8,108); background: linear-gradient(0deg, rgba(18,8,108,1) 1%, rgba(19,32,145,1) 100%);" class="white--text w-100 justify-center mt-10" v-bind:style="{'height': route == `listar_${tab_actual}` || route == `eliminar_${tab_actual}` ? '70px': '50px','font-size': route == `${tab_actual}_preguntas` ? '30px': '50px'}">
 			<div>{{route == `listar_${tab_actual}` || route == `eliminar_${tab_actual}` || route == `${tab_actual}_preguntas` ? titulo : ''}}</div>
 		</v-card-title>
 		<!-- COMPONENTES -->

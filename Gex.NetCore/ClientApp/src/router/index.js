@@ -6,7 +6,7 @@ import ExamenPreguntas from '../views/examen/comp_examen_preguntas.vue'
 import Materia from '../views/materia/comp_materia.vue'
 import MateriaPreguntas from '../views/materia/comp_materia_preguntas.vue'
 import Mesa from '../views/mesa/comp_mesa.vue'
-import Curso from '../views/curso/comp_curso.vue'
+import Comision from '../views/comision/comp_comision.vue'
 import Alumno from '../views/alumno/comp_alumno.vue'
 import Inscripcion from '../views/inscripcion/comp_inscripcion.vue'
 import Usuario from '../views/usuario/comp_usuario.vue'
@@ -79,19 +79,25 @@ const routes = [
 	},
 	//-- /MATERIAS --
 
-	// -- CURSOS --
+	// -- COMISIONES --
 	{
-		path: '/curso',
-		name: 'listar_curso',
-		component: Curso,
+		path: '/comision',
+		name: 'listar_comision',
+		component: Comision,
 		children: [
 			{
 				path: 'crear',
-				name: 'crear_curso',
+				name: 'crear_comision',
 			},
 		]
 	},
-	// -- /CURSOS --
+	// -- COMISION --
+	{
+		path: '/comision/:id',
+		name: 'editar_comision',
+		component: Comision,
+	},
+	// -- /COMISIONES --
 
 	// -- ALUMNOS --
 	{

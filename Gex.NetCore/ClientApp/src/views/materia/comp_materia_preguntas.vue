@@ -65,6 +65,13 @@ import axios from 'axios';
 						return a.toLowerCase().localeCompare(b.toLowerCase());
 				});
 			},
+			active(val){
+				var vm = this;
+				if(vm.pregunta.tipo == 1){
+					vm.respuesta[0].correcto = val;
+					vm.respuesta[1].correcto = !val;
+				}
+			}
 		},
 		data: () => ({
 			temas: [],

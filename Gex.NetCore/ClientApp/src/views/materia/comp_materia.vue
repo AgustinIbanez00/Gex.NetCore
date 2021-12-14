@@ -5,8 +5,8 @@
 			<v-data-table :ref="`tabla_${tab_actual}`" v-show="route == 'listar_materia'" :headers="headers" :items="lista" :items-per-page="5" class="elevation-3 px-10 mx-15 my-3" :loading="cargando_lista" :loading-text="`Cargando ${elementos}`">
 				<template v-slot:item.tipo="{ item }">{{tipos_materias[item.tipo].nombre}}</template>
 				<template v-slot:item.actions="{ item }"><!-- Acciones -->
-				<v-btn class="ma-2" text icon color="blue lighten-1" :to="`/${tab_actual}/${item.id}`"><v-icon>mdi-pencil</v-icon></v-btn>
-				<v-btn class="ma-2" text icon color="blue-grey darken-1" @click="eliminar_id = item.id; eliminar();"><v-icon>mdi-delete</v-icon></v-btn>
+					<v-btn class="ma-2" text icon color="blue lighten-1" :to="`/${tab_actual}/${item.id}`"><v-icon>mdi-pencil</v-icon></v-btn>
+					<v-btn class="ma-2" text icon color="blue-grey darken-1" @click="eliminar_id = item.id; eliminar();"><v-icon>mdi-delete</v-icon></v-btn>
 				</template>
 			</v-data-table>
 		</v-expand-transition>
@@ -27,7 +27,7 @@
 					<v-col class="text-right">
 						<v-btn text @click="cancelar">Cancelar</v-btn>
 						<v-btn text color="primary" @click="guardar(1)">Guardar y cerrar</v-btn>
-						<v-btn button class="white--text indigo darken-1" @click="guardar">Guardar</v-btn>
+						<v-btn button class="white--text indigo darken-1" @click="guardar()">Guardar</v-btn>
 					</v-col>
 				</v-card-actions>
 			</v-card>
@@ -75,21 +75,6 @@
 		computed: {
 		},
 		methods: {
-			guardar(listar){
-				var vm = this;
-				let f_guardar = res => {
-					if(listar) vm.listar();
-					else vm.materia = res.data.data;
-					//ALERTA
-				}
-				if(vm.materia.id){
-					axios.patch(`${vm.url_api}/Materia`,vm.materia, vm.axios_headers)
-					.then(f_guardar).catch(err => console.log(err));
-				}else{
-					axios.post(`${vm.url_api}/Materia`,vm.materia, vm.axios_headers)
-					.then(f_guardar).catch(err => console.log(err));
-				}
-			},
 		},
 		async mounted() {
 			var vm = this;
