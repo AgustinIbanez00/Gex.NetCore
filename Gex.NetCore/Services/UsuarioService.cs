@@ -230,7 +230,7 @@ public class UsuarioService : IUsuarioService
         }
         catch (Exception ex)
         {
-            return Error<Usuario, UsuarioResponse>(GexErrorMessage.Generic, ex.Message);
+            return Error<Usuario, ICollection<UsuarioResponse>>(GexErrorMessage.Generic, ex.Message);
         }
     }
 }
