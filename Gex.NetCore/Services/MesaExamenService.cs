@@ -41,6 +41,11 @@ public class MesaExamenService : IMesaExamenService
             if(!await _examenRepository.ExistsExamenAsync(mesaExamenDto.ExamenId))
                 return KeyError<Examen, MesaExamenResponse>(nameof(mesaExamenDto.ExamenId), GexErrorMessage.NotFound);
 
+            var examen = await _examenRepository.GetExamenAsync(mesaExamenDto.ExamenId);
+
+            if(examen == null)
+                return KeyError<Examen, MesaExamenResponse>(nameof(mesaExamenDto.ProfesorId), GexErrorMessage.NotFound);
+
             var profesor = await _usuarioRepository.GetUsuarioAsync(mesaExamenDto.ProfesorId);
 
             if (profesor == null)
@@ -51,13 +56,16 @@ public class MesaExamenService : IMesaExamenService
 
             var mesaExamen = _mapper.Map<MesaExamen>(mesaExamenDto);
 
+            mesaExamen.Profesor = profesor;
+            mesaExamen.Examen = examen;
+
             if (!await _mesaExamenRepository.CreateMesaExamenAsync(mesaExamen))
                 return Error<MesaExamen, MesaExamenResponse>(GexErrorMessage.CouldNotCreate);
 
             var dto = _mapper.Map<MesaExamenResponse>(mesaExamen);
             return Ok<MesaExamen, MesaExamenResponse>(dto, GexSuccessMessage.Created);
         }
-        catch (UniqueConstraintException)
+        catch (UniqueConstraintException ex)
         {
             return Error<MesaExamen, MesaExamenResponse>(GexErrorMessage.AlreadyExists);
         }

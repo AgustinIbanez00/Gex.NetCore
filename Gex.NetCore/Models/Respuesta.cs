@@ -16,7 +16,7 @@ public partial class Respuesta
     /// <summary>
     /// Indica si la respuesta es verdadera.
     /// </summary>
-    public bool? Correcto { get; set; }
+    public bool Correcto { get; set; }
 
     public long PreguntaId { get; set; }
 }

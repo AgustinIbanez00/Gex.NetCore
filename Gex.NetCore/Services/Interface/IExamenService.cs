@@ -12,5 +12,5 @@ public interface IExamenService
     Task<GexResult<ExamenResponse>> CreateExamenAsync(ExamenRequest request);
     Task<GexResult<ExamenResponse>> UpdateExamenAsync(ExamenRequest request);
     Task<GexResult<ExamenResponse>> DeleteExamenAsync(long id);
-    Task<GexResult<ExamenResponse>> RendirExamenAsync(RendirExamenRequest request);
+    Task<GexResult<ExamenResponse>> RendirExamenAsync(RendirExamenRequest request, string email);
 }
