@@ -15,7 +15,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Gex.NetCore": {
+    "Gex": {
       "commandName": "Project",
       "launchUrl": "home",
       "environmentVariables": {

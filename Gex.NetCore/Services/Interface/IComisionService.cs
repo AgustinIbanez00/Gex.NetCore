@@ -1,15 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Gex.NetCore.Utils;
-using Gex.NetCore.ViewModels;
+using Gex.Utils;
+using Gex.ViewModels.Request;
+using Gex.ViewModels.Response;
 
-namespace Gex.NetCore.Services.Interface;
+namespace Gex.Services.Interface;
 public interface IComisionService
 {
-    Task<ServiceResponse<ICollection<ComisionDTO>>> GetComisionsAsync();
-    Task<ServiceResponse<ComisionDTO>> GetComisionAsync(int id);
-    Task<ServiceResponse<ComisionDTO>> GetComisionAsync(string nombre);
-    Task<ServiceResponse<ComisionDTO>> CreateComisionAsync(ComisionDTO comisionDTO);
-    Task<ServiceResponse<ComisionDTO>> UpdateComisionAsync(ComisionDTO comisionDTO);
-    Task<ServiceResponse<ComisionDTO>> DeleteComisionAsync(int id);
+    Task<GexResult<ICollection<ComisionResponse>>> GetComisionesAsync();
+    Task<GexResult<ComisionResponse>> GetComisionAsync(long id);
+    Task<GexResult<ComisionResponse>> GetComisionAsync(string nombre);
+    Task<GexResult<ComisionResponse>> CreateComisionAsync(ComisionRequest comisionDto);
+    Task<GexResult<ComisionResponse>> UpdateComisionAsync(ComisionRequest comisionDto);
+    Task<GexResult<ComisionResponse>> DeleteComisionAsync(long id);
 }

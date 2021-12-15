@@ -142,4 +142,114 @@
     <value>Identificador</value>
     <comment>Created by XLocalizer</comment>
   </data>
+  <data isActive="false">
+    <key>nota regular</key>
+    <value>nota regular</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
+  <data isActive="false">
+    <key>nota de promoción</key>
+    <value>nota de promoción</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
+  <data isActive="false">
+    <key>tipo de exámen</key>
+    <value>tipo de exámen</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
+  <data isActive="false">
+    <key>materia</key>
+    <value>materia</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
+  <data isActive="false">
+    <key>El campo {0} debe coincidir con la siguiente expresión regular: '{1}'.</key>
+    <value>El campo {0} debe coincidir con la siguiente expresión regular: '{1}'.</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
+  <data isActive="false">
+    <key>exámen</key>
+    <value>exámen</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
+  <data isActive="false">
+    <key>duración</key>
+    <value>duración</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
+  <data isActive="false">
+    <key>profesor</key>
+    <value>profesor</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
+  <data isActive="false">
+    <key>periodo</key>
+    <value>periodo</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
+  <data isActive="false">
+    <key>descripción</key>
+    <value>descripción</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
+  <data isActive="false">
+    <key>tipo</key>
+    <value>tipo</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
+  <data isActive="false">
+    <key>fecha</key>
+    <value>fecha</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
+  <data isActive="false">
+    <key>mostrar respuestas</key>
+    <value>mostrar respuestas</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
+  <data isActive="false">
+    <key>tema</key>
+    <value>tema</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
+  <data isActive="false">
+    <key>pregunta</key>
+    <value>pregunta</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
+  <data isActive="false">
+    <key>valor</key>
+    <value>valor</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
+  <data isActive="false">
+    <key>correcto</key>
+    <value>correcto</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
+  <data isActive="false">
+    <key>nombre de usuario</key>
+    <value>nombre de usuario</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
+  <data isActive="false">
+    <key>dni</key>
+    <value>dni</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
+  <data isActive="false">
+    <key>fecha de nacimiento</key>
+    <value>fecha de nacimiento</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
+  <data isActive="false">
+    <key>condición</key>
+    <value>condición</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
+  <data isActive="false">
+    <key>alumno</key>
+    <value>alumno</value>
+    <comment>Created by XLocalizer</comment>
+  </data>
 </root>

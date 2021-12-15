@@ -1,13 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using Gex.NetCore.Services.Interface;
 using System.Threading.Tasks;
-using Gex.NetCore.ViewModels;
-using Microsoft.Extensions.Options;
-using System.Net;
+using Gex.Utils;
+using Microsoft.AspNetCore.Http;
+using Gex.ViewModels.Request;
+using Gex.Extensions.Response;
+using Gex.Models.Enums;
+using Gex.Services.Interface;
+using Gex.ViewModels.Response;
 
-namespace Gex.NetCore.Controllers;
-
+namespace Gex.Controllers;
+/*
 [Route("api/[controller]")]
 [Authorize]
 [ApiController]
@@ -21,31 +24,38 @@ public class ComisionController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResult<ComisionResponse>))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [Authorize(Roles = nameof(UsuarioTipo.Alumno))]
+    public async Task<ActionResult<GexResult<ComisionResponse>>> GetAll()
     {
-        return Ok(await _service.GetComisionsAsync());
+        var comisiones = await _service.GetComisionesAsync();
+
+        if (!comisiones.Success)
+            return StatusCode(ResponseHelper.GetHttpError(comisiones.ErrorCode), comisiones);
+
+        return Ok(comisiones);
     }
 
     [HttpGet("{id:int}")]
-    public async Task<IActionResult> Get(int id)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResult<ComisionResponse>))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<GexResult<ComisionResponse>>> Get(int id)
     {
-        if(id == 0)
-            return BadRequest();
-
         var comision = await _service.GetComisionAsync(id);
 
         if (!comision.Success)
-        {
-            if (comision.ErrorCode == Helpers.GexError.NotFound)
-                return NotFound(comision);
-            else
-                return BadRequest(comision);
-        }
+            return StatusCode(ResponseHelper.GetHttpError(comision.ErrorCode), comision);
 
         return Ok(comision);
     }
-    [HttpGet("byName/{nombre}")]
-    public async Task<IActionResult> GetByName(string nombre)
+
+    [HttpGet("nombre/{nombre}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResult<ComisionResponse>))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<GexResult<ComisionResponse>>> GetByName(string nombre)
     {
         var comision = await _service.GetComisionAsync(nombre);
 
@@ -55,19 +65,41 @@ public class ComisionController : ControllerBase
     }
 
     [HttpPost]
-    //[ValidateAntiForgeryToken]
-    public async Task<IActionResult> CreateComision([FromBody] ComisionDTO comisionDTO)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResult<ComisionResponse>))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    public async Task<ActionResult<GexResult<ComisionResponse>>> CreateComision([FromBody] ComisionRequest comisionDTO)
     {
-        if (comisionDTO == null)
-            return BadRequest();
-
         var comision = await _service.CreateComisionAsync(comisionDTO);
 
-        if(!comision.Success)
-            return BadRequest(comision);
+        if (!comision.Success)
+            return StatusCode(ResponseHelper.GetHttpError(comision.ErrorCode), comision);
+        return Created(nameof(Get), comision);
+    }
+
+    [HttpPatch]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResult<ComisionResponse>))]
+    public async Task<ActionResult<GexResult<ComisionResponse>>> UpdateComision([FromBody] ComisionRequest comisionDTO)
+    {
+        var comision = await _service.UpdateComisionAsync(comisionDTO);
+
+        if (!comision.Success)
+            return StatusCode(ResponseHelper.GetHttpError(comision.ErrorCode), comision);
+        return Ok(comision);
+    }
+
+    [HttpDelete]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResult<ComisionResponse>))]
+    public async Task<ActionResult<GexResult<ComisionResponse>>> DeleteComision(int id)
+    {
+        var comision = await _service.DeleteComisionAsync(id);
+
+        if (!comision.Success)
+            return StatusCode(ResponseHelper.GetHttpError(comision.ErrorCode), comision);
         return Ok(comision);
     }
 
 
-
 }
+*/

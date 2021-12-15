@@ -1,107 +1,105 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Gex.Services.Interface;
 using System.Threading.Tasks;
+using Gex.Utils;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Gex.NetCore.Models;
+using Gex.ViewModels.Request;
+using Gex.Extensions.Response;
+using Gex.Models.Enums;
+using Gex.ViewModels.Response;
+using System.Collections.Generic;
 
-namespace Gex.NetCore.Controllers
+namespace Gex.Controllers;
+
+[Route("api/[controller]")]
+[Authorize("ProfesoresOnly")]
+[ApiController]
+public class MateriaController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class MateriasController : ControllerBase
+    private readonly IMateriaService _materiaService;
+    private readonly IPreguntaService _preguntaService;
+
+    public MateriaController(IMateriaService service, IPreguntaService preguntaService)
     {
-        private readonly GexContext _context;
-
-        public MateriasController(GexContext context)
-        {
-            _context = context;
-        }
-
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Materia>>> GetMaterias()
-        {
-            return await _context.Materias.ToListAsync();
-        }
-
-        // GET: api/Materias/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Materia>> GetMaterias(long id)
-        {
-            var materias = await _context.Materias.FindAsync(id);
-
-            if (materias == null)
-            {
-                return NotFound();
-            }
-
-            return materias;
-        }
-
-        // PUT: api/Materias/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutMaterias(long id, Materia materias)
-        {
-            if (id != materias.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(materias).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!MateriasExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/Materias
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Materia>> PostMaterias(Materia materias)
-        {
-            _context.Materias.Add(materias);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetMaterias", new { id = materias.Id }, materias);
-        }
-
-        // DELETE: api/Materias/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteMaterias(long id)
-        {
-            var materias = await _context.Materias.FindAsync(id);
-            if (materias == null)
-            {
-                return NotFound();
-            }
-
-            _context.Materias.Remove(materias);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool MateriasExists(long id)
-        {
-            return _context.Materias.Any(e => e.Id == id);
-        }
+        _materiaService = service;
+        _preguntaService = preguntaService;
     }
+
+    [HttpGet]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResult<ICollection<MateriaResponse>>))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<GexResult<ICollection<MateriaResponse>>>> GetAll()
+    {
+        var materias = await _materiaService.GetMateriasAsync();
+
+        if (!materias.Success)
+            return StatusCode(ResponseHelper.GetHttpError(materias.ErrorCode), materias);
+
+        return Ok(materias);
+    }
+
+    [HttpGet("{id:int}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResult<MateriaResponse>))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<GexResult<MateriaResponse>>> Get(long id)
+    {
+        var materia = await _materiaService.GetMateriaAsync(id);
+
+        if (!materia.Success)
+            return StatusCode(ResponseHelper.GetHttpError(materia.ErrorCode), materia);
+
+        return Ok(materia);
+    }
+
+    [HttpPost]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResult<MateriaResponse>))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    public async Task<ActionResult<GexResult<MateriaResponse>>> CreateMateria([FromBody] MateriaRequest materiaDto)
+    {
+        var materia = await _materiaService.CreateMateriaAsync(materiaDto);
+
+        if (!materia.Success)
+            return StatusCode(ResponseHelper.GetHttpError(materia.ErrorCode), materia);
+        return Created(nameof(Get), materia);
+    }
+
+    [HttpPatch]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResult<MateriaResponse>))]
+    public async Task<ActionResult<GexResult<MateriaResponse>>> UpdateMateria([FromBody] MateriaRequest materiaDto)
+    {
+        var materia = await _materiaService.UpdateMateriaAsync(materiaDto);
+
+        if (!materia.Success)
+            return StatusCode(ResponseHelper.GetHttpError(materia.ErrorCode), materia);
+        return Ok(materia);
+    }
+
+    [HttpDelete]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResult<MateriaResponse>))]
+    public async Task<ActionResult<GexResult<MateriaResponse>>> DeleteMateria(long id)
+    {
+        var materia = await _materiaService.DeleteMateriaAsync(id);
+
+        if (!materia.Success)
+            return StatusCode(ResponseHelper.GetHttpError(materia.ErrorCode), materia);
+        return Ok(materia);
+    }
+
+    [HttpGet("{materiaId:int}/preguntas")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GexResult<PreguntaResponse>))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<GexResult<PreguntaResponse>>> GetPreguntas(long materiaId)
+    {
+        var preguntas = await _preguntaService.GetPreguntasByMateriaIdAsync(materiaId);
+
+        if (!preguntas.Success)
+            return StatusCode(ResponseHelper.GetHttpError(preguntas.ErrorCode), preguntas.Data);
+        return Ok(preguntas);
+    }
+
 }

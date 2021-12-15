@@ -341,3 +341,5 @@ healthchecksdb
 
 #VS Code Folders 
 .vscode/
+
+Gex.NetCore/swagger.json

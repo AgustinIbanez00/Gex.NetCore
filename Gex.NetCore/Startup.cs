@@ -9,21 +9,26 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using XLocalizer;
-using Gex.NetCore.LocalizationResources;
+using Gex.LocalizationResources;
 using System.Globalization;
 using XLocalizer.Routing;
 using XLocalizer.Xml;
-using Gex.NetCore.Services.Interface;
-using Gex.NetCore.Services;
+using Gex.Services.Interface;
+using Gex.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Gex.NetCore.Repository.Interface;
-using Gex.NetCore.Repository;
+using Gex.Repository.Interface;
+using Gex.Repository;
 using EntityFramework.Exceptions.MySQL.Pomelo;
-using Microsoft.AspNetCore.Mvc;
-using Gex.NetCore.Middlewares;
+using Gex.Filters;
+using Gex.Middlewares;
+using Microsoft.OpenApi.Models;
+using Gex.Utils;
+using Gex.Models.Enums;
+using System.Reflection;
+using System.IO;
 
-namespace Gex.NetCore;
+namespace Gex;
 
 public class Startup
 {
@@ -47,8 +52,22 @@ public class Startup
 
         /* INYECCION DE REPOSITORIOS */
         services.AddScoped<IComisionRepository, ComisionRepository>();
+        services.AddScoped<IExamenRepository, ExamenRepository>();
+        services.AddScoped<IMateriaRepository, MateriaRepository>();
+        services.AddScoped<IMesaExamenRepository, MesaExamenRepository>();
+        services.AddScoped<IPreguntaRepository, PreguntaRepository>();
+        services.AddScoped<IRespuestaRepository, RespuestaRepository>();
+        services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+        services.AddScoped<IInscripcionMesaRepository, InscripcionMesaRepository>();
         /* INYECCION DE SERVICIOS */
         services.AddScoped<IComisionService, ComisionService>();
+        services.AddScoped<IExamenService, ExamenService>();
+        services.AddScoped<IMateriaService, MateriaService>();
+        services.AddScoped<IMesaExamenService, MesaExamenService>();
+        services.AddScoped<IPreguntaService, PreguntaService>();
+        services.AddScoped<IRespuestaService, RespuestaService>();
+        services.AddScoped<IUsuarioService, UsuarioService>();
+        services.AddScoped<IInscripcionMesaService, InscripcionMesaService>();
 
         services.AddCors();
 
@@ -65,17 +84,38 @@ public class Startup
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = new SymmetricSecurityKey(key),
                 ValidateIssuer = false,
-                ValidateAudience = false
+                ValidateAudience = false,
             };
         });
-        services.AddControllers().AddBadRequestServices();
+        services.AddAuthorization(options =>
+        {
+            options.AddPolicy("ProfesoresOnly",
+                 policy => policy.RequireRole(nameof(UsuarioTipo.Administrador), nameof(UsuarioTipo.Profesor)));
+            options.AddPolicy("AlumnosOnly",
+                 policy => policy.RequireRole(nameof(UsuarioTipo.Administrador), nameof(UsuarioTipo.Alumno)));
+            options.AddPolicy("AdministratorsOnly",
+                 policy => policy.RequireRole(nameof(UsuarioTipo.Administrador)));
+        });
+
+        services.AddControllers(options =>
+        {
+            options.Filters.Add<HttpResponseExceptionFilter>();
+        }).AddBadRequestServices()
+           .AddJsonOptions(o => o.JsonSerializerOptions.PropertyNamingPolicy = new SnakeCaseNamingPolicy());
+
+        services.AddRouting(options => options.LowercaseUrls = true);
+
         services.AddDbContext<GexContext>(options =>
         {
-            options.UseMySql(Configuration.GetValue<string>("DatabaseConnection"), new MariaDbServerVersion(new Version(10, 4, 17)));
+            options.UseMySql(Configuration.GetValue<string>("DatabaseConnection"), new MariaDbServerVersion(new Version(10, 4, 17)), o =>
+            {
+                o.EnableRetryOnFailure();
+            });
             options.LogTo(Console.WriteLine, LogLevel.Information);
             options.EnableSensitiveDataLogging();
             options.EnableDetailedErrors();
             options.UseExceptionProcessor();
+            options.UseSnakeCaseNamingConvention();
         });
         services.Configure<RequestLocalizationOptions>(ops =>
         {
@@ -95,7 +135,21 @@ public class Startup
         ;
         services.AddSwaggerDocument(options =>
         {
+            options.Description = "Colleción de API's correspondientes al sistema de exámenes Gex.";
             options.Title = "Sistema de Exámenes Gex";
+        });
+        services.AddSwaggerGen(c =>
+        {
+            c.SwaggerDoc("v1", new OpenApiInfo
+            {
+                Title = "Gex",
+                Version = "v1",
+                Description = "Colleción de API's correspondientes al sistema de exámenes Gex.",
+                Contact = new OpenApiContact() { Email = "admin@gexsystem.com", Name = "Agustin Ibañez" }
+
+            });
+            var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+            c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
         });
     }
 
