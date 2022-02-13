@@ -1,0 +1,30 @@
+name: Deploy to Github Pages
+env:
+  PUBLISH_DIR: Gex.NetCore/ClientApp/dist
+on:
+  push:
+    branches:
+      - master
+jobs:
+  gh-pages-deploy:
+    name: Deploying to Github Pages
+    runs-on: ubuntu-latest
+    steps:
+        - uses: actions/checkout@v2
+        - uses: actions/setup-node@v2
+          with:
+            node-version: '12'
+        - name: Install packages
+          run: npm i
+          working-directory: ./Gex.NetCore/ClientApp
+        - name: Run Build
+          run: npm run build
+          working-directory: ./Gex.NetCore/ClientApp
+        - name: GitHub Pages
+          if: success()
+          uses: crazy-max/ghaction-github-pages@v1.5.1
+          with:
+            target_branch: gh-pages
+            build_dir: ${{ env.PUBLISH_DIR }}
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}          
