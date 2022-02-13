@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+	<style>
+		#fondo{
+			background: rgb(10,5,64);
+			background: linear-gradient(153deg, rgba(10,5,64,1) 33%, rgba(1,3,23,1) 65%, rgba(0,0,0,1) 96%);
+		}
+		.v-data-table .v-data-table-header tr th{
+			font-size: 16px !important;
+		}
+		.v-data-table .v-data-table-header tr{
+			background: rgb(8,5,29);
+			background: linear-gradient(159deg, rgba(8,5,29,1) 1%, rgba(0,0,0,1) 52%, rgba(2,4,19,1) 100%);
+		}
+	</style>
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0">
+	<link rel="icon" href="<%= BASE_URL %>favicon.ico">
+	<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+	<link href="https://fonts.googleapis.com/css?family=Material+Icons" rel="stylesheet">
+	<link href="https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css" rel="stylesheet">
+	<link href="https://cdn.jsdelivr.net/npm/font-awesome@4.x/css/font-awesome.min.css" rel="stylesheet">
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<script src="https://unpkg.com/vuex@3.6.2/dist/vuex.js"></script>
+	<script src="https://use.fontawesome.com/418757ce50.js"></script>
+	<title>GEX - Inicio</title>
+	<script>
+
+		var pushState = history.pushState;
+		var replaceState = history.replaceState;
+
+		history.pushState = function() {
+			pushState.apply(history, arguments);
+			window.dispatchEvent(new Event('pushstate'));
+			window.dispatchEvent(new Event('locationchange'));
+		};
+
+		history.replaceState = function() {
+			replaceState.apply(history, arguments);
+			window.dispatchEvent(new Event('replacestate'));
+			window.dispatchEvent(new Event('locationchange'));
+		};
+
+		window.addEventListener('popstate', function() {
+			window.dispatchEvent(new Event('locationchange'))
+		});
+		var materia_default = {
+		id: 0,
+		nombre: '',
+		tipo: '',
+	};
+	var examen_default = {
+		id: 0,
+		tipo: 0,
+		nota_regular: 0,
+		nota_promo: 0,
+		recuperatorio: true,
+		materia_id: 0
+	}
+	var inscripcionMesa_default = {
+		id: 0,
+		mesa: '',
+		condicion: '',
+		alumno: '',
+		examen_id: 0,
+		profesor_id: 0
+	}
+	var comision_default = {
+		id: 0,
+		nombre: '',
+		ciclo_lectivo: new Date().getFullYear(),
+	}
+	var usuario_default = {
+		id: 0,
+		usuario: '',
+		password: '',
+		password_confirm: '',
+		email: '',
+		nombre: '',
+		dni: '',
+		tipo: 0,
+	}
+
+
+	</script>
+</head>
+  <body>
+    <div id="app"></div>
+  </body>
+</html>
