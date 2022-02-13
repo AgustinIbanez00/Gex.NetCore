@@ -5,8 +5,6 @@ VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gex", "Gex.NetCore\Gex.csproj", "{79705ED2-7C67-4B2A-9E1F-C0CFE8A44A67}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gex.UnitTest", "Gex.UnitTest\Gex.UnitTest.csproj", "{559832E0-9C48-45A4-B3A3-319EDBCC6A75}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
