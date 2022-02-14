@@ -25,6 +25,10 @@ jobs:
       run: dotnet build --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal
+    - name: Pwd
+      run: pwd
+    - name: List
+      run: ls -l
     - name: GitHub Pages
       if: success()
       uses: crazy-max/ghaction-github-pages@v1.5.1
