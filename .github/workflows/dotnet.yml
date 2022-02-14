@@ -28,7 +28,7 @@ jobs:
     - name: Pwd
       run: pwd
     - name: Tree
-      run: tree
+      run: tree -f -P "dist" -I "node_modules" /home/runner/work/Gex.NetCore
     - name: GitHub Pages
       if: success()
       uses: crazy-max/ghaction-github-pages@v1.5.1
