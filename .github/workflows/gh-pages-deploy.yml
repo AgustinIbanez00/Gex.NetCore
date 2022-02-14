@@ -1,6 +1,6 @@
 name: Deploy to Github Pages
 env:
-  PUBLISH_DIR: Gex.NetCore/ClientApp/dist
+  PUBLISH_DIR: Gex.NetCore/VueApp/dist
 on:
   push:
     branches:
