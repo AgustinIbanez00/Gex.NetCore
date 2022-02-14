@@ -1,6 +1,6 @@
 name: .NET
 env:
-  PUBLISH_DIR: Gex.NetCore/VueApp/dist
+  PUBLISH_DIR: VueApp/dist
 
 on:
   push:
