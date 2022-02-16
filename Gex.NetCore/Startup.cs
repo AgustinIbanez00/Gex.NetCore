@@ -107,15 +107,23 @@ public class Startup
 
         services.AddDbContext<GexContext>(options =>
         {
+#if DEBUG
             options.UseMySql(Configuration.GetValue<string>("DatabaseConnection"), new MariaDbServerVersion(new Version(10, 4, 17)), o =>
             {
                 o.EnableRetryOnFailure();
             });
-            options.LogTo(Console.WriteLine, LogLevel.Information);
             options.EnableSensitiveDataLogging();
+#else
+            options.UseInMemoryDatabase("Gex");
+#endif
+
+            options.LogTo(Console.WriteLine, LogLevel.Information);
             options.EnableDetailedErrors();
             options.UseExceptionProcessor();
             options.UseSnakeCaseNamingConvention();
+
+
+
         });
         services.Configure<RequestLocalizationOptions>(ops =>
         {
