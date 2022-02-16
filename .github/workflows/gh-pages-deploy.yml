@@ -16,8 +16,10 @@ jobs:
             node-version: '12'
         - name: Install packages
           run: npm i
+          working-directory: ClientApp
         - name: Run Build
           run: npm run build
+          working-directory: ClientApp
         - name: GitHub Pages
           if: success()
           uses: crazy-max/ghaction-github-pages@v1.5.1
