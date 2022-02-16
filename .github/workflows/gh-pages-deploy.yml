@@ -16,10 +16,8 @@ jobs:
             node-version: '12'
         - name: Install packages
           run: npm i
-          working-directory: ./Gex.NetCore/ClientApp
         - name: Run Build
           run: npm run build
-          working-directory: ./Gex.NetCore/ClientApp
         - name: GitHub Pages
           if: success()
           uses: crazy-max/ghaction-github-pages@v1.5.1
