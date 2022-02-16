@@ -16,4 +16,5 @@ jobs:
           with:
             username: 'AgustinIbanez00'
             reponame: 'Gex.NetCore'
+            working-directory: Gex.NetCore/VueApp
             token: ${{ secrets.GITHUB_TOKEN }}      
