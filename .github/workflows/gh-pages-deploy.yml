@@ -22,6 +22,11 @@ jobs:
         - name: Run Build
           run: npm run build
           working-directory: Gex.NetCore/VueApp
+        - name: Rewrite base href
+          uses: SteveSandersonMS/ghaction-rewrite-base-href@v1
+          with:
+            html_path: ${{ env.PUBLISH_DIR }}/index.html
+            base_href: /Gex.NetCore/          
         - name: GitHub Pages
           if: success()
           uses: crazy-max/ghaction-github-pages@v1.5.1
