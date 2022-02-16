@@ -11,10 +11,27 @@ jobs:
     runs-on: ubuntu-latest
     steps:
         - uses: actions/checkout@v2
-        - id: Build-Vue
-          uses: xRealNeon/VuePagesAction@1.0.1
+        - uses: actions/setup-node@v2
           with:
-            username: 'AgustinIbanez00'
-            reponame: 'Gex.NetCore'
-            working-directory: Gex.NetCore/VueApp
-            token: ${{ secrets.GITHUB_TOKEN }}      
+            node-version: '12'
+        - name: Show directories
+          run: tree
+        - name: Install packages
+          run: npm i
+          working-directory: Gex.NetCore/VueApp
+        - name: Run Build
+          run: npm run build
+          working-directory: Gex.NetCore/VueApp
+        - name: Rewrite base href
+          uses: SteveSandersonMS/ghaction-rewrite-base-href@v1
+          with:
+            html_path: ${{ env.PUBLISH_DIR }}/index.html
+            base_href: /Gex.NetCore/          
+        - name: GitHub Pages
+          if: success()
+          uses: crazy-max/ghaction-github-pages@v1.5.1
+          with:
+            target_branch: gh-pages
+            build_dir: ${{ env.PUBLISH_DIR }}
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
