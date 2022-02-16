@@ -143,8 +143,8 @@ public class Startup
         ;
         services.AddSwaggerDocument(options =>
         {
-            options.Description = "Colleción de API's correspondientes al sistema de exámenes Gex.";
-            options.Title = "Sistema de Exámenes Gex";
+            options.Description = "ColleciÃ³n de API's correspondientes al sistema de exÃ¡menes Gex.";
+            options.Title = "Sistema de ExÃ¡menes Gex";
         });
         services.AddSwaggerGen(c =>
         {
@@ -152,8 +152,8 @@ public class Startup
             {
                 Title = "Gex",
                 Version = "v1",
-                Description = "Colleción de API's correspondientes al sistema de exámenes Gex.",
-                Contact = new OpenApiContact() { Email = "admin@gexsystem.com", Name = "Agustin Ibañez" }
+                Description = "ColleciÃ³n de API's correspondientes al sistema de exÃ¡menes Gex.",
+                Contact = new OpenApiContact() { Email = "admin@gexsystem.com", Name = "Agustin IbaÃ±ez" }
 
             });
             var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
@@ -192,7 +192,7 @@ public class Startup
         app.UseOpenApi();
         app.UseSwaggerUi3(options =>
         {
-            options.DocumentTitle = "Sistema de Exámenes Gex";
+            options.DocumentTitle = "Sistema de ExÃ¡menes Gex";
         });
 
     }
