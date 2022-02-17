@@ -14,7 +14,7 @@ public interface IUsuarioService
     Task<GexResult<UsuarioResponse>> GetUsuarioAsync(int id);
     Task<GexResult<UsuarioResponse>> GetUsuarioByEmailAsync(string email);
     Task<GexResult<UsuarioResponse>> GetUsuarioByUserNameAsync(string userName);
-    Task<GexResult<UsuarioResponse>> CreateUsuarioAsync(RegistroRequest request);
+    Task<GexResult<UsuarioResponse>> CreateUsuarioAsync(RegistroRequest request, string secret);
     Task<GexResult<UsuarioResponse>> LockUsuarioAsync(int id);
     Task<GexResult<LoginResponse>> LoginUsuarioAsync(LoginRequest request);
 }

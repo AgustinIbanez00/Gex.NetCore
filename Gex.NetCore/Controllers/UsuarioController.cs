@@ -66,9 +66,9 @@ public class UsuarioController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [AllowAnonymous]
-    public async Task<ActionResult<GexResult<UsuarioResponse>>> RegisterUsuario([FromBody] RegistroRequest usuarioDto)
+    public async Task<ActionResult<GexResult<UsuarioResponse>>> RegisterUsuario([FromBody] RegistroRequest usuarioDto, [FromHeader(Name = "SECRET_AUTH")] string secret)
     {
-        var usuario = await _usuarioService.CreateUsuarioAsync(usuarioDto);
+        var usuario = await _usuarioService.CreateUsuarioAsync(usuarioDto, secret);
 
         if (!usuario.Success)
             return StatusCode(ResponseHelper.GetHttpError(usuario.ErrorCode), usuario);

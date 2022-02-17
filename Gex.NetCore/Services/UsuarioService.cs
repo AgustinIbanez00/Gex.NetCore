@@ -30,14 +30,22 @@ public class UsuarioService : IUsuarioService
         _configuration = configuration;
     }
 
-    public async Task<GexResult<UsuarioResponse>> CreateUsuarioAsync(RegistroRequest request)
+    public async Task<GexResult<UsuarioResponse>> CreateUsuarioAsync(RegistroRequest request, string secret)
     {
         try
         {
+            if (!string.IsNullOrEmpty(secret) && string.IsNullOrEmpty(_configuration.GetValue<string>("SECRET_PASSWORD")))
+                return Error<UsuarioResponse>("Sistema deshabilitado.");
+            else if (string.IsNullOrEmpty(secret) && request.Tipo != UsuarioTipo.Alumno)
+                return Error<UsuarioResponse>("No estás autenticado.");
+            else if (!string.IsNullOrEmpty(secret) && !string.IsNullOrEmpty(_configuration.GetValue<string>("SECRET_PASSWORD")) && _configuration.GetValue<string>("SECRET_PASSWORD") != secret)
+                return Error<UsuarioResponse>("Error de autenticación.");
+
             if (await _usuarioRepository.ExistsUsuarioByEmailAsync(request.Email))
                 return KeyError<UsuarioResponse>(nameof(request.Email), $"Esa dirección de correo electrónico {request.Email} ya existe.");
 
             var usuario = _mapper.Map<Usuario>(request);
+
             HashedPassword hashedPassword = request.Password.Hash();
             usuario.Password = hashedPassword.Password;
             usuario.Salt = hashedPassword.Salt;
@@ -171,15 +179,6 @@ public class UsuarioService : IUsuarioService
         try
         {
             var secretKey = _configuration.GetValue<string>("SecretKey");
-            string email = _configuration.GetValue<string>("SECRET_EMAIL");
-            string password = _configuration.GetValue<string>("SECRET_PASSWORD");
-
-            if (!string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(password) && request.Email == email && request.Password == password)
-            {
-                var token = HashingExtensions.CreateToken(email, UsuarioTipo.Administrador.ToString(), secretKey);
-                return Ok(new LoginResponse() { Token = token });
-            }
-
             Usuario usuario = await _usuarioRepository.GetUsuarioByEmailAsync(request.Email);
 
             if (usuario == null)
