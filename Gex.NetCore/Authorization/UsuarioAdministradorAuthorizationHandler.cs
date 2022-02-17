@@ -18,8 +18,7 @@ namespace Gex.Authorization
             {
                 context.Succeed(requirement);
             }
-
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
     }
 }
