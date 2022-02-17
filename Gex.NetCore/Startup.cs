@@ -101,7 +101,7 @@ public class Startup
                  policy => policy.RequireRole(nameof(UsuarioTipo.Administrador)));
         });
 
-        services.AddScoped<IAuthorizationHandler, UsuarioAdministradorAuthorizationHandler>();
+        services.AddSingleton<IAuthorizationHandler, UsuarioAdministradorAuthorizationHandler>();
 
         services.AddSpaStaticFiles(opt => opt.RootPath = "VueApp/dist");
 
