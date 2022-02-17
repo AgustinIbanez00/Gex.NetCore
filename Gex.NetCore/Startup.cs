@@ -27,6 +27,8 @@ using Gex.Utils;
 using Gex.Models.Enums;
 using System.Reflection;
 using System.IO;
+using VueCliMiddleware;
+using Microsoft.AspNetCore.SpaServices;
 
 namespace Gex;
 
@@ -97,6 +99,8 @@ public class Startup
                  policy => policy.RequireRole(nameof(UsuarioTipo.Administrador)));
         });
 
+        services.AddSpaStaticFiles(opt => opt.RootPath = "VueApp/dist");
+
         services.AddControllers(options =>
         {
             options.Filters.Add<HttpResponseExceptionFilter>();
@@ -116,14 +120,10 @@ public class Startup
 #else
             options.UseInMemoryDatabase("Gex");
 #endif
-
             options.LogTo(Console.WriteLine, LogLevel.Information);
             options.EnableDetailedErrors();
             options.UseExceptionProcessor();
             options.UseSnakeCaseNamingConvention();
-
-
-
         });
         services.Configure<RequestLocalizationOptions>(ops =>
         {
@@ -171,10 +171,12 @@ public class Startup
             .AllowAnyMethod()
             .AllowAnyHeader()
         );
-
+        /*
         app.UseDefaultFiles();
         app.UseStaticFiles();
+        */
 
+        app.UseSpaStaticFiles();
         app.UseRouting();
         app.UseAuthentication();
         app.UseAuthorization();
@@ -183,10 +185,16 @@ public class Startup
             .AddSupportedUICultures(supportedCultures);
 
         app.UseRequestLocalization(localizationOptions);
-
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapControllers();
+            endpoints.MapToVueCliProxy(
+                "{*path}",
+                new SpaOptions { SourcePath = "VueApp" },
+                npmScript: (System.Diagnostics.Debugger.IsAttached) ? "serve" : null,
+                regex: "Compiled successfully",
+                forceKill: true
+            );
         });
 
         app.UseOpenApi();
