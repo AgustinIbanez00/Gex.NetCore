@@ -172,7 +172,7 @@ public class UsuarioService : IUsuarioService
         {
             var secretKey = _configuration.GetValue<string>("SecretKey");
             string email = _configuration.GetValue<string>("SECRET_EMAIL");
-            string password = _configuration.GetValue<string>("SECRET_USER");
+            string password = _configuration.GetValue<string>("SECRET_PASSWORD");
 
             if (!string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(password) && request.Email == email && request.Password == password)
             {
