@@ -29,6 +29,8 @@ using System.Reflection;
 using System.IO;
 using VueCliMiddleware;
 using Microsoft.AspNetCore.SpaServices;
+using Microsoft.AspNetCore.Authorization;
+using Gex.Authorization;
 
 namespace Gex;
 
@@ -98,6 +100,8 @@ public class Startup
             options.AddPolicy("AdministratorsOnly",
                  policy => policy.RequireRole(nameof(UsuarioTipo.Administrador)));
         });
+
+        services.AddScoped<IAuthorizationHandler, UsuarioAdministradorAuthorizationHandler>();
 
         services.AddSpaStaticFiles(opt => opt.RootPath = "VueApp/dist");
 

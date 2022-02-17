@@ -1,6 +1,9 @@
-﻿using System.Security.Cryptography;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Gex.Extensions.Hashing;
 public static class HashingExtensions
@@ -30,6 +33,27 @@ public static class HashingExtensions
              iterationCount: 10000,
              numBytesRequested: 256 / 8));
         return hash == hashed;
+    }
+
+    public static string CreateToken(string nameIdentifier, string role, string secretKey, int expirationDays = 15)
+    {
+        var key = Encoding.ASCII.GetBytes(secretKey);
+
+        var claims = new ClaimsIdentity();
+        claims.AddClaim(new Claim(ClaimTypes.NameIdentifier, nameIdentifier));
+        claims.AddClaim(new Claim(ClaimTypes.Role, role));
+
+        var tokenDescriptor = new SecurityTokenDescriptor
+        {
+            Subject = claims,
+            Expires = DateTime.UtcNow.AddDays(expirationDays),
+            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+        };
+
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var createdToken = tokenHandler.CreateToken(tokenDescriptor);
+
+        return tokenHandler.WriteToken(createdToken);
     }
 
     public static byte[] GetHash(string password, string salt)
