@@ -1,15 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
-using System.Threading.Tasks;
-using Gex.Utils;
-using Microsoft.AspNetCore.Http;
-using Gex.ViewModels.Request;
-using Gex.Extensions.Response;
-using Gex.Models.Enums;
-using Gex.Services.Interface;
-using Gex.ViewModels.Response;
-
-namespace Gex.Controllers;
+﻿namespace Gex.Controllers;
 /*
 [Route("api/[controller]")]
 [Authorize]

@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Gex.Models.Enums;
+﻿using Gex.Models.Enums;
 
 namespace Gex.ViewModels.Response
 {

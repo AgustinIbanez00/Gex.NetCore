@@ -1,8 +1,7 @@
-﻿using System.Linq;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Gex.Models;
-using Gex.Models.Enums;
 using Gex.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
 
@@ -44,7 +43,7 @@ public class RespuestaRepository : IRespuestaRepository
         var respuestasRelacionadas = await _context.Respuestas.Where(r => r.PreguntaId == preguntaId).ToListAsync();
         _context.Respuestas.RemoveRange(respuestasRelacionadas);
         return autosave ? await Save() : true;
-    }   
+    }
 
     public async Task<bool> ExistsRespuestaAsync(long id) => await _context.Respuestas.AnyAsync(r => r.Id == id);
 

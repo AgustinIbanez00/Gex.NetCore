@@ -11,7 +11,7 @@ public class HttpResponseExceptionFilter : IActionFilter, IOrderedFilter
 
     public void OnActionExecuted(ActionExecutedContext context)
     {
-        if(context.Exception != null)
+        if (context.Exception != null)
         {
 
         }

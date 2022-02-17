@@ -1,6 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Gex.Models.Enums;
-using Gex.Validation.Attributes;
 
 namespace Gex.ViewModels.Request;
 public class RespuestaCreateRequest

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Gex.Models.Enums;
+﻿using Gex.Models.Enums;
 
 namespace Gex.ViewModels.Response;
 public class PreguntaResponse

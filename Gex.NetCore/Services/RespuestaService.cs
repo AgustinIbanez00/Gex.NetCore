@@ -13,7 +13,6 @@ using Gex.Services.Interface;
 using Gex.Utils;
 using Gex.ViewModels.Request;
 using Gex.ViewModels.Response;
-using Humanizer;
 
 namespace Gex.Services;
 using static GexResponse;
@@ -185,7 +184,7 @@ public Task<GexResult<RespuestaResponse>> PrepareCreateRespuestaAsync(RespuestaC
             if (pregunta == null)
                 return KeyError<Pregunta, RespuestaResponse>(nameof(respuestaDto.PreguntaId), GexErrorMessage.NotFound);
 
-            if(pregunta.Tipo == PreguntaTipo.Texto)
+            if (pregunta.Tipo == PreguntaTipo.Texto)
                 return Ok<RespuestaResponse>();
 
             if (pregunta.Tipo == PreguntaTipo.VerdaderoOFalso)
@@ -193,10 +192,10 @@ public Task<GexResult<RespuestaResponse>> PrepareCreateRespuestaAsync(RespuestaC
                 if (respuestaDto.Respuestas.Count(r => r.Correcto == true && !r.Borrar) > 2)
                     return KeyError<RespuestaResponse>(nameof(respuestaDto.Respuestas), $"No se acepta más de dos respuestas cuando la pregunta es de tipo {pregunta.Tipo.GetDescription()}");
 
-                if(respuestaDto.Respuestas.Count(r => r.Id <= 0 && !r.Borrar) >= 2)
+                if (respuestaDto.Respuestas.Count(r => r.Id <= 0 && !r.Borrar) >= 2)
                 {
                     var preguntas = await _respuestaRepository.GetRespuestasByPreguntaIdAsync(respuestaDto.PreguntaId);
-                    if(preguntas.Count >= 2)
+                    if (preguntas.Count >= 2)
                     {
                         return KeyError<RespuestaResponse>(nameof(respuestaDto.Respuestas), $"No se pueden crear más de dos respuestas cuando la pregunta es de tipo {pregunta.Tipo.GetDescription()}");
                     }
@@ -208,7 +207,7 @@ public Task<GexResult<RespuestaResponse>> PrepareCreateRespuestaAsync(RespuestaC
                 if (respuestaDto.Respuestas.Count(r => r.Correcto == true && !r.Borrar) > 1)
                     return KeyError<RespuestaResponse>(nameof(respuestaDto.Respuestas), $"No se acepta más de una respuesta correcta cuando la pregunta es de tipo {pregunta.Tipo.GetDescription()}");
             }
-            if(pregunta.Tipo == PreguntaTipo.VerdaderoOFalso || pregunta.Tipo == PreguntaTipo.MultipleChoise || pregunta.Tipo == PreguntaTipo.SeleccionMultiple)
+            if (pregunta.Tipo == PreguntaTipo.VerdaderoOFalso || pregunta.Tipo == PreguntaTipo.MultipleChoise || pregunta.Tipo == PreguntaTipo.SeleccionMultiple)
             {
                 if (respuestaDto.Respuestas.Count(r => r.Correcto == true && !r.Borrar) == 0)
                     return KeyError<RespuestaResponse>(nameof(respuestaDto.Respuestas), $"No se encontró ninguna respuesta correcta.");
@@ -302,7 +301,7 @@ public Task<GexResult<RespuestaResponse>> PrepareCreateRespuestaAsync(RespuestaC
     {
         try
         {
-            if(!await _respuestaRepository.DeleteRespuestasByPreguntaIdAsync(preguntaId))
+            if (!await _respuestaRepository.DeleteRespuestasByPreguntaIdAsync(preguntaId))
                 return Error<Respuesta, RespuestaResponse>(GexErrorMessage.CouldNotDelete);
             return Ok<Respuesta, RespuestaResponse>(GexSuccessMessage.Deleted);
         }

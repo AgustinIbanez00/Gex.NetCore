@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using Gex.Models.Enums;
 using Gex.Models;
+using Gex.Models.Enums;
 
 namespace Gex.Fakers;
 public class MateriaFaker

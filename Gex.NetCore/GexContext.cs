@@ -1,5 +1,4 @@
-﻿using Gex.Fakers;
-using Gex.Models;
+﻿using Gex.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Gex;
@@ -32,7 +31,7 @@ public partial class GexContext : DbContext
 
         //modelBuilder.Entity<Materia>()
         //    .HasData(MateriaFaker.Get(300));
-            
+
         base.OnModelCreating(modelBuilder);
     }
 

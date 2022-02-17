@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 using AutoMapper;
@@ -139,7 +138,7 @@ public class ExamenService : IExamenService
     {
         try
         {
-            
+
             var mesaExamen = await _mesaExamenRepository.GetMesaExamenAsync(request.MesaExamenId);
             if (mesaExamen == null)
                 return Error<MesaExamen, ExamenResponse>(GexErrorMessage.NotFound);
@@ -149,14 +148,14 @@ public class ExamenService : IExamenService
 
             var preguntasExamen = await _preguntaRepository.GetPreguntasByExamenIdAsync(mesaExamen.Examen.Id);
 
-            if(preguntasExamen.Count != request.Preguntas.Length)
+            if (preguntasExamen.Count != request.Preguntas.Length)
                 return Error<ExamenResponse>("No coinciden la cantidad de preguntas con la del exámen.");
 
             foreach (var pregunta in preguntasExamen)
             {
                 foreach (var preguntaRequest in request.Preguntas)
                 {
-                    if(pregunta.Id != preguntaRequest.PreguntaId)
+                    if (pregunta.Id != preguntaRequest.PreguntaId)
                         return Error<ExamenResponse>("Una pregunta no está vinculada en este exámen.");
 
                     if (pregunta.Tipo == PreguntaTipo.Texto)
@@ -208,7 +207,7 @@ public class ExamenService : IExamenService
 
                 //var inscripcionExamen = await _inscripcionMesaRepository.GetInscripcionMesaAsync();
             }
-            if(esperaProfesor)
+            if (esperaProfesor)
                 Ok<ExamenResponse>(null, "El exámen se envió correctamente. Tendrá los resultados en breve.");
 
             return Ok<ExamenResponse>();

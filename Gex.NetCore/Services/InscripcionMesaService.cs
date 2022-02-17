@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 using AutoMapper;
@@ -50,7 +49,7 @@ public class InscripcionMesaService : IInscripcionMesaService
             if (inscripcionMesa.Alumno == null)
                 return KeyError<Usuario, InscripcionMesaResponse>(nameof(inscripcionMesaDto.UsuarioId), GexErrorMessage.NotFound);
 
-            if(inscripcionMesa.Alumno.Tipo != UsuarioTipo.Alumno)
+            if (inscripcionMesa.Alumno.Tipo != UsuarioTipo.Alumno)
                 return KeyError<InscripcionMesaResponse>(nameof(inscripcionMesaDto.UsuarioId), "Sólo se pueden inscribir alumnos en una mesa de exámen.");
 
             if (!await _inscripcionMesaRepository.CreateInscripcionMesaAsync(inscripcionMesa))

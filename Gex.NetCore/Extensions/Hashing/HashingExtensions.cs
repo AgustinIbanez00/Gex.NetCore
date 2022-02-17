@@ -59,8 +59,7 @@ public static class HashingExtensions
     public static byte[] GetHash(string password, string salt)
     {
         byte[] unhashedBytes = Encoding.Unicode.GetBytes(string.Concat(salt, password));
-        SHA256Managed sha256 = new();
-        byte[] hashedBytes = sha256.ComputeHash(unhashedBytes);
+        byte[] hashedBytes = SHA256.Create().ComputeHash(unhashedBytes);
         return hashedBytes;
     }
 }

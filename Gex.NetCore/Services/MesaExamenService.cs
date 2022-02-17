@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 using AutoMapper;
@@ -38,12 +37,12 @@ public class MesaExamenService : IMesaExamenService
             if (await _mesaExamenRepository.ExistsMesaExamenAsync(mesaExamenDto.Id))
                 return KeyError<MesaExamen, MesaExamenResponse>(nameof(mesaExamenDto.Id), GexErrorMessage.AlreadyExists);
 
-            if(!await _examenRepository.ExistsExamenAsync(mesaExamenDto.ExamenId))
+            if (!await _examenRepository.ExistsExamenAsync(mesaExamenDto.ExamenId))
                 return KeyError<Examen, MesaExamenResponse>(nameof(mesaExamenDto.ExamenId), GexErrorMessage.NotFound);
 
             var examen = await _examenRepository.GetExamenAsync(mesaExamenDto.ExamenId);
 
-            if(examen == null)
+            if (examen == null)
                 return KeyError<Examen, MesaExamenResponse>(nameof(mesaExamenDto.ProfesorId), GexErrorMessage.NotFound);
 
             var profesor = await _usuarioRepository.GetUsuarioAsync(mesaExamenDto.ProfesorId);
@@ -65,7 +64,7 @@ public class MesaExamenService : IMesaExamenService
             var dto = _mapper.Map<MesaExamenResponse>(mesaExamen);
             return Ok<MesaExamen, MesaExamenResponse>(dto, GexSuccessMessage.Created);
         }
-        catch (UniqueConstraintException ex)
+        catch (UniqueConstraintException)
         {
             return Error<MesaExamen, MesaExamenResponse>(GexErrorMessage.AlreadyExists);
         }
@@ -165,8 +164,8 @@ public class MesaExamenService : IMesaExamenService
             mesaExamen.Examen = examen;
 
             var profesor = await _usuarioRepository.GetUsuarioAsync(mesaExamenDto.ProfesorId);
-            
-            if(profesor == null)
+
+            if (profesor == null)
                 return KeyError<Usuario, MesaExamenResponse>(nameof(mesaExamenDto.ProfesorId), GexErrorMessage.NotFound);
 
             if (profesor.Tipo != UsuarioTipo.Profesor)

@@ -1,7 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using EntityFramework.Exceptions.Common;
@@ -15,7 +12,6 @@ using Gex.Utils;
 using Gex.ViewModels.Request;
 using Gex.ViewModels.Response;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
 
 namespace Gex.Services;
 
@@ -38,7 +34,7 @@ public class UsuarioService : IUsuarioService
     {
         try
         {
-            if(await _usuarioRepository.ExistsUsuarioByEmailAsync(request.Email))
+            if (await _usuarioRepository.ExistsUsuarioByEmailAsync(request.Email))
                 return KeyError<UsuarioResponse>(nameof(request.Email), $"Esa dirección de correo electrónico {request.Email} ya existe.");
 
             var usuario = _mapper.Map<Usuario>(request);
@@ -178,7 +174,7 @@ public class UsuarioService : IUsuarioService
             string email = _configuration.GetValue<string>("SECRET_EMAIL");
             string password = _configuration.GetValue<string>("SECRET_USER");
 
-            if(!string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(password) && request.Email == email && request.Password == password)
+            if (!string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(password) && request.Email == email && request.Password == password)
             {
                 var token = HashingExtensions.CreateToken(email, UsuarioTipo.Administrador.ToString(), secretKey);
                 return Ok(new LoginResponse() { Token = token });
@@ -192,7 +188,7 @@ public class UsuarioService : IUsuarioService
             if (usuario.LockoutEnabled)
                 return Error<LoginResponse>("Esta cuenta se encuentra bloqueada.");
 
-            if(HashingExtensions.CheckHash(request.Password, usuario.Password, usuario.Salt))
+            if (HashingExtensions.CheckHash(request.Password, usuario.Password, usuario.Salt))
             {
                 var token = HashingExtensions.CreateToken(usuario.Email, usuario.Tipo.ToString(), secretKey);
 
@@ -201,7 +197,7 @@ public class UsuarioService : IUsuarioService
 
             return KeyError<Usuario, LoginResponse>(nameof(request.Password), GexErrorMessage.InvalidPassword);
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             return Error<Usuario, LoginResponse>(GexErrorMessage.Generic, ex.Message);
         }

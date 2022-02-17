@@ -1,15 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
-using Gex.Services.Interface;
-using System.Threading.Tasks;
-using Gex.Utils;
-using Microsoft.AspNetCore.Http;
-using Gex.ViewModels.Request;
-using Gex.Extensions.Response;
-using Gex.ViewModels.Response;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Security.Claims;
+using System.Threading.Tasks;
+using Gex.Extensions.Response;
+using Gex.Services.Interface;
+using Gex.Utils;
+using Gex.ViewModels.Request;
+using Gex.ViewModels.Response;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Gex.Controllers;
 

@@ -5,7 +5,7 @@ namespace Gex.ViewModels.Request;
 public class RegistroRequest
 {
 
-    [Required, Display(Name = "correo electrónico"), EmailAddress]    
+    [Required, Display(Name = "correo electrónico"), EmailAddress]
     public string Email { get; set; }
 
     [Required, Display(Name = "contraseña"), DataType(DataType.Password), StringLength(255, MinimumLength = 6)]

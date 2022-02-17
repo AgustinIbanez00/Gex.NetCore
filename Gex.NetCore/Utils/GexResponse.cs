@@ -49,7 +49,7 @@ public static class GexResponse
             Data = default(TResult),
             Success = false,
             Message = "Se encontraron uno o más errores.",
-            ErrorMessages =  new Dictionary<string, string[]>() { { new string(key.ToSnakeCase().ToArray()), new string[] { Smart.Format(EnumExtensions.GetDescription(error), Options<TEntity>()) } } }
+            ErrorMessages = new Dictionary<string, string[]>() { { new string(key.ToSnakeCase().ToArray()), new string[] { Smart.Format(EnumExtensions.GetDescription(error), Options<TEntity>()) } } }
         };
     }
 
@@ -128,7 +128,7 @@ public static class GexResponse
             Gender = typeof(TEntity).GetAttributeValue<GexDescriptionAttribute, GrammaticalGender>(c => c.Gender)
         };
 
-        if(string.IsNullOrEmpty(options.Entity))
+        if (string.IsNullOrEmpty(options.Entity))
         {
             options.Entity = typeof(TEntity).Name.Humanize(LetterCasing.LowerCase);
             options.Gender = GrammaticalGender.Masculine;
