@@ -2,8 +2,6 @@
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
 name: Build and deploy ASP.Net Core app to Azure Web App - gex
-env:
-  DOTNET_ROOT: Gex.NetCore/
 
 on:
   push:
@@ -23,7 +21,7 @@ jobs:
         with:
           dotnet-version: '6.0.x'
           include-prerelease: true
-          
+
       - name: Build with dotnet
         run: dotnet build --configuration Release
 
@@ -55,5 +53,5 @@ jobs:
         with:
           app-name: 'gex'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_7BAA97F0E69E4EC99857A329F6834944 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_AB8D622FE493491EB542965B381AF7E0 }}
           package: .
