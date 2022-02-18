@@ -184,7 +184,7 @@ const routes = [
 ]
 const router = new VueRouter({
 	mode: 'history',
-	base: process.env.NODE_ENV === 'production' ? '/Gex.NetCore/' : process.env.BASE_URL,
+	base: process.env.NODE_ENV === 'production' ? process.env.BASE_URL + '/Gex.NetCore/' : process.env.BASE_URL,
 	routes
 })
 export default router
