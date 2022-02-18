@@ -1,7 +1,7 @@
 <template>
 	<v-app>
 		<v-overlay :value="enviando_ajax"><v-progress-circular indeterminate size="64"></v-progress-circular></v-overlay>
-		<v-app-bar src="/vue1.jpg" dark dense fixed style="background: rgb(17,19,41); background: linear-gradient(151deg, rgba(17,19,41,1) 34%, rgba(0,0,0,1) 59%, rgba(0,0,0,1) 76%, rgba(19,24,69,1) 93%);"><!-- Menú -->
+		<v-app-bar dark dense fixed style="background: rgb(17,19,41); background: linear-gradient(151deg, rgba(17,19,41,1) 34%, rgba(0,0,0,1) 59%, rgba(0,0,0,1) 76%, rgba(19,24,69,1) 93%);"><!-- Menú -->
 			<template v-slot:img="{ props }">
 				<v-img v-bind="props" gradient="to top right, rgba(0,0,0,1), rgba(19,24,69,0.8)"></v-img>
 			</template>
