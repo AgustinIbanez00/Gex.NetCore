@@ -18,7 +18,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.SpaServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,7 +26,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using VueCliMiddleware;
 using XLocalizer;
 using XLocalizer.Routing;
 using XLocalizer.Xml;
@@ -103,7 +101,8 @@ public class Startup
 
         services.AddSingleton<IAuthorizationHandler, UsuarioAdministradorAuthorizationHandler>();
 
-        services.AddSpaStaticFiles(opt => opt.RootPath = "VueApp/dist");
+        // ENABLE VUE ON API
+        //services.AddSpaStaticFiles(opt => opt.RootPath = "VueApp/dist");
 
         services.AddControllers(options =>
         {
@@ -192,13 +191,17 @@ public class Startup
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapControllers();
+
+            /*
+             * ENABLE VUE ON WEBAPI
+             * 
             endpoints.MapToVueCliProxy(
                 "{*path}",
                 new SpaOptions { SourcePath = "VueApp" },
                 npmScript: (System.Diagnostics.Debugger.IsAttached) ? "serve" : null,
                 regex: "Compiled successfully",
                 forceKill: true
-            );
+            );*/
         });
 
         app.UseOpenApi();
