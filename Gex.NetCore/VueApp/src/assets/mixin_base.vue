@@ -20,9 +20,7 @@
 			alerta_error: false,
 			alerta_error_txt: '',
 			usuario_actual: JSON.parse(JSON.stringify(usuario_default)),
-			url_api: process.env.NODE_ENV === 'production'
-    ? 'https://gex.azurewebsites.net/api'
-    : 'http://localhost:5000/api',
+			url_api: process.env.NODE_ENV === 'production' ? 'https://gex.azurewebsites.net/api' : 'http://localhost:5000/api',
 			enviando_ajax: false,
 		},
 		mutations: {
