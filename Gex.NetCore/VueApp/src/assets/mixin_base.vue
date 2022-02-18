@@ -19,7 +19,6 @@
 			alerta_ok_txt: '',
 			alerta_error: false,
 			alerta_error_txt: '',
-			usuario_actual: JSON.parse(JSON.stringify(usuario_default)),
 			url_api: process.env.NODE_ENV === 'production' ? 'https://gex.azurewebsites.net/api' : 'http://localhost:5000/api',
 			enviando_ajax: false,
 		},
@@ -52,7 +51,13 @@
 				{id: 1, name:' Profesor'},
 				{id: 2, name:' Administrador'}
 			],
-
+			usuario_default : {
+				"id": 0,
+				"email": null,
+				"tipo": 0,
+				"nombre": null,
+				"apellido": null
+			}
 		}),
 		watch:{
 			async $route(to, from) {
