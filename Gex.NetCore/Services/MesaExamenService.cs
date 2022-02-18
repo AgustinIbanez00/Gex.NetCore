@@ -50,7 +50,7 @@ public class MesaExamenService : IMesaExamenService
             if (profesor == null)
                 return KeyError<Usuario, MesaExamenResponse>(nameof(mesaExamenDto.ProfesorId), GexErrorMessage.NotFound);
 
-            if (profesor.Tipo != UsuarioTipo.Profesor)
+            if (profesor.Tipo != UsuarioTipo.Profesor && profesor.Tipo != UsuarioTipo.Administrador)
                 return KeyError<MesaExamenResponse>(nameof(mesaExamenDto.ProfesorId), "Sólo se pueden asignar profesores a una mesa de exámen.");
 
             var mesaExamen = _mapper.Map<MesaExamen>(mesaExamenDto);
@@ -168,7 +168,7 @@ public class MesaExamenService : IMesaExamenService
             if (profesor == null)
                 return KeyError<Usuario, MesaExamenResponse>(nameof(mesaExamenDto.ProfesorId), GexErrorMessage.NotFound);
 
-            if (profesor.Tipo != UsuarioTipo.Profesor)
+            if (profesor.Tipo != UsuarioTipo.Profesor && profesor.Tipo != UsuarioTipo.Administrador)
                 return KeyError<MesaExamenResponse>(nameof(mesaExamenDto.ProfesorId), "Sólo se pueden asignar profesores a una mesa de exámen.");
 
             mesaExamen.Profesor = profesor;
