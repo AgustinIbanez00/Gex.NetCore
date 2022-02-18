@@ -177,9 +177,9 @@ public class Startup
         /*
         app.UseDefaultFiles();
         app.UseStaticFiles();
-        */
 
         app.UseSpaStaticFiles();
+        */
         app.UseRouting();
         app.UseAuthentication();
         app.UseAuthorization();
