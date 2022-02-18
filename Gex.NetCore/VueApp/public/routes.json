@@ -1,8 +1,8 @@
 {
     "routes": [
       {
-        "route": "/Gex.NetCore/*",
-        "serve": "/index.html",
+        "route": "/*",
+        "serve": "Gex.NetCore/index.html",
         "statusCode": 200
       }
       
