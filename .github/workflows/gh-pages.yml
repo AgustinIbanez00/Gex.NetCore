@@ -22,7 +22,7 @@ jobs:
       - name: Build
         run: |
           npm install
-          npm run-script deploy
+          npm run build
         working-directory: Gex.NetCore/VueApp
         
       # changes the base-tag in index.html from '/' to 'Gex.NetCore' to match GitHub Pages repository subdirectory
