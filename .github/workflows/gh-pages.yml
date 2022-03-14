@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - master
+    paths:
+      - Gex.NetCore/VueApp/** 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
