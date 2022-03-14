@@ -9,6 +9,10 @@ on:
   push:
     branches:
       - master
+    paths:
+      - Gex.NetCore/** 
+    paths-ignore:
+      - Gex.NetCore/VueApp/**
   workflow_dispatch:
 
 jobs:
