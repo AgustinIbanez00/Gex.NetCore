@@ -10,8 +10,9 @@ on:
     branches:
       - master
     paths:
-      - Gex.NetCore/** 
-      - Gex.sln
+      - 'Gex.NetCore/**'
+      - '!Gex.NetCore/VueApp/**'
+      - 'Gex.sln'
   workflow_dispatch:
 
 jobs:
