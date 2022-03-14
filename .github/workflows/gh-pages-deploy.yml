@@ -1,37 +1,49 @@
-name: Deploy to Github Pages
-env:
-  PUBLISH_DIR: Gex.NetCore/VueApp/dist
+name: Build and Deploy
+
 on:
   push:
     branches:
       - master
 jobs:
-  gh-pages-deploy:
-    name: Deploying to Github Pages
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-        - uses: actions/checkout@v2
-        - uses: actions/setup-node@v2
-          with:
-            node-version: '12'
-        - name: Show directories
-          run: tree
-        - name: Install packages
-          run: npm i
-          working-directory: Gex.NetCore/VueApp
-        - name: Run Build
-          run: npm run build
-          working-directory: Gex.NetCore/VueApp
-        - name: Rewrite base href
-          uses: SteveSandersonMS/ghaction-rewrite-base-href@v1
-          with:
-            html_path: ${{ env.PUBLISH_DIR }}/index.html
-            base_href: /Gex.NetCore/          
-        - name: GitHub Pages
-          if: success()
-          uses: crazy-max/ghaction-github-pages@v1.5.1
-          with:
-            target_branch: gh-pages
-            build_dir: ${{ env.PUBLISH_DIR }}
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Checkout
+        uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '12'
+      - uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: Build
+        run: |
+          npm install
+          npm run-script deploy
+        working-directory: Gex.NetCore/VueApp
+        
+      # changes the base-tag in index.html from '/' to 'Gex.NetCore' to match GitHub Pages repository subdirectory
+      - name: Change base-tag in index.html from / to Gex.NetCore
+        run: sed -i 's/<base href="\/" \/>/<base href="\/Gex.NetCore\/" \/>/g' dist/index.html
+        working-directory: Gex.NetCore/VueApp
+
+      # copy index.html to 404.html to serve the same file when a file is not found
+      - name: copy index.html to 404.html
+        run: cp dist/index.html dist/404.html
+        working-directory: Gex.NetCore/VueApp
+
+      # add .nojekyll file to tell GitHub pages to not treat this as a Jekyll project. (Allow files and folders starting with an underscore)
+      - name: Add .nojekyll file
+        run: touch dist/.nojekyll        
+        working-directory: Gex.NetCore/VueApp
+        
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@releases/v3
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages
+          WORKSPACE: .
+          FOLDER: Gex.NetCore/VueApp/dist
